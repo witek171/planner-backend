@@ -89,7 +89,7 @@ Reservation & Event Management:
 
 ### Prerequisites
 
- [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed and running
+ - [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed and running
 
 1. **Clone the repository:**
    ```bash
@@ -103,10 +103,26 @@ Reservation & Event Management:
    ```
 
 4. **Open Swagger:**
-    API:
    ```bash
    http://localhost:5000/swagger
    ```
+
+### Connection string (SQL Server)
+
+Use this connection string to connect to the database from your **local machine**:
+
+```bash
+Server=localhost,1433;Database=PlannerDB;User Id=sa;Password=YourStrong@Password123;TrustServerCertificate=True;MultipleActiveResultSets=True;
+```
+
+**JDBC equivalent**:
+
+```bash
+jdbc:sqlserver://localhost:1433;databaseName=PlannerDB;user=sa;password=YourStrong@Password123;trustServerCertificate=true;multipleActiveResultSets=true
+```
+
+> Note: From inside Docker containers, `localhost` means **the container itself**.  
+> Other containers should use the service name `sqlserver` instead of `localhost`.
 
  ### What happens automatically:
 - SQL Server starts up (port 1433)
