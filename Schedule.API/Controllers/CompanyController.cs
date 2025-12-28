@@ -31,7 +31,6 @@ public class CompanyController : ControllerBase
 	public async Task<ActionResult<Guid>> Create([FromBody] CompanyRequest request)
 	{
 		Company company = _mapper.Map<Company>(request);
-
 		Guid companyId = await _companyService.CreateAsync(company);
 		return CreatedAtAction(nameof(Create), companyId);
 	}
@@ -46,7 +45,6 @@ public class CompanyController : ControllerBase
 			return NotFound();
 
 		_mapper.Map(request, company);
-
 		await _companyService.PutAsync(company);
 		return NoContent();
 	}
@@ -62,8 +60,8 @@ public class CompanyController : ControllerBase
 		return NoContent();
 	}
 
-	[HttpGet("byId")]
-	public async Task<ActionResult<CompanyResponse>> GetById([FromQuery] Guid companyId)
+	[HttpGet("{companyId:guid}")]
+	public async Task<ActionResult<CompanyResponse>> GetById(Guid companyId)
 	{
 		Company? company = await _companyService.GetByIdAsync(companyId);
 		if (company == null)
@@ -73,7 +71,7 @@ public class CompanyController : ControllerBase
 		return Ok(response);
 	}
 
-	[HttpPut("{companyId:guid}/markAsReception")]
+	[HttpPatch("{companyId:guid}/markAsReception")]
 	public async Task<ActionResult> MarkAsReception(Guid companyId)
 	{
 		Company? company = await _companyService.GetByIdAsync(companyId);
@@ -84,7 +82,7 @@ public class CompanyController : ControllerBase
 		return NoContent();
 	}
 
-	[HttpPut("{companyId:guid}/unmarkAsReception")]
+	[HttpPatch("{companyId:guid}/unmarkAsReception")]
 	public async Task<ActionResult> UnmarkAsReception(Guid companyId)
 	{
 		Company? company = await _companyService.GetByIdAsync(companyId);
@@ -128,7 +126,6 @@ public class CompanyController : ControllerBase
 			return NotFound();
 
 		List<Company> companies = await _companyService.GetAllRelationsAsync(companyId);
-
 		List<CompanyResponse> responses = _mapper.Map<List<CompanyResponse>>(companies);
 		return Ok(responses);
 	}
@@ -144,7 +141,6 @@ public class CompanyController : ControllerBase
 
 		CompanyConfig companyConfig = await _companyConfigService.GetByIdAsync(companyId);
 		_mapper.Map(request, companyConfig);
-
 		await _companyConfigService.UpdateBreakTimesAsync(companyConfig);
 		return NoContent();
 	}

@@ -24,7 +24,7 @@ public class EventTypeController : ControllerBase
 		_mapper = mapper;
 	}
 
-	[HttpGet("all")]
+	[HttpGet]
 	public async Task<ActionResult<List<EventTypeResponse>>> GetAll(Guid companyId)
 	{
 		List<EventType> eventTypes = await _eventTypeService.GetAllAsync(companyId);

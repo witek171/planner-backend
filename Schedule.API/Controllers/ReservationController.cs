@@ -24,7 +24,7 @@ public class ReservationController : ControllerBase
 		_mapper = mapper;
 	}
 
-	[HttpGet("all")]
+	[HttpGet]
 	public async Task<ActionResult<List<ReservationResponse>>> GetAll(Guid companyId)
 	{
 		List<Reservation> reservations = await _reservationService.GetAllAsync(companyId);
@@ -71,7 +71,7 @@ public class ReservationController : ControllerBase
 		return NoContent();
 	}
 
-	[HttpPut("{id:guid}/markAsPaid")]
+	[HttpPatch("{id:guid}/markAsPaid")]
 	public async Task<ActionResult> MarkAsPaid(
 		Guid id,
 		Guid companyId)
@@ -84,7 +84,7 @@ public class ReservationController : ControllerBase
 		return NoContent();
 	}
 
-	[HttpPut("{id:guid}/unmarkAsPaid")]
+	[HttpPatch("{id:guid}/unmarkAsPaid")]
 	public async Task<ActionResult> UnmarkAsPaid(
 		Guid id,
 		Guid companyId)
