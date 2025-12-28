@@ -24,7 +24,7 @@ public class EventScheduleController : ControllerBase
 		_mapper = mapper;
 	}
 
-	[HttpGet("all")]
+	[HttpGet]
 	public async Task<ActionResult<List<EventScheduleResponse>>> GetAll(Guid companyId)
 	{
 		List<EventSchedule> eventSchedules = await _eventScheduleService.GetAllAsync(companyId);
