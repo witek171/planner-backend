@@ -13,7 +13,9 @@ public class AuthController : ControllerBase
 	private readonly IAuthService _authService;
 	private readonly IMapper _mapper;
 
-	public AuthController(IAuthService authService, IMapper mapper)
+	public AuthController(
+		IAuthService authService,
+		IMapper mapper)
 	{
 		_authService = authService;
 		_mapper = mapper;
@@ -29,7 +31,7 @@ public class AuthController : ControllerBase
 
 	[HttpPost("register")]
 	public async Task<ActionResult<Guid>> Register(
-	[FromBody] StaffMemberRequest request)
+		[FromBody] StaffMemberRequest request)
 	{
 		StaffMember staffMember = _mapper.Map<StaffMember>(request);
 		Guid staffMemberId = await _authService.RegisterAsync(staffMember);

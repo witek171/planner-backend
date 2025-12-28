@@ -13,27 +13,31 @@ namespace Schedule.API.Controllers;
 [Authorize(Roles = "Manager")]
 public class SpecializationController : ControllerBase
 {
-	private readonly ISpecializationService _service;
+	private readonly ISpecializationService _specializationService;
 	private readonly IMapper _mapper;
 
-	public SpecializationController(ISpecializationService service, IMapper mapper)
+	public SpecializationController(
+		ISpecializationService specializationService,
+		IMapper mapper)
 	{
-		_service = service;
+		_specializationService = specializationService;
 		_mapper = mapper;
 	}
 
 	[HttpGet]
 	public async Task<ActionResult<List<SpecializationResponse>>> GetAll(Guid companyId)
 	{
-		List<Specialization> result = await _service.GetAllAsync(companyId);
+		List<Specialization> result = await _specializationService.GetAllAsync(companyId);
 		List<SpecializationResponse> response = _mapper.Map<List<SpecializationResponse>>(result);
 		return Ok(response);
 	}
 
 	[HttpGet("{id}")]
-	public async Task<ActionResult<SpecializationResponse>> GetById(Guid id, Guid companyId)
+	public async Task<ActionResult<SpecializationResponse>> GetById(
+		Guid id,
+		Guid companyId)
 	{
-		Specialization? specialization = await _service.GetByIdAsync(id, companyId);
+		Specialization? specialization = await _specializationService.GetByIdAsync(id, companyId);
 		if (specialization == null)
 			return NotFound();
 
@@ -42,39 +46,41 @@ public class SpecializationController : ControllerBase
 	}
 
 	[HttpPost]
-	public async Task<ActionResult<Guid>> Create(Guid companyId, [FromBody] SpecializationRequest request)
+	public async Task<ActionResult<Guid>> Create(
+		Guid companyId,
+		[FromBody] SpecializationRequest request)
 	{
 		Specialization? specialization = _mapper.Map<Specialization>(request);
 		specialization.SetCompanyId(companyId);
-		Guid id = await _service.CreateAsync(specialization);
+		Guid id = await _specializationService.CreateAsync(specialization);
 		return CreatedAtAction(nameof(Create), id);
 	}
 
 	[HttpPut("{id:guid}")]
-	public async Task<ActionResult> Update(Guid id, Guid companyId, [FromBody] SpecializationRequest request)
+	public async Task<ActionResult> Update(
+		Guid id,
+		Guid companyId,
+		[FromBody] SpecializationRequest request)
 	{
-		Specialization? specialization = await _service.GetByIdAsync(id, companyId);
+		Specialization? specialization = await _specializationService.GetByIdAsync(id, companyId);
 		if (specialization == null)
 			return NotFound();
 
 		_mapper.Map(request, specialization);
-		Boolean success = await _service.UpdateAsync(specialization);
-		if (!success)
-			return NotFound();
-
+		await _specializationService.UpdateAsync(specialization);
 		return NoContent();
 	}
 
 	[HttpDelete("{id:guid}")]
-	public async Task<ActionResult> Delete(Guid id, Guid companyId)
+	public async Task<ActionResult> Delete(
+		Guid id,
+		Guid companyId)
 	{
-		Specialization? specialization = await _service.GetByIdAsync(id, companyId);
+		Specialization? specialization = await _specializationService.GetByIdAsync(id, companyId);
 		if (specialization == null)
 			return NotFound();
 
-		Boolean success = await _service.DeleteAsync(id, companyId);
-		if (!success) 
-			return NotFound();
+		await _specializationService.DeleteAsync(id, companyId);
 		return NoContent();
 	}
 }
