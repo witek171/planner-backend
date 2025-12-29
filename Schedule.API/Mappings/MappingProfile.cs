@@ -50,7 +50,6 @@ public class MappingProfile : Profile
 		CreateMap<ReservationUpdateRequest, Reservation>();
 
 		CreateMap<StaffMemberCompany, StaffMemberCompanyResponse>();
-		CreateMap<StaffMemberCompanyRequest, StaffMemberCompany>();
 
 		CreateMap<UpdateCompanyBreakTimesRequest, CompanyConfig>();
 	}
