@@ -102,29 +102,29 @@ public class Program
 
 		builder.Services.AddAuthorization();
 
-		builder.Services.AddScoped<IParticipantRepository>(provider =>
+		builder.Services.AddScoped<IParticipantRepository>(_ =>
 			new ParticipantRepository(EnvironmentService.SqlConnectionString));
-		builder.Services.AddScoped<IStaffMemberRepository>(provider =>
+		builder.Services.AddScoped<IStaffMemberRepository>(_ =>
 			new StaffMemberRepository(EnvironmentService.SqlConnectionString));
-		builder.Services.AddScoped<IStaffMemberSpecializationRepository>(provider =>
+		builder.Services.AddScoped<IStaffMemberSpecializationRepository>(_ =>
 			new StaffMemberSpecializationRepository(EnvironmentService.SqlConnectionString));
-		builder.Services.AddScoped<IStaffMemberAvailabilityRepository>(provider =>
+		builder.Services.AddScoped<IStaffMemberAvailabilityRepository>(_ =>
 			new StaffMemberAvailabilityRepository(EnvironmentService.SqlConnectionString));
-		builder.Services.AddScoped<IEventScheduleRepository>(provider =>
+		builder.Services.AddScoped<IEventScheduleRepository>(_ =>
 			new EventScheduleRepository(EnvironmentService.SqlConnectionString));
-		builder.Services.AddScoped<IEventScheduleStaffMemberRepository>(provider =>
+		builder.Services.AddScoped<IEventScheduleStaffMemberRepository>(_ =>
 			new EventScheduleStaffMemberRepository(EnvironmentService.SqlConnectionString));
-		builder.Services.AddScoped<ISpecializationRepository>(provider =>
+		builder.Services.AddScoped<ISpecializationRepository>(_ =>
 			new SpecializationRepository(EnvironmentService.SqlConnectionString));
-		builder.Services.AddScoped<ICompanyRepository>(provider =>
+		builder.Services.AddScoped<ICompanyRepository>(_ =>
 			new CompanyRepository(EnvironmentService.SqlConnectionString));
-		builder.Services.AddScoped<IEventTypeRepository>(provider =>
+		builder.Services.AddScoped<IEventTypeRepository>(_ =>
 			new EventTypeRepository(EnvironmentService.SqlConnectionString));
-		builder.Services.AddScoped<IReservationRepository>(provider =>
+		builder.Services.AddScoped<IReservationRepository>(_ =>
 			new ReservationRepository(EnvironmentService.SqlConnectionString));
-		builder.Services.AddScoped<IReservationParticipantRepository>(provider =>
+		builder.Services.AddScoped<IReservationParticipantRepository>(_ =>
 			new ReservationParticipantRepository(EnvironmentService.SqlConnectionString));
-		builder.Services.AddScoped<ICompanyConfigRepository>(provider =>
+		builder.Services.AddScoped<ICompanyConfigRepository>(_ =>
 			new CompanyConfigRepository(EnvironmentService.SqlConnectionString));
 
 		builder.Services.AddScoped<IHealthCheckService>(provider =>
@@ -165,7 +165,8 @@ public class Program
 			c.RoutePrefix = "swagger";
 		});
 
-		app.MapGet("/", () => Results.Redirect("/swagger"));
+		app.MapGet("/", () => Results.Redirect("/swagger"))
+			.ExcludeFromDescription();
 
 		app.UseHttpsRedirection();
 
