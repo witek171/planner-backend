@@ -4,7 +4,7 @@ namespace Schedule.Domain.Models;
 
 public class StaffMember
 {
-	public Guid Id { get; private set; }
+	public Guid Id { get; }
 	public StaffRole Role { get; }
 	public string Email { get; private set; }
 	public string Password { get; private set; }

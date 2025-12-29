@@ -9,15 +9,20 @@ public interface IStaffMemberService
 	Task<StaffMember?> GetByIdAsync(
 		Guid id,
 		Guid companyId);
+
 	Task<StaffMember?> GetByEmailAsync(String email);
-	Task<Guid> CreateAsync(StaffMember staffMember);
+
+	Task<Guid> CreateAsync(
+		StaffMember staffMember,
+		Guid companyId);
+
 	Task PutAsync(StaffMember staffMember, Guid companyId);
 
 	Task DeleteAsync(
 		Guid id,
 		Guid companyId);
 
-	Task<bool> AssignToCompanyAsync(Guid staffMemberId, Guid companyId);
+	Task<Guid> AssignToCompanyAsync(Guid staffMemberId, Guid companyId);
 	Task<bool> UnassignFromCompanyAsync(Guid staffMemberId, Guid companyId);
 	Task<List<StaffMemberCompany>> GetAssignedCompanyAsync(Guid staffMemberId);
 }
