@@ -64,8 +64,7 @@ public class StaffMemberController : ControllerBase
 		[FromBody] StaffMemberRequest request)
 	{
 		StaffMember staffMember = _mapper.Map<StaffMember>(request);
-		staffMember.AddCompany(companyId);
-		Guid staffMemberId = await _staffMemberService.CreateAsync(staffMember);
+		Guid staffMemberId = await _staffMemberService.CreateAsync(staffMember, companyId);
 		return CreatedAtAction(nameof(Create), staffMemberId);
 	}
 
@@ -217,21 +216,23 @@ public class StaffMemberController : ControllerBase
 		return NoContent();
 	}
 
-	[HttpPost("assign")]
-	public async Task<ActionResult<StaffMemberCompanyResponse>> AssignToCompany(
-		[FromBody] StaffMemberCompanyRequest request)
+	[HttpPost("assign/{staffMemberId:guid}")]
+	public async Task<ActionResult> AssignToCompany(
+		Guid companyId,
+		Guid staffMemberId)
 	{
-		StaffMemberCompany staffCompany = _mapper.Map<StaffMemberCompany>(request);
-		await _staffMemberService.AssignToCompanyAsync(staffCompany.StaffMemberId, staffCompany.CompanyId);
-		StaffMemberCompanyResponse response = _mapper.Map<StaffMemberCompanyResponse>(staffCompany);
-		return Ok(response);
+		// walidacja company i staffmember id
+		Guid id = await _staffMemberService
+			.AssignToCompanyAsync(staffMemberId, companyId);
+		return CreatedAtAction(nameof(AssignToCompany), id);
 	}
 
-	[HttpDelete("unassign")]
+	[HttpDelete("unassign/{staffMemberId:guid}")]
 	public async Task<ActionResult> UnassignFromCompany(
-		[FromBody] StaffMemberCompanyRequest request)
+		Guid companyId,
+		Guid staffMemberId)
 	{
-		await _staffMemberService.UnassignFromCompanyAsync(request.StaffMemberId, request.CompanyId);
+		await _staffMemberService.UnassignFromCompanyAsync(staffMemberId, companyId);
 		return NoContent();
 	}
 
