@@ -216,23 +216,32 @@ public class StaffMemberController : ControllerBase
 		return NoContent();
 	}
 
-	[HttpPost("assign/{staffMemberId:guid}")]
+	[HttpPost("{staffMemberId:guid}/companies/{targetCompanyId:guid}")]
 	public async Task<ActionResult> AssignToCompany(
 		Guid companyId,
+		Guid targetCompanyId,
 		Guid staffMemberId)
 	{
 		// walidacja company i staffmember id
-		Guid id = await _staffMemberService
-			.AssignToCompanyAsync(staffMemberId, companyId);
+		StaffMember? staffMember = await _staffMemberService.GetByIdAsync(staffMemberId, companyId);
+		if (staffMember == null)
+			return NotFound();
+
+		Guid id = await _staffMemberService.AssignToCompanyAsync(staffMemberId, targetCompanyId);
 		return CreatedAtAction(nameof(AssignToCompany), id);
 	}
 
-	[HttpDelete("unassign/{staffMemberId:guid}")]
+	[HttpDelete("{staffMemberId:guid}/companies/{targetCompanyId:guid}")]
 	public async Task<ActionResult> UnassignFromCompany(
 		Guid companyId,
+		Guid targetCompanyId,
 		Guid staffMemberId)
 	{
-		await _staffMemberService.UnassignFromCompanyAsync(staffMemberId, companyId);
+		StaffMember? staffMember = await _staffMemberService.GetByIdAsync(staffMemberId, companyId);
+		if (staffMember == null)
+			return NotFound();
+
+		await _staffMemberService.UnassignFromCompanyAsync(staffMemberId, targetCompanyId);
 		return NoContent();
 	}
 
