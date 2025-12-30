@@ -2,6 +2,7 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PlannerNet.Filters;
 using Schedule.Application.Interfaces.Services;
 using Schedule.Contracts.Dtos.Responses;
 using Schedule.Domain.Models;
@@ -37,8 +38,10 @@ public class StaffMemberCompanyController : ControllerBase
 		return Ok(response);
 	}
 
+	// dodac sprawdzenie czy staff member nalezy do firmy
 	[HttpPost("{companyId:guid}/{staffMemberId:guid}/companies/{targetCompanyId:guid}")]
 	[Authorize(Roles = "Manager")]
+	[CompanyAccess]
 	public async Task<ActionResult> AssignToCompany(
 		Guid companyId,
 		Guid targetCompanyId,
@@ -55,6 +58,7 @@ public class StaffMemberCompanyController : ControllerBase
 
 	[HttpDelete("{companyId:guid}/{staffMemberId:guid}/companies/{targetCompanyId:guid}")]
 	[Authorize(Roles = "Manager")]
+	[CompanyAccess]
 	public async Task<ActionResult> UnassignFromCompany(
 		Guid companyId,
 		Guid targetCompanyId,
