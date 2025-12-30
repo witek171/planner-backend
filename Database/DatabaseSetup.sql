@@ -52,11 +52,11 @@ IF OBJECT_ID('dbo.Reservations', 'U') IS NOT NULL DROP TABLE dbo.Reservations;
 IF OBJECT_ID('dbo.EventScheduleStaff', 'U') IS NOT NULL DROP TABLE dbo.EventScheduleStaff;
 IF OBJECT_ID('dbo.EventSchedules', 'U') IS NOT NULL DROP TABLE dbo.EventSchedules;
 IF OBJECT_ID('dbo.EventTypes', 'U') IS NOT NULL DROP TABLE dbo.EventTypes;
-IF OBJECT_ID('dbo.StaffAvailability', 'U') IS NOT NULL DROP TABLE dbo.StaffAvailability;
-IF OBJECT_ID('dbo.StaffSpecializations', 'U') IS NOT NULL DROP TABLE dbo.StaffSpecializations;
+IF OBJECT_ID('dbo.StaffMemberAvailabilities', 'U') IS NOT NULL DROP TABLE dbo.StaffMemberAvailabilities;
+IF OBJECT_ID('dbo.StaffMemberSpecializations', 'U') IS NOT NULL DROP TABLE dbo.StaffMemberSpecializations;
 IF OBJECT_ID('dbo.Specializations', 'U') IS NOT NULL DROP TABLE dbo.Specializations;
 IF OBJECT_ID('dbo.Participants', 'U') IS NOT NULL DROP TABLE dbo.Participants;
-IF OBJECT_ID('dbo.StaffCompanies', 'U') IS NOT NULL DROP TABLE dbo.StaffCompanies;
+IF OBJECT_ID('dbo.StaffMemberCompanies', 'U') IS NOT NULL DROP TABLE dbo.StaffMemberCompanies;
 IF OBJECT_ID('dbo.Staff', 'U') IS NOT NULL DROP TABLE dbo.Staff;
 IF OBJECT_ID('dbo.CompanyConfigs', 'U') IS NOT NULL DROP TABLE dbo.CompanyConfigs;
 IF OBJECT_ID('dbo.CompanyHierarchies', 'U') IS NOT NULL DROP TABLE dbo.CompanyHierarchies;
@@ -127,20 +127,20 @@ CREATE TABLE dbo.Staff
 );
 PRINT 'Tabela Staff utworzona.';
 
--- Tabela StaffCompanies (wiele-do-wielu pomiędzy Staff a Companies)
-CREATE TABLE dbo.StaffCompanies
+-- Tabela StaffMemberCompanies (wiele-do-wielu pomiędzy Staff a Companies)
+CREATE TABLE dbo.StaffMemberCompanies
 (
     Id        UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
-    StaffId   UNIQUEIDENTIFIER NOT NULL,
+    StaffMemberId   UNIQUEIDENTIFIER NOT NULL,
     CompanyId UNIQUEIDENTIFIER NOT NULL,
     CreatedAt DATETIME2(7)                 DEFAULT SYSUTCDATETIME(),
-    CONSTRAINT fk_sc_staff FOREIGN KEY (StaffId)
+    CONSTRAINT fk_sc_staff FOREIGN KEY (StaffMemberId)
         REFERENCES dbo.Staff (Id) ON DELETE CASCADE ON UPDATE NO ACTION,
     CONSTRAINT fk_sc_company FOREIGN KEY (CompanyId)
         REFERENCES dbo.Companies (Id) ON DELETE CASCADE ON UPDATE NO ACTION,
-    CONSTRAINT uq_staff_company UNIQUE (StaffId, CompanyId)
+    CONSTRAINT uq_staff_company UNIQUE (StaffMemberId, CompanyId)
 );
-PRINT 'Tabela StaffCompanies utworzona.';
+PRINT 'Tabela StaffMemberCompanies utworzona.';
 
 -- Tabela Participants (uczestnicy)
 CREATE TABLE dbo.Participants
@@ -170,8 +170,8 @@ CREATE TABLE dbo.Specializations
 );
 PRINT 'Tabela Specializations utworzona.';
 
--- Tabela StaffSpecializations (specjalizacje personelu)
-CREATE TABLE dbo.StaffSpecializations
+-- Tabela StaffMemberSpecializations (specjalizacje personelu)
+CREATE TABLE dbo.StaffMemberSpecializations
 (
     Id               UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
     CompanyId        UNIQUEIDENTIFIER NOT NULL,
@@ -184,10 +184,10 @@ CREATE TABLE dbo.StaffSpecializations
     CONSTRAINT fk_staffspec_specialization FOREIGN KEY (SpecializationId)
         REFERENCES dbo.Specializations (Id) ON DELETE NO ACTION ON UPDATE NO ACTION
 );
-PRINT 'Tabela StaffSpecializations utworzona.';
+PRINT 'Tabela StaffMemberSpecializations utworzona.';
 
--- Tabela StaffAvailability (dostępność personelu)
-CREATE TABLE dbo.StaffAvailability
+-- Tabela StaffMemberAvailabilities (dostępność personelu)
+CREATE TABLE dbo.StaffMemberAvailabilities
 (
     Id            UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
     CompanyId     UNIQUEIDENTIFIER NOT NULL,
@@ -201,7 +201,7 @@ CREATE TABLE dbo.StaffAvailability
     CONSTRAINT fk_staffavail_staff FOREIGN KEY (StaffMemberId)
         REFERENCES dbo.Staff (Id) ON DELETE NO ACTION ON UPDATE NO ACTION
 );
-PRINT 'Tabela StaffAvailability utworzona.';
+PRINT 'Tabela StaffMemberAvailabilities utworzona.';
 
 -- Tabela EventTypes (typy wydarzeń)
 CREATE TABLE dbo.EventTypes
@@ -401,10 +401,10 @@ BEGIN
         DELETE FROM dbo.EventTypes WHERE CompanyId IN (SELECT Id FROM @DeletedCompanies);
 
         -- Usuń dostępność personelu
-        DELETE FROM dbo.StaffAvailability WHERE CompanyId IN (SELECT Id FROM @DeletedCompanies);
+        DELETE FROM dbo.StaffMemberAvailabilities WHERE CompanyId IN (SELECT Id FROM @DeletedCompanies);
 
         -- Usuń specjalizacje personelu
-        DELETE FROM dbo.StaffSpecializations WHERE CompanyId IN (SELECT Id FROM @DeletedCompanies);
+        DELETE FROM dbo.StaffMemberSpecializations WHERE CompanyId IN (SELECT Id FROM @DeletedCompanies);
 
         -- Usuń specjalizacje
         DELETE FROM dbo.Specializations WHERE CompanyId IN (SELECT Id FROM @DeletedCompanies);
@@ -413,7 +413,7 @@ BEGIN
         DELETE FROM dbo.Participants WHERE CompanyId IN (SELECT Id FROM @DeletedCompanies);
 
         -- Usuń przypisania pracowników do firm
-        DELETE FROM dbo.StaffCompanies WHERE CompanyId IN (SELECT Id FROM @DeletedCompanies);
+        DELETE FROM dbo.StaffMemberCompanies WHERE CompanyId IN (SELECT Id FROM @DeletedCompanies);
 
         -- Usuń hierarchię firm
         DELETE FROM dbo.CompanyHierarchies WHERE CompanyId IN (SELECT Id FROM @DeletedCompanies);

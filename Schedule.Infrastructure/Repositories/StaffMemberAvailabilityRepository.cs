@@ -17,7 +17,7 @@ public class StaffMemberAvailabilityRepository : IStaffMemberAvailabilityReposit
 	public async Task<Guid> CreateAsync(StaffMemberAvailability availability)
 	{
 		const string sql = @"
-			INSERT INTO StaffAvailability 
+			INSERT INTO StaffMemberAvailabilities 
 			(CompanyId, StaffMemberId, Date, StartTime, EndTime, IsAvailable)
 			OUTPUT INSERTED.Id
 			VALUES (@CompanyId, @StaffMemberId, @Date, @StartTime, @EndTime, @IsAvailable)";
@@ -42,7 +42,7 @@ public class StaffMemberAvailabilityRepository : IStaffMemberAvailabilityReposit
 		Guid staffMemberAvailabilityId)
 	{
 		const string sql = @"
-			DELETE FROM StaffAvailability 
+			DELETE FROM StaffMemberAvailabilities 
 			WHERE CompanyId = @CompanyId AND Id = @Id";
 
 		await using SqlConnection connection = new(_connectionString);
@@ -62,7 +62,7 @@ public class StaffMemberAvailabilityRepository : IStaffMemberAvailabilityReposit
 	{
 		const string sql = @"
 			SELECT Id, CompanyId, StaffMemberId, Date, StartTime, EndTime, IsAvailable
-			FROM StaffAvailability
+			FROM StaffMemberAvailabilities
 			WHERE StaffMemberId = @StaffMemberId AND CompanyId = @CompanyId
 			AND IsAvailable = 1";
 
@@ -89,7 +89,7 @@ public class StaffMemberAvailabilityRepository : IStaffMemberAvailabilityReposit
 	{
 		const string sql = @"
 			SELECT 1
-			FROM StaffAvailability
+			FROM StaffMemberAvailabilities
 			WHERE CompanyId = @CompanyId AND Id = @Id";
 
 		await using SqlConnection connection = new(_connectionString);
