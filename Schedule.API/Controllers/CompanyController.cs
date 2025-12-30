@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PlannerNet.Filters;
 using Schedule.Application.Interfaces.Services;
 using Schedule.Contracts.Dtos.Requests;
 using Schedule.Contracts.Dtos.Responses;
@@ -36,6 +37,7 @@ public class CompanyController : ControllerBase
 	}
 
 	[HttpPut("{companyId:guid}")]
+	[CompanyAccess]
 	public async Task<ActionResult> Put(
 		Guid companyId,
 		[FromBody] CompanyRequest request)
@@ -50,6 +52,7 @@ public class CompanyController : ControllerBase
 	}
 
 	[HttpDelete("{companyId:guid}")]
+	[CompanyAccess]
 	public async Task<ActionResult> DeleteById(Guid companyId)
 	{
 		Company? company = await _companyService.GetByIdAsync(companyId);
@@ -72,6 +75,7 @@ public class CompanyController : ControllerBase
 	}
 
 	[HttpPatch("{companyId:guid}/markAsReception")]
+	[CompanyAccess]
 	public async Task<ActionResult> MarkAsReception(Guid companyId)
 	{
 		Company? company = await _companyService.GetByIdAsync(companyId);
@@ -83,6 +87,7 @@ public class CompanyController : ControllerBase
 	}
 
 	[HttpPatch("{companyId:guid}/unmarkAsReception")]
+	[CompanyAccess]
 	public async Task<ActionResult> UnmarkAsReception(Guid companyId)
 	{
 		Company? company = await _companyService.GetByIdAsync(companyId);
@@ -94,6 +99,7 @@ public class CompanyController : ControllerBase
 	}
 
 	[HttpPost("{companyId:guid}/relation")]
+	[CompanyAccess]
 	public async Task<ActionResult> AddToParent(
 		Guid companyId,
 		[FromBody] Guid parentCompanyId)
@@ -108,6 +114,7 @@ public class CompanyController : ControllerBase
 	}
 
 	[HttpDelete("{companyId:guid}/relation")]
+	[CompanyAccess]
 	public async Task<ActionResult> RemoveRelations(Guid companyId)
 	{
 		Company? company = await _companyService.GetByIdAsync(companyId);
@@ -119,6 +126,7 @@ public class CompanyController : ControllerBase
 	}
 
 	[HttpGet("{companyId:guid}/relation")]
+	[CompanyAccess]
 	public async Task<ActionResult> GetRelations(Guid companyId)
 	{
 		Company? company = await _companyService.GetByIdAsync(companyId);
@@ -131,6 +139,7 @@ public class CompanyController : ControllerBase
 	}
 
 	[HttpPut("{companyId:guid}/breakTimes")]
+	[CompanyAccess]
 	public async Task<IActionResult> UpdateCompanyBreakTimes(
 		Guid companyId,
 		[FromBody] UpdateCompanyBreakTimesRequest request)

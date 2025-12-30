@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PlannerNet.Filters;
 using Schedule.Application.Interfaces.Services;
 using Schedule.Contracts.Dtos.Requests;
 using Schedule.Contracts.Dtos.Responses;
@@ -11,6 +12,7 @@ namespace PlannerNet.Controllers;
 [ApiController]
 [Route("api/[controller]/{companyId:guid}")]
 [Authorize(Roles = "Manager")]
+[CompanyAccess]
 public class StaffMemberController : ControllerBase
 {
 	private readonly IStaffMemberService _staffMemberService;
@@ -214,44 +216,5 @@ public class StaffMemberController : ControllerBase
 
 		await _eventScheduleStaffMemberService.DeleteAsync(companyId, eventScheduleStaffMemberId);
 		return NoContent();
-	}
-
-	[HttpPost("{staffMemberId:guid}/companies/{targetCompanyId:guid}")]
-	public async Task<ActionResult> AssignToCompany(
-		Guid companyId,
-		Guid targetCompanyId,
-		Guid staffMemberId)
-	{
-		// walidacja company i staffmember id
-		StaffMember? staffMember = await _staffMemberService.GetByIdAsync(staffMemberId, companyId);
-		if (staffMember == null)
-			return NotFound();
-
-		Guid id = await _staffMemberService.AssignToCompanyAsync(staffMemberId, targetCompanyId);
-		return CreatedAtAction(nameof(AssignToCompany), id);
-	}
-
-	[HttpDelete("{staffMemberId:guid}/companies/{targetCompanyId:guid}")]
-	public async Task<ActionResult> UnassignFromCompany(
-		Guid companyId,
-		Guid targetCompanyId,
-		Guid staffMemberId)
-	{
-		StaffMember? staffMember = await _staffMemberService.GetByIdAsync(staffMemberId, companyId);
-		if (staffMember == null)
-			return NotFound();
-
-		await _staffMemberService.UnassignFromCompanyAsync(staffMemberId, targetCompanyId);
-		return NoContent();
-	}
-
-	[HttpGet("{staffMemberId:guid}/companies")]
-	public async Task<ActionResult<List<StaffMemberCompanyResponse>>> GetAssignedCompany(
-		Guid staffMemberId)
-	{
-		List<StaffMemberCompany> staffMemberCompanies = await _staffMemberService
-			.GetAssignedCompanyAsync(staffMemberId);
-		List<StaffMemberCompanyResponse> response = _mapper.Map<List<StaffMemberCompanyResponse>>(staffMemberCompanies);
-		return Ok(response);
 	}
 }

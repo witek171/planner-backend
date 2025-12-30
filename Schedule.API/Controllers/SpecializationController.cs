@@ -1,16 +1,18 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PlannerNet.Filters;
 using Schedule.Application.Interfaces.Services;
 using Schedule.Contracts.Dtos.Requests;
 using Schedule.Contracts.Dtos.Responses;
 using Schedule.Domain.Models;
 
-namespace Schedule.API.Controllers;
+namespace PlannerNet.Controllers;
 
 [ApiController]
 [Route("api/[controller]/{companyId:guid}")]
 [Authorize(Roles = "Manager")]
+[CompanyAccess]
 public class SpecializationController : ControllerBase
 {
 	private readonly ISpecializationService _specializationService;
