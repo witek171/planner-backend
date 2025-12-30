@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PlannerNet.Filters;
 using Schedule.Application.Interfaces.Services;
 using Schedule.Contracts.Dtos.Requests;
 using Schedule.Contracts.Dtos.Responses;
@@ -11,6 +12,7 @@ namespace PlannerNet.Controllers;
 [ApiController]
 [Route("api/[controller]/{companyId:guid}")]
 [Authorize(Roles = "Manager")]
+[CompanyAccess]
 public class ParticipantController : ControllerBase
 {
 	private readonly IParticipantService _participantService;
