@@ -293,7 +293,7 @@ VALUES
 -- =============================================
 -- Powiązania Staff z Companies (wiele-do-wielu)
 -- =============================================
-INSERT INTO StaffCompanies (StaffId, CompanyId)
+INSERT INTO StaffMemberCompanies (StaffMemberId, CompanyId)
 VALUES
 	-- Pracownicy recepcji
 	(@StaffRec1Id, @Branch1Id),
@@ -557,10 +557,10 @@ VALUES
 	(@Spec20Id, @FlexYoga1Id, 'Hatha Yoga', 'Klasyczna joga z naciskiem na pozycje');
 
 -- =============================================
--- 6. StaffSpecializations - przypisanie specjalizacji do trenerów 
+-- 6. StaffMemberSpecializations - przypisanie specjalizacji do trenerów
 -- =============================================
 
-INSERT INTO StaffSpecializations (Id, CompanyId, StaffMemberId, SpecializationId)
+INSERT INTO StaffMemberSpecializations (Id, CompanyId, StaffMemberId, SpecializationId)
 VALUES
 	-- SportFit Centrum
 	(NEWID(), @Branch1Id, @Trainer1Id, @Spec1Id),
@@ -617,10 +617,10 @@ VALUES
 	(NEWID(), @FlexYoga1Id, @Trainer20Id, @Spec20Id);
 
 -- =============================================
--- 7. StaffAvailability - dodanie dostępności personelu 
+-- 7. StaffMemberAvailabilities - dodanie dostępności personelu
 -- =============================================
 
-INSERT INTO StaffAvailability (Id, CompanyId, StaffMemberId, Date, StartTime, EndTime, IsAvailable)
+INSERT INTO StaffMemberAvailabilities (Id, CompanyId, StaffMemberId, Date, StartTime, EndTime, IsAvailable)
 VALUES
 	-- Dostępność trenerów SportFit Centrum
 	(NEWID(), @Branch1Id, @Trainer1Id, '2025-07-28', '2025-07-28 08:00:00', '2025-07-28 16:00:00', 1),
@@ -1326,8 +1326,8 @@ PRINT '- Hierarchię firm (CompanyHierarchies)'
 PRINT '- 43 pracowników (Staff) - 13 recepcjonistów, 20 trenerów, 10 managerów'
 PRINT '- 30 uczestników (Participants)'
 PRINT '- 20 specjalizacji (Specializations)'
-PRINT '- Przypisania specjalizacji do trenerów (StaffSpecializations)'
-PRINT '- Dostępność personelu (StaffAvailability)'
+PRINT '- Przypisania specjalizacji do trenerów (StaffMemberSpecializations)'
+PRINT '- Dostępność personelu (StaffMemberAvailabilities)'
 PRINT '- 25 typów wydarzeń (EventTypes)'
 PRINT '- 35 zaplanowanych wydarzeń (EventSchedules)'
 PRINT '- Przypisania personelu do wydarzeń (EventScheduleStaff)'

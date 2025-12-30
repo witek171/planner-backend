@@ -141,7 +141,7 @@ public class StaffMemberController : ControllerBase
 				.GetByStaffMemberIdAsync(companyId, staffMemberId);
 		StaffMemberAvailabilityResponse response = new(
 			_mapper.Map<StaffMemberResponse>(staffMember),
-			_mapper.Map<List<AvailabilityResponse>>(availabilities));
+			_mapper.Map<List<AvailableSlotResponse>>(availabilities));
 		return Ok(response);
 	}
 
@@ -249,9 +249,9 @@ public class StaffMemberController : ControllerBase
 	public async Task<ActionResult<List<StaffMemberCompanyResponse>>> GetAssignedCompany(
 		Guid staffMemberId)
 	{
-		List<StaffMemberCompany> staffCompanies = await _staffMemberService
+		List<StaffMemberCompany> staffMemberCompanies = await _staffMemberService
 			.GetAssignedCompanyAsync(staffMemberId);
-		List<StaffMemberCompanyResponse> response = _mapper.Map<List<StaffMemberCompanyResponse>>(staffCompanies);
+		List<StaffMemberCompanyResponse> response = _mapper.Map<List<StaffMemberCompanyResponse>>(staffMemberCompanies);
 		return Ok(response);
 	}
 }
