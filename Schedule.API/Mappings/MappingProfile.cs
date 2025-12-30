@@ -27,7 +27,7 @@ public class MappingProfile : Profile
 		CreateMap<StaffMemberSpecializationRequest, StaffMemberSpecialization>();
 
 		CreateMap<StaffMemberAvailabilityRequest, StaffMemberAvailability>();
-		CreateMap<StaffMemberAvailability, AvailabilityResponse>();
+		CreateMap<StaffMemberAvailability, AvailableSlotResponse>();
 		CreateMap<(StaffMember staffMember, List<StaffMemberAvailability> availabilities),
 			StaffMemberAvailabilityResponse>();
 

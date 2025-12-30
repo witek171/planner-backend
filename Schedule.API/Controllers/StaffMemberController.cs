@@ -141,7 +141,7 @@ public class StaffMemberController : ControllerBase
 				.GetByStaffMemberIdAsync(companyId, staffMemberId);
 		StaffMemberAvailabilityResponse response = new(
 			_mapper.Map<StaffMemberResponse>(staffMember),
-			_mapper.Map<List<AvailabilityResponse>>(availabilities));
+			_mapper.Map<List<AvailableSlotResponse>>(availabilities));
 		return Ok(response);
 	}
 

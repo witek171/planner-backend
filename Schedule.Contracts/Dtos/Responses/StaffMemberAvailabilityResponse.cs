@@ -6,12 +6,12 @@ public class StaffMemberAvailabilityResponse
 {
 	public StaffMemberAvailabilityResponse(
 		StaffMemberResponse staffMember,
-		List<AvailabilityResponse> availableSlots)
+		List<AvailableSlotResponse> availableSlots)
 	{
 		StaffMember = staffMember;
 		AvailableSlots = availableSlots;
 	}
 
 	[Required] public StaffMemberResponse StaffMember { get; }
-	[Required] public List<AvailabilityResponse> AvailableSlots { get; }
+	[Required] public List<AvailableSlotResponse> AvailableSlots { get; }
 }
