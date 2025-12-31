@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using PlannerNet.Converters;
 using Schedule.Contracts.Dtos.Requests;
 using Schedule.Contracts.Dtos.Responses;
 using Schedule.Domain.Models;
@@ -52,8 +51,5 @@ public class MappingProfile : Profile
 		CreateMap<StaffMemberCompany, StaffMemberCompanyResponse>();
 
 		CreateMap<UpdateCompanyBreakTimesRequest, CompanyConfig>();
-
-		CreateMap(typeof(PagedResponse<>), typeof(PagedResponse<>))
-			.ConvertUsing(typeof(PagedResponseConverter<,>));
 	}
 }
