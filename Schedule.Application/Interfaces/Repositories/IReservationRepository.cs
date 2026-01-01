@@ -4,7 +4,10 @@ namespace Schedule.Application.Interfaces.Repositories;
 
 public interface IReservationRepository
 {
-	Task<List<Reservation>> GetAllAsync(Guid companyId);
+	Task<(List<Reservation> Items, int TotalCount)> GetPagedWithCountAsync(
+		Guid companyId,
+		int page,
+		int pageSize);
 
 	Task<Reservation?> GetByIdAsync(
 		Guid id,

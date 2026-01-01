@@ -1,7 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 using Schedule.Application.Interfaces.Repositories;
 using Schedule.Domain.Models;
-using Schedule.Domain.Models.Enums;
 using Schedule.Infrastructure.Utils;
 
 namespace Schedule.Infrastructure.Repositories;
@@ -15,25 +14,41 @@ public class EventTypeRepository : IEventTypeRepository
 		_connectionString = connectionString;
 	}
 
-	public async Task<List<EventType>> GetAllAsync(Guid companyId)
+	public async Task<(List<EventType> Items, int TotalCount)> GetPagedWithCountAsync(
+		Guid companyId,
+		int page,
+		int pageSize)
 	{
 		const string sql = @"
 			SELECT Id, CompanyId, Name, Description, Duration, 
-			Price, MaxParticipants, MinStaff, isDeleted
+				Price, MaxParticipants, MinStaff, IsDeleted,
+				COUNT(*) OVER() AS TotalCount
 			FROM EventTypes 
-			WHERE CompanyId = @CompanyId AND isDeleted = 0";
+			WHERE CompanyId = @CompanyId AND IsDeleted = 0
+			ORDER BY Name
+			OFFSET @Offset ROWS
+			FETCH NEXT @PageSize ROWS ONLY";
 
 		await using SqlConnection connection = new(_connectionString);
 		await connection.OpenAsync();
 
 		await using SqlCommand command = new(sql, connection);
 		command.Parameters.AddWithValue("@CompanyId", companyId);
-		SqlDataReader reader = await command.ExecuteReaderAsync();
-		List<EventType> eventTypes = new();
-		while (await reader.ReadAsync())
-			eventTypes.Add(DbMapper.MapEventType(reader));
+		command.Parameters.AddWithValue("@Offset", (page - 1) * pageSize);
+		command.Parameters.AddWithValue("@PageSize", pageSize);
 
-		return eventTypes;
+		await using SqlDataReader reader = await command.ExecuteReaderAsync();
+		List<EventType> eventTypes = new();
+		int totalCount = 0;
+		while (await reader.ReadAsync())
+		{
+			if (totalCount == 0)
+				totalCount = Convert.ToInt32(reader["TotalCount"]);
+
+			eventTypes.Add(DbMapper.MapEventType(reader));
+		}
+
+		return (eventTypes, totalCount);
 	}
 
 	public async Task<EventType?> GetByIdAsync(

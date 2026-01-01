@@ -14,23 +14,40 @@ public class SpecializationRepository : ISpecializationRepository
 		_connectionString = connectionString;
 	}
 
-	public async Task<List<Specialization>> GetAllAsync(Guid companyId)
+	public async Task<(List<Specialization> Items, int TotalCount)> GetPagedWithCountAsync(
+		Guid companyId,
+		int page,
+		int pageSize)
 	{
 		const string sql = @"
-			SELECT Id, CompanyId, Name, Description
+			SELECT Id, CompanyId, Name, Description,
+				COUNT(*) OVER() AS TotalCount
 			FROM Specializations 
-			WHERE CompanyId = @CompanyId";
+			WHERE CompanyId = @CompanyId
+			ORDER BY Name
+			OFFSET @Offset ROWS
+			FETCH NEXT @PageSize ROWS ONLY";
 
 		await using SqlConnection connection = new(_connectionString);
 		await connection.OpenAsync();
+
 		await using SqlCommand command = new(sql, connection);
 		command.Parameters.AddWithValue("@CompanyId", companyId);
-		SqlDataReader reader = await command.ExecuteReaderAsync();
-		List<Specialization> result = new();
-		while (await reader.ReadAsync())
-			result.Add(DbMapper.MapSpecialization(reader));
+		command.Parameters.AddWithValue("@Offset", (page - 1) * pageSize);
+		command.Parameters.AddWithValue("@PageSize", pageSize);
 
-		return result;
+		await using SqlDataReader reader = await command.ExecuteReaderAsync();
+		List<Specialization> specializations = new();
+		int totalCount = 0;
+		while (await reader.ReadAsync())
+		{
+			if (totalCount == 0)
+				totalCount = Convert.ToInt32(reader["TotalCount"]);
+
+			specializations.Add(DbMapper.MapSpecialization(reader));
+		}
+
+		return (specializations, totalCount);
 	}
 
 	public async Task<Specialization?> GetByIdAsync(Guid id, Guid companyId)

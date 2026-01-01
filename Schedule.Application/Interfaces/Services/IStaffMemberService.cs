@@ -4,7 +4,10 @@ namespace Schedule.Application.Interfaces.Services;
 
 public interface IStaffMemberService
 {
-	Task<List<StaffMember>> GetAllAsync(Guid companyId);
+	Task<(List<StaffMember> Items, int TotalCount)> GetAllAsync(
+		Guid companyId,
+		int page,
+		int pageSize);
 
 	Task<StaffMember?> GetByIdAsync(
 		Guid id,

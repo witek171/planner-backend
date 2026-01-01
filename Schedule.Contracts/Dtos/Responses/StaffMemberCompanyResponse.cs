@@ -2,8 +2,8 @@ namespace Schedule.Contracts.Dtos.Responses;
 
 public class StaffMemberCompanyResponse
 {
-	public Guid Id { get; set; }
-	public Guid StaffMemberId { get; set; }
-	public Guid CompanyId { get; set; }
-	public DateTime CreatedAt { get; set; }
+	public Guid Id { get; init; }
+	public Guid StaffMemberId { get; init; }
+	public Guid CompanyId { get; init; }
+	public DateTime CreatedAt { get; init; }
 }

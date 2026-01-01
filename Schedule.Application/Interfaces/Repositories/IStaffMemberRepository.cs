@@ -4,7 +4,10 @@ namespace Schedule.Application.Interfaces.Repositories;
 
 public interface IStaffMemberRepository
 {
-	Task<List<StaffMember>> GetAllAsync(Guid companyId);
+	Task<(List<StaffMember> Items, int TotalCount)> GetPagedWithCountAsync(
+		Guid companyId,
+		int page,
+		int pageSize);
 
 	Task<StaffMember?> GetByIdAsync(
 		Guid staffMemberId,

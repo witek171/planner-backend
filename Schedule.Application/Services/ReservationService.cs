@@ -27,8 +27,11 @@ public class ReservationService : IReservationService
 		_scheduleConflictValidator = scheduleConflictValidator;
 	}
 
-	public async Task<List<Reservation>> GetAllAsync(Guid companyId)
-		=> await _reservationRepository.GetAllAsync(companyId);
+	public async Task<(List<Reservation> Items, int TotalCount)> GetAllAsync(
+		Guid companyId,
+		int page,
+		int pageSize)
+		=> await _reservationRepository.GetPagedWithCountAsync(companyId, page, pageSize);
 
 	public async Task<Reservation?> GetByIdAsync(
 		Guid id,

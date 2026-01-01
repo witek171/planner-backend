@@ -19,7 +19,10 @@ public interface IParticipantRepository
 		string email,
 		Guid companyId);
 
-	Task<List<Participant>> GetAllAsync(Guid companyId);
+	Task<(List<Participant> Items, int TotalCount)> GetPagedWithCountAsync(
+		Guid companyId,
+		int page,
+		int pageSize);
 
 	Task<bool> IsParticipantAssignedToReservationsAsync(
 		Guid participantId,

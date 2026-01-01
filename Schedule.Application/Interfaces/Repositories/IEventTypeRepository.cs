@@ -4,7 +4,10 @@ namespace Schedule.Application.Interfaces.Repositories;
 
 public interface IEventTypeRepository
 {
-	Task<List<EventType>> GetAllAsync(Guid companyId);
+	Task<(List<EventType> Items, int TotalCount)> GetPagedWithCountAsync(
+		Guid companyId,
+		int page,
+		int pageSize);
 
 	Task<EventType?> GetByIdAsync(
 		Guid id,

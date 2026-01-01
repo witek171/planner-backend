@@ -28,5 +28,7 @@ public class StaffMemberResponse
 	[Required] public string FirstName { get; }
 	[Required] public string LastName { get; }
 	[Required] public string Phone { get; }
+
 	[Required] public List<SpecializationResponse> Specializations { get; }
+	// [Required] public List<CompanyResponse> Companies { get; }
 }
