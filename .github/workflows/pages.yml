@@ -34,7 +34,7 @@ jobs:
         run: dotnet build Schedule.API/Schedule.API.csproj -c Release --no-restore
 
       - name: Install Swagger CLI (Swashbuckle)
-        run: dotnet tool install --tool-path ./.tools Swashbuckle.AspNetCore.Cli
+        run: dotnet tool install --tool-path ./.tools Swashbuckle.AspNetCore.Cli --version 6.6.2
 
       - name: Generate swagger.json into docs/
         env:
