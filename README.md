@@ -5,7 +5,7 @@ A universal backend API designed for reservation systems, staff management, and 
 ---
 ## About The Project
 
-This project provides a comprehensive and flexible backend solution designed to power scheduling and management applications for a wide variety of service-based businesses. Its universal architecture makes it suitable for organizations like:
+**This project provides a comprehensive and flexible backend solution designed to power scheduling and management applications for a wide variety of service-based businesses. Its universal architecture makes it suitable for organizations like:**
 
 - Sports clubs: managing class schedules, booking courts or facilities, and assigning trainers.
 
@@ -15,7 +15,7 @@ This project provides a comprehensive and flexible backend solution designed to 
 
 - Any business that relies on managing appointments, staff availability, and client reservations.
 
-The API is built to handle complex relationships between companies (or locations), staff members, available services (events), and clients (participants), providing a robust foundation for a custom-tailored front-end application.
+**The API is built to handle complex relationships between companies (or locations), staff members, available services (events), and clients (participants), providing a robust foundation for a custom-tailored front-end application.**
 
 ---
 ## Features
@@ -66,23 +66,23 @@ The system currently supports the following core functionalities:
 ---
 ## Technology & Libraries
 
-- .NET 8: The latest LTS version of Microsoft's cross-platform framework.
+- **.NET 8**: The latest LTS version of Microsoft's cross-platform framework.
 
-- ASP.NET Core: For building the RESTful API.
+- **ASP.NET Core**: For building the RESTful API.
 
-- ADO.NET: For direct database communication and executing raw SQL queries.
+- **ADO.NET**: For direct database communication and executing raw SQL queries.
 
-- Swashbuckle (Swagger): For API documentation generation.
+- **Swashbuckle (Swagger)**: For API documentation generation.
 
-- TimePeriodLibrary.NET: Used for handling time-period logic, such as in availability schedules.
+- **TimePeriodLibrary.NET**: Used for handling time-period logic, such as in availability schedules.
 
-- JSON Web Token: For stateless authentication and authorization.
+- **JSON Web Token**: For stateless authentication and authorization.
   
-- AutoMapper: For object-to-object mapping between DTOs and domain entities.
+- **AutoMapper**: For object-to-object mapping between DTOs and domain entities.
   
-- BCrypt.Net: For secure password hashing using the BCrypt algorithm.
+- **BCrypt.Net**: For secure password hashing using the BCrypt algorithm.
 
-- Microsoft SQL Server: Relational database management system used for persistent data storage.
+- **Microsoft SQL Server**: Relational database management system used for persistent data storage.
 
 ---
 ## Database Schema
@@ -134,10 +134,10 @@ jdbc:sqlserver://localhost:1433;databaseName=PlannerDB;user=sa;password=YourStro
 > Other containers should use the service name `sqlserver` instead of `localhost`.
 
  ### What happens automatically:
-- SQL Server starts up (port 1433)
-- Database is created and populated with sample data 
-- RSA keys are generated
-- API is ready to use (port 5000)
+- SQL Server starts up (port 1433).
+- Database is created and populated with sample data.
+- RSA keys are generated.
+- API is ready to use (port 5000).
 
  ### Stop services:
 ```bash
