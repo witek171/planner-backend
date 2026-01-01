@@ -22,10 +22,17 @@ The API is built to handle complex relationships between companies (or locations
 
 The system currently supports the following core functionalities:
 
-Authentication:
-- Staff registration and login.
+### Authentication & Authorization:
 
-Company & Staff Management:
+- Staff registration and secure login (JWT-based).
+  
+- Multi-company context switching (staff choose one of their assigned companies).
+
+- Role-based access control (RBAC) for staff roles (e.g., Manager, Reception employee).
+  
+- Company-scoped data isolation.
+
+### Company & Staff Management:
 
 - CRUD operations for companies/locations, including hierarchy management (e.g., main office and receptions).
 
@@ -33,7 +40,7 @@ Company & Staff Management:
 
 - Defining staff availability schedules.
 
-Reservation & Event Management:
+### Reservation & Event Management:
 
 - Defining event templates (EventTypes) and creating specific instances in the schedule (EventSchedules).
 
@@ -59,37 +66,39 @@ Reservation & Event Management:
 ---
 ## Technology & Libraries
 
-- .NET 8
+- .NET 8: The latest LTS version of Microsoft's cross-platform framework.
 
 - ASP.NET Core: For building the RESTful API.
 
-- ADO.NET: For direct database communication and executing raw SQL queries (using Microsoft.Data.SqlClient).
+- ADO.NET: For direct database communication and executing raw SQL queries.
 
 - Swashbuckle (Swagger): For API documentation generation.
 
 - TimePeriodLibrary.NET: Used for handling time-period logic, such as in availability schedules.
 
-- JSON Web Token.
+- JSON Web Token: For stateless authentication and authorization.
   
-- AutoMapper.
+- AutoMapper: For object-to-object mapping between DTOs and domain entities.
   
-- BCrypt.Net.
+- BCrypt.Net: For secure password hashing using the BCrypt algorithm.
 
-- Microsoft SQL Server.
+- Microsoft SQL Server: Relational database management system used for persistent data storage.
 
 ---
 ## Database Schema
 
 <p align="center">
-  <img width="3788" height="4428" alt="Image" src="https://github.com/user-attachments/assets/9c77c331-5dff-4c0e-8169-4e37f0dfeba3" />
+  <img width="3264" height="2944" alt="Image" src="https://github.com/user-attachments/assets/dc9c561e-06fe-4c51-bc43-a17a9d9c6059" />
 </p>
 
 ---
-## Quick Start
+## How to run locally
 
-### Prerequisites
+### Prerequisites:
 
  - [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed and running
+
+### Quick Start:
 
 1. **Clone the repository:**
    ```bash
@@ -107,15 +116,15 @@ Reservation & Event Management:
    http://localhost:5000/swagger
    ```
 
-### Connection string (SQL Server)
+### Connection string (SQL Server):
 
-Use this connection string to connect to the database from your **local machine**:
+Use this connection string to connect to the database from your local machine:
 
 ```bash
 Server=localhost,1433;Database=PlannerDB;User Id=sa;Password=YourStrong@Password123;TrustServerCertificate=True;MultipleActiveResultSets=True;
 ```
 
-**JDBC equivalent**:
+JDBC equivalent:
 
 ```bash
 jdbc:sqlserver://localhost:1433;databaseName=PlannerDB;user=sa;password=YourStrong@Password123;trustServerCertificate=true;multipleActiveResultSets=true
