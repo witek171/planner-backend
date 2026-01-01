@@ -51,7 +51,10 @@ public class EventScheduleRepository : IEventScheduleRepository
 		return eventSchedules;
 	}
 
-	public async Task<List<EventSchedule>> GetAllAsync(Guid companyId)
+	public async Task<(List<EventSchedule> Items, int TotalCount)> GetPagedWithCountAsync(
+		Guid companyId,
+		int page,
+		int pageSize)
 	{
 		const string sql = @"
 			SELECT 
@@ -60,12 +63,15 @@ public class EventScheduleRepository : IEventScheduleRepository
 				et.Name as EventTypeName, 
 				et.Description as EventTypeDescription, 
 				et.Duration, et.Price, et.MaxParticipants, et.MinStaff,
-				et.IsDeleted as EventTypeIsDeleted
+				et.IsDeleted as EventTypeIsDeleted,
+				COUNT(*) OVER() AS TotalCount
 			FROM EventSchedules es
 			INNER JOIN EventTypes et ON es.EventTypeId = et.Id
 			WHERE es.CompanyId = @CompanyId 
 			  AND es.Status <> @DeletedStatus
-			ORDER BY es.StartTime";
+			ORDER BY es.StartTime
+			OFFSET @Offset ROWS
+			FETCH NEXT @PageSize ROWS ONLY";
 
 		await using SqlConnection connection = new(_connectionString);
 		await connection.OpenAsync();
@@ -73,14 +79,21 @@ public class EventScheduleRepository : IEventScheduleRepository
 		await using SqlCommand command = new(sql, connection);
 		command.Parameters.AddWithValue("@CompanyId", companyId);
 		command.Parameters.AddWithValue("@DeletedStatus", nameof(EventScheduleStatus.Deleted));
+		command.Parameters.AddWithValue("@Offset", (page - 1) * pageSize);
+		command.Parameters.AddWithValue("@PageSize", pageSize);
 
-		SqlDataReader reader = await command.ExecuteReaderAsync();
+		await using SqlDataReader reader = await command.ExecuteReaderAsync();
 		List<EventSchedule> eventSchedules = new();
-
+		int totalCount = 0;
 		while (await reader.ReadAsync())
-			eventSchedules.Add(DbMapper.MapEventSchedule(reader));
+		{
+			if (totalCount == 0)
+				totalCount = Convert.ToInt32(reader["TotalCount"]);
 
-		return eventSchedules;
+			eventSchedules.Add(DbMapper.MapEventSchedule(reader));
+		}
+
+		return (eventSchedules, totalCount);
 	}
 
 	public async Task<EventSchedule?> GetByIdAsync(

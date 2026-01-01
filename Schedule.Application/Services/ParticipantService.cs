@@ -37,7 +37,6 @@ public class ParticipantService : IParticipantService
 		{
 			Participant participant = (await _participantRepository
 				.GetByIdAsync(participantId, companyId))!;
-
 			participant.Anonymize();
 			await _participantRepository.PutAsync(participant);
 		}
@@ -58,6 +57,9 @@ public class ParticipantService : IParticipantService
 		return await _participantRepository.GetByEmailAsync(email, companyId);
 	}
 
-	public async Task<List<Participant>> GetAllAsync(Guid companyId)
-		=> await _participantRepository.GetAllAsync(companyId);
+	public async Task<(List<Participant> Items, int TotalCount)> GetAllAsync(
+		Guid companyId,
+		int page,
+		int pageSize)
+		=> await _participantRepository.GetPagedWithCountAsync(companyId, page, pageSize);
 }

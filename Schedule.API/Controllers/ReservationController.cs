@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PlannerNet.Extensions;
 using PlannerNet.Filters;
 using Schedule.Application.Interfaces.Services;
 using Schedule.Contracts.Dtos.Requests;
@@ -27,11 +28,15 @@ public class ReservationController : ControllerBase
 	}
 
 	[HttpGet]
-	public async Task<ActionResult<List<ReservationResponse>>> GetAll(Guid companyId)
+	public async Task<ActionResult<PagedResponse<ReservationResponse>>> GetAll(
+		Guid companyId,
+		[FromQuery] PaginationRequest paginationRequest)
 	{
-		List<Reservation> reservations = await _reservationService.GetAllAsync(companyId);
-		List<ReservationResponse> responses = _mapper.Map<List<ReservationResponse>>(reservations);
-		return Ok(responses);
+		(List<Reservation> Items, int TotalCount) result = await _reservationService
+			.GetAllAsync(companyId, paginationRequest.Page, paginationRequest.PageSize);
+		PagedResponse<ReservationResponse> response = result
+			.ToPagedResponse<Reservation, ReservationResponse>(paginationRequest, _mapper);
+		return Ok(response);
 	}
 
 	[HttpGet("{id}")]

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PlannerNet.Extensions;
 using PlannerNet.Filters;
 using Schedule.Application.Interfaces.Services;
 using Schedule.Contracts.Dtos.Requests;
@@ -27,11 +28,15 @@ public class EventTypeController : ControllerBase
 	}
 
 	[HttpGet]
-	public async Task<ActionResult<List<EventTypeResponse>>> GetAll(Guid companyId)
+	public async Task<ActionResult<PagedResponse<EventTypeResponse>>> GetAll(
+		Guid companyId,
+		[FromQuery] PaginationRequest paginationRequest)
 	{
-		List<EventType> eventTypes = await _eventTypeService.GetAllAsync(companyId);
-		List<EventTypeResponse> responses = _mapper.Map<List<EventTypeResponse>>(eventTypes);
-		return Ok(responses);
+		(List<EventType> Items, int TotalCount) result = await _eventTypeService
+			.GetAllAsync(companyId, paginationRequest.Page, paginationRequest.PageSize);
+		PagedResponse<EventTypeResponse> response = result
+			.ToPagedResponse<EventType, EventTypeResponse>(paginationRequest, _mapper);
+		return Ok(response);
 	}
 
 	[HttpGet("{id}")]

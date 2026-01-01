@@ -19,8 +19,11 @@ public class StaffMemberService : IStaffMemberService
 		_passwordHasher = passwordHasher;
 	}
 
-	public async Task<List<StaffMember>> GetAllAsync(Guid companyId)
-		=> await _staffMemberRepository.GetAllAsync(companyId);
+	public async Task<(List<StaffMember> Items, int TotalCount)> GetAllAsync(
+		Guid companyId,
+		int page,
+		int pageSize)
+		=> await _staffMemberRepository.GetPagedWithCountAsync(companyId, page, pageSize);
 
 	public async Task<StaffMember?> GetByIdAsync(
 		Guid id,

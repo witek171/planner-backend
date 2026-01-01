@@ -97,7 +97,6 @@ public class ParticipantRepository : IParticipantRepository
 		command.Parameters.AddWithValue("@Id", participantId);
 
 		await using SqlDataReader reader = await command.ExecuteReaderAsync();
-
 		if (!await reader.ReadAsync())
 			return null;
 
@@ -121,35 +120,46 @@ public class ParticipantRepository : IParticipantRepository
 		command.Parameters.AddWithValue("@Email", email);
 
 		await using SqlDataReader reader = await command.ExecuteReaderAsync();
-
 		if (!await reader.ReadAsync())
 			return null;
 
 		return DbMapper.MapParticipant(reader);
 	}
 
-	public async Task<List<Participant>> GetAllAsync(Guid companyId)
+	public async Task<(List<Participant> Items, int TotalCount)> GetPagedWithCountAsync(
+		Guid companyId,
+		int page,
+		int pageSize)
 	{
 		const string sql = @"
-			SELECT Id, CompanyId, Email, FirstName, LastName, Phone, GdprConsent, CreatedAt
+			SELECT Id, CompanyId, Email, FirstName, LastName, Phone, GdprConsent, CreatedAt,
+				COUNT(*) OVER() AS TotalCount
 			FROM Participants 
 			WHERE CompanyId = @CompanyId
-			ORDER BY CreatedAt DESC";
+			ORDER BY CreatedAt DESC
+			OFFSET @Offset ROWS
+			FETCH NEXT @PageSize ROWS ONLY";
 
 		await using SqlConnection connection = new(_connectionString);
 		await connection.OpenAsync();
 
 		await using SqlCommand command = new(sql, connection);
 		command.Parameters.AddWithValue("@CompanyId", companyId);
+		command.Parameters.AddWithValue("@Offset", (page - 1) * pageSize);
+		command.Parameters.AddWithValue("@PageSize", pageSize);
 
 		await using SqlDataReader reader = await command.ExecuteReaderAsync();
-
 		List<Participant> participants = new();
-
+		int totalCount = 0;
 		while (await reader.ReadAsync())
-			participants.Add(DbMapper.MapParticipant(reader));
+		{
+			if (totalCount == 0)
+				totalCount = Convert.ToInt32(reader["TotalCount"]);
 
-		return participants;
+			participants.Add(DbMapper.MapParticipant(reader));
+		}
+
+		return (participants, totalCount);
 	}
 
 	public async Task<bool> IsParticipantAssignedToReservationsAsync(

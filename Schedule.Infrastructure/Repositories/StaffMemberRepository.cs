@@ -83,43 +83,70 @@ public class StaffMemberRepository : IStaffMemberRepository
 		return true;
 	}
 
-	public async Task<List<StaffMember>> GetAllAsync(Guid companyId)
+	public async Task<(List<StaffMember> Items, int TotalCount)> GetPagedWithCountAsync(
+		Guid companyId,
+		int page,
+		int pageSize)
 	{
-		const string sql = @"
-			SELECT s.Id as StaffMemberId, s.Role, s.Email, s.Password, s.FirstName, s.LastName, s.Phone, s.CreatedAt, s.IsDeleted
+		const string staffSql = @"
+			SELECT s.Id as StaffMemberId,
+				s.Role,
+				s.Email,
+				s.Password,
+				s.FirstName,
+				s.LastName,
+				s.Phone,
+				s.CreatedAt,
+				s.IsDeleted,
+				COUNT(*) OVER() AS TotalCount
 			FROM Staff s
 			INNER JOIN StaffMemberCompanies sc ON s.Id = sc.StaffMemberId
 			WHERE sc.CompanyId = @CompanyId AND s.IsDeleted = 0
-			ORDER BY s.CreatedAt DESC";
+			ORDER BY s.CreatedAt DESC
+			OFFSET @Offset ROWS
+			FETCH NEXT @PageSize ROWS ONLY";
 
 		await using SqlConnection connection = new(_connectionString);
 		await connection.OpenAsync();
-		await using SqlCommand command = new(sql, connection);
-		command.Parameters.AddWithValue("@CompanyId", companyId);
-		await using SqlDataReader reader = await command.ExecuteReaderAsync();
 
 		List<StaffMember> staffMembers = new();
 		List<Guid> staffIds = new();
-		while (await reader.ReadAsync())
+		int totalCount = 0;
+		await using (SqlCommand command = new(staffSql, connection))
 		{
-			StaffMember staffMember = DbMapper.MapStaffMember(reader);
-			staffMembers.Add(staffMember);
-			staffIds.Add(staffMember.Id);
+			command.Parameters.AddWithValue("@CompanyId", companyId);
+			command.Parameters.AddWithValue("@Offset", (page - 1) * pageSize);
+			command.Parameters.AddWithValue("@PageSize", pageSize);
+
+			await using SqlDataReader reader = await command.ExecuteReaderAsync();
+			while (await reader.ReadAsync())
+			{
+				if (totalCount == 0)
+					totalCount = Convert.ToInt32(reader["TotalCount"]);
+
+				StaffMember staffMember = DbMapper.MapStaffMember(reader);
+				staffMembers.Add(staffMember);
+				staffIds.Add(staffMember.Id);
+			}
 		}
 
-		reader.Close();
+		if (staffIds.Count == 0)
+			return (staffMembers, totalCount);
 
-		if (staffIds.Count > 0)
+		string staffIdsParam = string.Join(",", staffIds);
+		const string companiesSql = @"
+			SELECT Id, StaffMemberId, CompanyId, CreatedAt 
+			FROM StaffMemberCompanies 
+			WHERE StaffMemberId IN 
+				(SELECT CAST(value AS UNIQUEIDENTIFIER) FROM STRING_SPLIT(@StaffIds, ','))";
+
+		await using (SqlCommand companiesCommand = new(companiesSql, connection))
 		{
-			string staffIdsParam = string.Join(",", staffIds.Select(id => $"'{id}'"));
-			string companiesSql = $@"
-				SELECT Id, StaffMemberId, CompanyId, CreatedAt 
-				FROM StaffMemberCompanies WHERE StaffMemberId IN ({staffIdsParam})";
-
-			await using SqlCommand companiesCommand = new(companiesSql, connection);
+			companiesCommand.Parameters.AddWithValue("@StaffIds", staffIdsParam);
 			await using SqlDataReader companiesReader = await companiesCommand.ExecuteReaderAsync();
 			Dictionary<Guid, List<StaffMemberCompany>> companiesDict =
-				staffMembers.ToDictionary(sm => sm.Id, sm => new List<StaffMemberCompany>());
+				staffMembers.ToDictionary(sm => sm.Id, _ => new List<StaffMemberCompany>());
+
 			while (await companiesReader.ReadAsync())
 			{
 				Guid staffId = companiesReader.GetGuid(companiesReader.GetOrdinal("StaffMemberId"));
@@ -128,16 +155,59 @@ public class StaffMemberRepository : IStaffMemberRepository
 					staffId,
 					companiesReader.GetGuid(companiesReader.GetOrdinal("CompanyId")),
 					companiesReader.GetDateTime(companiesReader.GetOrdinal("CreatedAt")));
-				if (companiesDict.ContainsKey(staffId))
-					companiesDict[staffId].Add(staffCompany);
+
+				if (companiesDict.TryGetValue(staffId, out List<StaffMemberCompany>? companies))
+					companies.Add(staffCompany);
 			}
 
-			companiesReader.Close();
 			foreach (StaffMember staffMember in staffMembers)
 				staffMember.SetStaffMemberCompanies(companiesDict[staffMember.Id]);
 		}
 
-		return staffMembers;
+		const string specializationsSql = @"
+			SELECT 
+				sms.StaffMemberId,
+				sp.Id,
+				sp.CompanyId,
+				sp.Name,
+				sp.Description
+			FROM StaffMemberSpecializations sms
+			INNER JOIN Specializations sp ON sms.SpecializationId = sp.Id
+			WHERE sms.StaffMemberId IN 
+			    (SELECT CAST(value AS UNIQUEIDENTIFIER) FROM STRING_SPLIT(@StaffIds, ','))
+			AND sms.CompanyId = @CompanyId";
+
+		await using (SqlCommand specCommand = new(specializationsSql, connection))
+		{
+			specCommand.Parameters.AddWithValue("@StaffIds", staffIdsParam);
+			specCommand.Parameters.AddWithValue("@CompanyId", companyId);
+
+			await using SqlDataReader specReader = await specCommand.ExecuteReaderAsync();
+			Dictionary<Guid, List<Specialization>> specDict =
+				staffMembers.ToDictionary(sm => sm.Id, _ => new List<Specialization>());
+
+			while (await specReader.ReadAsync())
+			{
+				Guid staffId = specReader.GetGuid(specReader.GetOrdinal("StaffMemberId"));
+				Specialization specialization = new(
+					specReader.GetGuid(specReader.GetOrdinal("Id")),
+					specReader.GetGuid(specReader.GetOrdinal("CompanyId")),
+					specReader.GetString(specReader.GetOrdinal("Name")),
+					specReader.GetString(specReader.GetOrdinal("Description")));
+
+				if (specDict.TryGetValue(staffId, out List<Specialization>? specs))
+					specs.Add(specialization);
+			}
+
+			foreach (StaffMember staffMember in staffMembers)
+			{
+				List<Specialization> specs = specDict[staffMember.Id];
+				if (specs.Any())
+					staffMember.SetSpecializations(specs);
+			}
+		}
+
+		return (staffMembers, totalCount);
 	}
 
 	public async Task<StaffMember?> GetByIdAsync(Guid staffMemberId, Guid companyId)
@@ -398,7 +468,8 @@ public class StaffMemberRepository : IStaffMemberRepository
 
 	public async Task<List<StaffMemberCompany>> GetAssignedCompanyAsync(Guid staffMemberId)
 	{
-		const string sql = @"SELECT Id, StaffMemberId, CompanyId, CreatedAt FROM StaffMemberCompanies WHERE StaffMemberId = @StaffMemberId";
+		const string sql =
+			@"SELECT Id, StaffMemberId, CompanyId, CreatedAt FROM StaffMemberCompanies WHERE StaffMemberId = @StaffMemberId";
 		using SqlConnection connection = new SqlConnection(_connectionString);
 		await connection.OpenAsync();
 		using SqlCommand command = new SqlCommand(sql, connection);

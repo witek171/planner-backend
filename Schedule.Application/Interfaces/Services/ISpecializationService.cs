@@ -4,7 +4,11 @@ namespace Schedule.Application.Interfaces.Services;
 
 public interface ISpecializationService
 {
-	Task<List<Specialization>> GetAllAsync(Guid companyId);
+	Task<(List<Specialization> Items, int TotalCount)> GetAllAsync(
+		Guid companyId,
+		int page,
+		int pageSize);
+
 	Task<Specialization?> GetByIdAsync(Guid id, Guid companyId);
 	Task<Guid> CreateAsync(Specialization specialization);
 	Task<bool> UpdateAsync(Specialization specialization);

@@ -4,7 +4,10 @@ namespace Schedule.Application.Interfaces.Services;
 
 public interface IReservationService
 {
-	Task<List<Reservation>> GetAllAsync(Guid companyId);
+	Task<(List<Reservation> Items, int TotalCount)> GetAllAsync(
+		Guid companyId,
+		int page,
+		int pageSize);
 
 	Task<Reservation?> GetByIdAsync(
 		Guid id,

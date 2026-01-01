@@ -8,7 +8,10 @@ public interface IEventScheduleRepository
 		Guid companyId,
 		Guid staffMemberId);
 
-	Task<List<EventSchedule>> GetAllAsync(Guid companyId);
+	Task<(List<EventSchedule> Items, int TotalCount)> GetPagedWithCountAsync(
+		Guid companyId,
+		int page,
+		int pageSize);
 
 	Task<EventSchedule?> GetByIdAsync(
 		Guid id,
