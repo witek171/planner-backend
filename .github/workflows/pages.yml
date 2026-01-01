@@ -1,0 +1,63 @@
+﻿name: Build docs and deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build-docs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Restore
+        run: dotnet restore Schedule.API/Schedule.API.csproj
+
+      - name: Build (Release)
+        run: dotnet build Schedule.API/Schedule.API.csproj -c Release --no-restore
+
+      - name: Restore local tools
+        run: dotnet tool restore
+
+      - name: Generate swagger.json into docs/
+        env:
+          SWAGGER_GENERATION: "true"
+        run: |
+          mkdir -p docs
+          dotnet tool run swagger tofile \
+            --output docs/swagger.json \
+            Schedule.API/bin/Release/net8.0/Schedule.API.dll v1
+
+      - name: Upload Pages artifact (docs/)
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+
+  deploy:
+    needs: build-docs
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
