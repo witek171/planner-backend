@@ -1,4 +1,5 @@
-﻿using Schedule.Domain.Models;
+﻿using Schedule.Contracts.Dtos.Responses;
+using Schedule.Domain.Models;
 
 namespace Schedule.Application.Interfaces.Services;
 
@@ -20,5 +21,8 @@ public interface IParticipantService
 		string email,
 		Guid companyId);
 
-	Task<List<Participant>> GetAllAsync(Guid companyId);
+	Task<(List<Participant> Items, int TotalCount)> GetAllAsync(
+		Guid companyId,
+		int page,
+		int pageSize);
 }

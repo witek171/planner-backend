@@ -1,7 +1,7 @@
 ﻿using Schedule.Application.Interfaces.Repositories;
 using Schedule.Application.Interfaces.Services;
-using Schedule.Domain.Exceptions;
 using Schedule.Application.Interfaces.Utils;
+using Schedule.Domain.Exceptions;
 using Schedule.Domain.Models;
 
 namespace Schedule.Application.Services;
@@ -9,15 +9,21 @@ namespace Schedule.Application.Services;
 public class StaffMemberService : IStaffMemberService
 {
 	private readonly IStaffMemberRepository _staffMemberRepository;
+	private readonly IPasswordHasher _passwordHasher;
 
-	public StaffMemberService(IStaffMemberRepository staffMemberRepository)
+	public StaffMemberService(
+		IStaffMemberRepository staffMemberRepository,
+		IPasswordHasher passwordHasher)
 	{
 		_staffMemberRepository = staffMemberRepository;
-
+		_passwordHasher = passwordHasher;
 	}
 
-	public async Task<List<StaffMember>> GetAllAsync(Guid companyId)
-		=> await _staffMemberRepository.GetAllAsync(companyId);
+	public async Task<(List<StaffMember> Items, int TotalCount)> GetAllAsync(
+		Guid companyId,
+		int page,
+		int pageSize)
+		=> await _staffMemberRepository.GetPagedWithCountAsync(companyId, page, pageSize);
 
 	public async Task<StaffMember?> GetByIdAsync(
 		Guid id,
@@ -25,20 +31,27 @@ public class StaffMemberService : IStaffMemberService
 		=> await _staffMemberRepository.GetByIdAsync(id, companyId);
 
 	public async Task<StaffMember?> GetByEmailAsync(String email)
-	{
-		return await _staffMemberRepository.GetByEmailAsync(email);
-	}
+		=> await _staffMemberRepository.GetByEmailAsync(email);
 
-	public async Task<Guid> CreateAsync(StaffMember staffMember)
+	public async Task<Guid> CreateAsync(
+		StaffMember staffMember,
+		Guid companyId)
 	{
-		await ValidateEmailAndPhoneWithoutCompanyIdAsync(staffMember);
-		return await _staffMemberRepository.CreateAsync(staffMember);
+		staffMember.Normalize();
+		await ValidateEmailAndPhoneAsync(staffMember, companyId);
+		string hashed = _passwordHasher.Hash(staffMember.Password);
+		staffMember.SetPassword(hashed);
+
+		Guid staffMemberId = await _staffMemberRepository.CreateAsync(staffMember);
+		await _staffMemberRepository.AssignToCompanyAsync(staffMemberId, companyId);
+		return staffMemberId;
 	}
 
 	public async Task PutAsync(
 		StaffMember staffMember,
 		Guid companyId)
 	{
+		// trzeba by sprawdzic czy tel i email nie koliduje z firmami pracownika
 		staffMember.Normalize();
 		await ValidateEmailAndPhoneAsync(staffMember, companyId);
 		await _staffMemberRepository.PutAsync(staffMember);
@@ -56,12 +69,14 @@ public class StaffMemberService : IStaffMemberService
 		}
 		else
 			await _staffMemberRepository.DeleteByIdAsync(id, companyId);
+		// moze usuniecie rekordu/rekordow z staffCompanies
 	}
 
-	public async Task<bool> AssignToCompanyAsync(
+	public async Task<Guid> AssignToCompanyAsync(
 		Guid staffMemberId,
 		Guid companyId)
 	{
+		// trzeba by sprawdzic czy tel i email nie koliduje z firmami pracownika i inne
 		return await _staffMemberRepository.AssignToCompanyAsync(staffMemberId, companyId);
 	}
 
@@ -92,17 +107,17 @@ public class StaffMemberService : IStaffMemberService
 			throw new PhoneAlreadyExistsException(phone, companyId);
 	}
 
-	private async Task ValidateEmailAndPhoneWithoutCompanyIdAsync(
-	StaffMember staffMember)
-	{
-		Guid staffMemberId = staffMember.Id;
-		string email = staffMember.Email;
-		string phone = staffMember.Phone;
-
-		if (await _staffMemberRepository.EmailExistsForOtherWithoutCompanyIdAsync(staffMemberId, email))
-			throw new EmailAlreadyExistsException(email);
-
-		if (await _staffMemberRepository.PhoneExistsForOtherWithoutCompanyIdAsync(staffMemberId, phone))
-			throw new PhoneAlreadyExistsException(phone);
-	}
+	// private async Task ValidateEmailAndPhoneWithoutCompanyIdAsync(
+	// 	StaffMember staffMember)
+	// {
+	// 	Guid staffMemberId = staffMember.Id;
+	// 	string email = staffMember.Email;
+	// 	string phone = staffMember.Phone;
+	//
+	// 	if (await _staffMemberRepository.EmailExistsForOtherWithoutCompanyIdAsync(staffMemberId, email))
+	// 		throw new EmailAlreadyExistsException(email);
+	//
+	// 	if (await _staffMemberRepository.PhoneExistsForOtherWithoutCompanyIdAsync(staffMemberId, phone))
+	// 		throw new PhoneAlreadyExistsException(phone);
+	// }
 }

@@ -31,4 +31,8 @@
 	<ProjectReference Include="..\Schedule.Infrastructure\Schedule.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Data\" />
+  </ItemGroup>
+
 </Project>

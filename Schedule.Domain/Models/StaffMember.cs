@@ -4,7 +4,7 @@ namespace Schedule.Domain.Models;
 
 public class StaffMember
 {
-	public Guid Id { get; private set; }
+	public Guid Id { get; }
 	public StaffRole Role { get; }
 	public string Email { get; private set; }
 	public string Password { get; private set; }
@@ -14,14 +14,14 @@ public class StaffMember
 	public DateTime CreatedAt { get; }
 	public bool IsDeleted { get; private set; }
 	public IReadOnlyList<Specialization> Specializations { get; private set; }
-	public IReadOnlyList<StaffMemberCompany> StaffCompanies { get; private set; }
+	public IReadOnlyList<StaffMemberCompany> StaffMemberCompanies { get; private set; }
 
-	public IEnumerable<Guid> CompanyIds => StaffCompanies.Select(sc => sc.CompanyId);
+	public IEnumerable<Guid> CompanyIds => StaffMemberCompanies.Select(sc => sc.CompanyId);
 
 	public StaffMember()
 	{
 		Specializations = new List<Specialization>();
-		StaffCompanies = new List<StaffMemberCompany>();
+		StaffMemberCompanies = new List<StaffMemberCompany>();
 	}
 
 	public StaffMember(
@@ -35,7 +35,7 @@ public class StaffMember
 		DateTime createdAt,
 		bool isDeleted,
 		List<Specialization> specializations,
-		List<StaffMemberCompany> staffCompanies)
+		List<StaffMemberCompany> staffMemberCompanies)
 	{
 		Id = id;
 		Role = role;
@@ -47,7 +47,7 @@ public class StaffMember
 		CreatedAt = createdAt;
 		IsDeleted = isDeleted;
 		Specializations = specializations;
-		StaffCompanies = staffCompanies;
+		StaffMemberCompanies = staffMemberCompanies;
 	}
 
 	public void Normalize()
@@ -69,12 +69,12 @@ public class StaffMember
 
 	public void AddCompany(Guid companyId)
 	{
-		if (StaffCompanies.Any(sc => sc.CompanyId == companyId))
+		if (StaffMemberCompanies.Any(sc => sc.CompanyId == companyId))
 			return;
 
-		List<StaffMemberCompany> companies = StaffCompanies.ToList();
+		List<StaffMemberCompany> companies = StaffMemberCompanies.ToList();
 		companies.Add(new StaffMemberCompany(Guid.NewGuid(), Id, companyId, DateTime.UtcNow));
-		StaffCompanies = companies;
+		StaffMemberCompanies = companies;
 	}
 
 	public void SoftDelete()
@@ -86,9 +86,9 @@ public class StaffMember
 		IsDeleted = true;
 	}
 
-	public void SetStaffCompanies(List<StaffMemberCompany> staffCompanies)
+	public void SetStaffMemberCompanies(List<StaffMemberCompany> staffMemberCompanies)
 	{
-		StaffCompanies = staffCompanies;
+		StaffMemberCompanies = staffMemberCompanies;
 	}
 
 	public void SetPassword(string hashedPassword)

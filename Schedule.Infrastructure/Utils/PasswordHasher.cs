@@ -3,7 +3,6 @@ using Schedule.Application.Interfaces.Utils;
 
 namespace Schedule.Infrastructure.Utils;
 
-
 public class PasswordHasher : IPasswordHasher
 {
 	private readonly string _pepper;

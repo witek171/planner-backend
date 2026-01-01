@@ -18,7 +18,7 @@ public class StaffMemberSpecializationRepository : IStaffMemberSpecializationRep
 		StaffMemberSpecialization staffMemberSpecialization)
 	{
 		const string sql = @"
-			INSERT INTO StaffSpecializations (CompanyId, StaffMemberId, SpecializationId)
+			INSERT INTO StaffMemberSpecializations (CompanyId, StaffMemberId, SpecializationId)
 			OUTPUT INSERTED.Id
 			VALUES (@CompanyId, @StaffMemberId, @SpecializationId)";
 
@@ -39,7 +39,7 @@ public class StaffMemberSpecializationRepository : IStaffMemberSpecializationRep
 		Guid staffMemberSpecializationId)
 	{
 		const string sql = @"
-			DELETE FROM StaffSpecializations 
+			DELETE FROM StaffMemberSpecializations 
 			WHERE CompanyId = @CompanyId AND Id = @Id";
 
 		await using SqlConnection connection = new(_connectionString);
@@ -59,7 +59,7 @@ public class StaffMemberSpecializationRepository : IStaffMemberSpecializationRep
 	{
 		const string sql = @"
 			SELECT 1
-			FROM StaffSpecializations
+			FROM StaffMemberSpecializations
 			WHERE StaffMemberId = @StaffMemberId
 			AND SpecializationId = @SpecializationId";
 
@@ -81,7 +81,7 @@ public class StaffMemberSpecializationRepository : IStaffMemberSpecializationRep
 	{
 		const string sql = @"
 			SELECT 1
-			FROM StaffSpecializations
+			FROM StaffMemberSpecializations
 			WHERE CompanyId = @CompanyId AND Id = @Id";
 
 		await using SqlConnection connection = new(_connectionString);

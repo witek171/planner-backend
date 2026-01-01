@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PlannerNet.Extensions;
+using PlannerNet.Filters;
 using Schedule.Application.Interfaces.Services;
 using Schedule.Contracts.Dtos.Requests;
 using Schedule.Contracts.Dtos.Responses;
@@ -11,6 +13,7 @@ namespace PlannerNet.Controllers;
 [ApiController]
 [Route("api/[controller]/{companyId:guid}")]
 [Authorize(Roles = "Manager")]
+[CompanyAccess]
 public class ParticipantController : ControllerBase
 {
 	private readonly IParticipantService _participantService;
@@ -66,35 +69,26 @@ public class ParticipantController : ControllerBase
 		return NoContent();
 	}
 
-	[HttpGet("byId")]
+	[HttpGet("{participantId:guid}")]
 	public async Task<ActionResult<ParticipantResponse>> GetById(
-		[FromQuery] Guid participantId,
+		Guid participantId,
 		Guid companyId)
 	{
 		Participant? participant = await _participantService
 			.GetByIdAsync(participantId, companyId);
-
 		ParticipantResponse response = _mapper.Map<ParticipantResponse>(participant);
 		return Ok(response);
 	}
 
-	[HttpGet("byEmail")]
-	public async Task<ActionResult<ParticipantResponse>> GetByEmail(
-		[FromQuery] string email,
-		Guid companyId)
+	[HttpGet]
+	public async Task<ActionResult<PagedResponse<ParticipantResponse>>> GetAll(
+		Guid companyId,
+		[FromQuery] PaginationRequest paginationRequest)
 	{
-		Participant? participant = await _participantService.GetByEmailAsync(email, companyId);
-
-		ParticipantResponse response = _mapper.Map<ParticipantResponse>(participant);
+		(List<Participant> Items, int TotalCount) result = await _participantService
+			.GetAllAsync(companyId, paginationRequest.Page, paginationRequest.PageSize);
+		PagedResponse<ParticipantResponse> response = result
+			.ToPagedResponse<Participant, ParticipantResponse>(paginationRequest, _mapper);
 		return Ok(response);
-	}
-
-	[HttpGet("all")]
-	public async Task<ActionResult<List<ParticipantResponse>>> GetAll(Guid companyId)
-	{
-		List<Participant> participants = await _participantService.GetAllAsync(companyId);
-
-		List<ParticipantResponse> responses = _mapper.Map<List<ParticipantResponse>>(participants);
-		return Ok(responses);
 	}
 }

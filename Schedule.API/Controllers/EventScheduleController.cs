@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PlannerNet.Extensions;
+using PlannerNet.Filters;
 using Schedule.Application.Interfaces.Services;
 using Schedule.Contracts.Dtos.Requests;
 using Schedule.Contracts.Dtos.Responses;
@@ -11,6 +13,7 @@ namespace PlannerNet.Controllers;
 [ApiController]
 [Route("api/[controller]/{companyId:guid}")]
 [Authorize(Roles = "Manager")]
+[CompanyAccess]
 public class EventScheduleController : ControllerBase
 {
 	private readonly IEventScheduleService _eventScheduleService;
@@ -24,12 +27,16 @@ public class EventScheduleController : ControllerBase
 		_mapper = mapper;
 	}
 
-	[HttpGet("all")]
-	public async Task<ActionResult<List<EventScheduleResponse>>> GetAll(Guid companyId)
+	[HttpGet]
+	public async Task<ActionResult<List<EventScheduleResponse>>> GetAll(
+		Guid companyId,
+		[FromQuery] PaginationRequest paginationRequest)
 	{
-		List<EventSchedule> eventSchedules = await _eventScheduleService.GetAllAsync(companyId);
-		List<EventScheduleResponse> responses = _mapper.Map<List<EventScheduleResponse>>(eventSchedules);
-		return Ok(responses);
+		(List<EventSchedule> Items, int TotalCount) result = await _eventScheduleService
+			.GetAllAsync(companyId, paginationRequest.Page, paginationRequest.PageSize);
+		PagedResponse<EventScheduleResponse> response = result
+			.ToPagedResponse<EventSchedule, EventScheduleResponse>(paginationRequest, _mapper);
+		return Ok(response);
 	}
 
 	[HttpGet("{id}")]

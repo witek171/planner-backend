@@ -2,9 +2,9 @@
 
 namespace Schedule.Contracts.Dtos.Responses;
 
-public class AvailabilityResponse
+public class AvailableSlotResponse
 {
-	public AvailabilityResponse(
+	public AvailableSlotResponse(
 		DateOnly date,
 		DateTime startTime,
 		DateTime endTime)

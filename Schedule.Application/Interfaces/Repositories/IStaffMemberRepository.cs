@@ -4,7 +4,10 @@ namespace Schedule.Application.Interfaces.Repositories;
 
 public interface IStaffMemberRepository
 {
-	Task<List<StaffMember>> GetAllAsync(Guid companyId);
+	Task<(List<StaffMember> Items, int TotalCount)> GetPagedWithCountAsync(
+		Guid companyId,
+		int page,
+		int pageSize);
 
 	Task<StaffMember?> GetByIdAsync(
 		Guid staffMemberId,
@@ -34,8 +37,8 @@ public interface IStaffMemberRepository
 		string phone);
 
 	Task<bool> EmailExistsForOtherWithoutCompanyIdAsync(
-	Guid staffMemberId,
-	string email);
+		Guid staffMemberId,
+		string email);
 
 	Task<bool> PhoneExistsForOtherWithoutCompanyIdAsync(
 		Guid staffMemberId,
@@ -43,7 +46,7 @@ public interface IStaffMemberRepository
 
 	Task<bool> UpdateSoftDeleteAsync(StaffMember staffMember);
 
-	Task<bool> AssignToCompanyAsync(Guid staffMemberId, Guid companyId);
+	Task<Guid> AssignToCompanyAsync(Guid staffMemberId, Guid companyId);
 	Task<bool> UnassignFromCompanyAsync(Guid staffMemberId, Guid companyId);
 
 	Task<List<StaffMemberCompany>> GetAssignedCompanyAsync(Guid staffMemberId);

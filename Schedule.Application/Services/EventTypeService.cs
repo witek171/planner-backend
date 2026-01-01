@@ -13,8 +13,11 @@ public class EventTypeService : IEventTypeService
 		_eventTypeRepository = eventTypeRepository;
 	}
 
-	public async Task<List<EventType>> GetAllAsync(Guid companyId)
-		=> await _eventTypeRepository.GetAllAsync(companyId);
+	public async Task<(List<EventType> Items, int TotalCount)> GetAllAsync(
+		Guid companyId,
+		int page,
+		int pageSize)
+		=> await _eventTypeRepository.GetPagedWithCountAsync(companyId, page, pageSize);
 
 	public async Task<EventType?> GetByIdAsync(
 		Guid id,

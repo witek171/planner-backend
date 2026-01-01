@@ -1,6 +1,16 @@
 -- Przełącz się na bazę danych
-USE
-	PlannerDB;
+USE PlannerDB;
+GO
+
+-- Sprawdź czy pracujemy na właściwej bazie
+IF DB_NAME() != 'PlannerDB'
+BEGIN
+    RAISERROR('Błąd: Nie udało się przełączyć na bazę PlannerDB', 16, 1);
+    RETURN;
+END
+
+PRINT 'Rozpoczynam wypełnianie bazy danych przykładowymi danymi...';
+PRINT 'Kontekst bazy danych: ' + DB_NAME();
 GO
 
 -- =============================================
@@ -232,59 +242,58 @@ VALUES
 INSERT INTO Staff (Id, Role, Email, Password, FirstName, LastName, Phone)
 VALUES
 	-- Pracownicy recepcji
-	(@StaffRec1Id, 'ReceptionEmployee', 'kowalska@sportfit.pl', 'password123', 'Anna', 'Kowalska', '+48700100101'),
-	(@StaffRec2Id, 'ReceptionEmployee', 'nowak@sportfit.pl', 'password123', 'Barbara', 'Nowak', '+48700100102'),
-	(@StaffRec3Id, 'ReceptionEmployee', 'wisniewska@sportfit.pl', 'password123', 'Celina', 'Wiśniewska',
-	 '+48700100103'),
-	(@StaffRec4Id, 'ReceptionEmployee', 'kaminska@sportfit.pl', 'password123', 'Diana', 'Kamińska', '+48700100104'),
-	(@StaffRec5Id, 'ReceptionEmployee', 'lewandowska@sportfit.pl', 'password123', 'Ewa', 'Lewandowska', '+48700100105'),
-	(@StaffRec6Id, 'ReceptionEmployee', 'zielinska@fitzone.pl', 'password123', 'Fatima', 'Zielińska', '+48700100106'),
-	(@StaffRec7Id, 'ReceptionEmployee', 'szymanska@fitzone.pl', 'password123', 'Gabriela', 'Szymańska', '+48700100107'),
-	(@StaffRec8Id, 'ReceptionEmployee', 'wojcik@fitzone.pl', 'password123', 'Hanna', 'Wójcik', '+48700100108'),
-	(@StaffRec9Id, 'ReceptionEmployee', 'kowalczyk@aquafit.pl', 'password123', 'Irena', 'Kowalczyk', '+48700100109'),
-	(@StaffRec10Id, 'ReceptionEmployee', 'kozlowska@aquafit.pl', 'password123', 'Justyna', 'Kozłowska', '+48700100110'),
-	(@StaffRec11Id, 'ReceptionEmployee', 'jankowska@powergym.pl', 'password123', 'Klara', 'Jankowska', '+48700100111'),
-	(@StaffRec12Id, 'ReceptionEmployee', 'zawadzka@powergym.pl', 'password123', 'Laura', 'Zawadzka', '+48700100112'),
-	(@StaffRec13Id, 'ReceptionEmployee', 'mazur@flexyoga.pl', 'password123', 'Monika', 'Mazur', '+48700100113'),
+	(@StaffRec1Id, 'ReceptionEmployee', 'kowalska@sportfit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Anna', 'Kowalska', '+48700100101'),
+	(@StaffRec2Id, 'ReceptionEmployee', 'nowak@sportfit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Barbara', 'Nowak', '+48700100102'),
+	(@StaffRec3Id, 'ReceptionEmployee', 'wisniewska@sportfit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Celina', 'Wiśniewska','+48700100103'),
+	(@StaffRec4Id, 'ReceptionEmployee', 'kaminska@sportfit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Diana', 'Kamińska', '+48700100104'),
+	(@StaffRec5Id, 'ReceptionEmployee', 'lewandowska@sportfit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Ewa', 'Lewandowska', '+48700100105'),
+	(@StaffRec6Id, 'ReceptionEmployee', 'zielinska@fitzone.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Fatima', 'Zielińska', '+48700100106'),
+	(@StaffRec7Id, 'ReceptionEmployee', 'szymanska@fitzone.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Gabriela', 'Szymańska', '+48700100107'),
+	(@StaffRec8Id, 'ReceptionEmployee', 'wojcik@fitzone.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Hanna', 'Wójcik', '+48700100108'),
+	(@StaffRec9Id, 'ReceptionEmployee', 'kowalczyk@aquafit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Irena', 'Kowalczyk', '+48700100109'),
+	(@StaffRec10Id, 'ReceptionEmployee', 'kozlowska@aquafit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Justyna', 'Kozłowska', '+48700100110'),
+	(@StaffRec11Id, 'ReceptionEmployee', 'jankowska@powergym.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Klara', 'Jankowska', '+48700100111'),
+	(@StaffRec12Id, 'ReceptionEmployee', 'zawadzka@powergym.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Laura', 'Zawadzka', '+48700100112'),
+	(@StaffRec13Id, 'ReceptionEmployee', 'mazur@flexyoga.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Monika', 'Mazur', '+48700100113'),
 
 	-- Trenerzy
-	(@Trainer1Id, 'Trainer', 'malinowski@sportfit.pl', 'password123', 'Dariusz', 'Malinowski', '+48700200201'),
-	(@Trainer2Id, 'Trainer', 'jablonska@sportfit.pl', 'password123', 'Ewa', 'Jabłońska', '+48700200202'),
-	(@Trainer3Id, 'Trainer', 'kowalczyk@sportfit.pl', 'password123', 'Filip', 'Kowalczyk', '+48700200203'),
-	(@Trainer4Id, 'Trainer', 'lewandowska2@sportfit.pl', 'password123', 'Grażyna', 'Lewandowska', '+48700200204'),
-	(@Trainer5Id, 'Trainer', 'zielinski@sportfit.pl', 'password123', 'Henryk', 'Zieliński', '+48700200205'),
-	(@Trainer6Id, 'Trainer', 'szymanska2@sportfit.pl', 'password123', 'Iwona', 'Szymańska', '+48700200206'),
-	(@Trainer7Id, 'Trainer', 'borkowski@sportfit.pl', 'password123', 'Jacek', 'Borkowski', '+48700200207'),
-	(@Trainer8Id, 'Trainer', 'krawczyk@sportfit.pl', 'password123', 'Kinga', 'Krawczyk', '+48700200208'),
-	(@Trainer9Id, 'Trainer', 'nowicki@fitzone.pl', 'password123', 'Łukasz', 'Nowicki', '+48700200209'),
-	(@Trainer10Id, 'Trainer', 'pawlak@fitzone.pl', 'password123', 'Marta', 'Pawlak', '+48700200210'),
-	(@Trainer11Id, 'Trainer', 'michalski@fitzone.pl', 'password123', 'Norbert', 'Michalski', '+48700200211'),
-	(@Trainer12Id, 'Trainer', 'olszewska@fitzone.pl', 'password123', 'Oliwia', 'Olszewska', '+48700200212'),
-	(@Trainer13Id, 'Trainer', 'adamczyk@aquafit.pl', 'password123', 'Piotr', 'Adamczyk', '+48700200213'),
-	(@Trainer14Id, 'Trainer', 'rutkowska@aquafit.pl', 'password123', 'Renata', 'Rutkowska', '+48700200214'),
-	(@Trainer15Id, 'Trainer', 'sikora@aquafit.pl', 'password123', 'Sebastian', 'Sikora', '+48700200215'),
-	(@Trainer16Id, 'Trainer', 'baran@powergym.pl', 'password123', 'Tomasz', 'Baran', '+48700200216'),
-	(@Trainer17Id, 'Trainer', 'urbanska@powergym.pl', 'password123', 'Urszula', 'Urbańska', '+48700200217'),
-	(@Trainer18Id, 'Trainer', 'walczak@powergym.pl', 'password123', 'Władysław', 'Walczak', '+48700200218'),
-	(@Trainer19Id, 'Trainer', 'zakrzewski@flexyoga.pl', 'password123', 'Yolanda', 'Zakrzewska', '+48700200219'),
-	(@Trainer20Id, 'Trainer', 'adamski@flexyoga.pl', 'password123', 'Zbigniew', 'Adamski', '+48700200220'),
+	(@Trainer1Id, 'Trainer', 'malinowski@sportfit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Dariusz', 'Malinowski', '+48700200201'),
+	(@Trainer2Id, 'Trainer', 'jablonska@sportfit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Ewa', 'Jabłońska', '+48700200202'),
+	(@Trainer3Id, 'Trainer', 'kowalczyk@sportfit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Filip', 'Kowalczyk', '+48700200203'),
+	(@Trainer4Id, 'Trainer', 'lewandowska2@sportfit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Grażyna', 'Lewandowska', '+48700200204'),
+	(@Trainer5Id, 'Trainer', 'zielinski@sportfit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Henryk', 'Zieliński', '+48700200205'),
+	(@Trainer6Id, 'Trainer', 'szymanska2@sportfit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Iwona', 'Szymańska', '+48700200206'),
+	(@Trainer7Id, 'Trainer', 'borkowski@sportfit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Jacek', 'Borkowski', '+48700200207'),
+	(@Trainer8Id, 'Trainer', 'krawczyk@sportfit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Kinga', 'Krawczyk', '+48700200208'),
+	(@Trainer9Id, 'Trainer', 'nowicki@fitzone.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Łukasz', 'Nowicki', '+48700200209'),
+	(@Trainer10Id, 'Trainer', 'pawlak@fitzone.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Marta', 'Pawlak', '+48700200210'),
+	(@Trainer11Id, 'Trainer', 'michalski@fitzone.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Norbert', 'Michalski', '+48700200211'),
+	(@Trainer12Id, 'Trainer', 'olszewska@fitzone.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Oliwia', 'Olszewska', '+48700200212'),
+	(@Trainer13Id, 'Trainer', 'adamczyk@aquafit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Piotr', 'Adamczyk', '+48700200213'),
+	(@Trainer14Id, 'Trainer', 'rutkowska@aquafit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Renata', 'Rutkowska', '+48700200214'),
+	(@Trainer15Id, 'Trainer', 'sikora@aquafit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Sebastian', 'Sikora', '+48700200215'),
+	(@Trainer16Id, 'Trainer', 'baran@powergym.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Tomasz', 'Baran', '+48700200216'),
+	(@Trainer17Id, 'Trainer', 'urbanska@powergym.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Urszula', 'Urbańska', '+48700200217'),
+	(@Trainer18Id, 'Trainer', 'walczak@powergym.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Władysław', 'Walczak', '+48700200218'),
+	(@Trainer19Id, 'Trainer', 'zakrzewski@flexyoga.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Yolanda', 'Zakrzewska', '+48700200219'),
+	(@Trainer20Id, 'Trainer', 'adamski@flexyoga.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Zbigniew', 'Adamski', '+48700200220'),
 
 	-- Managerowie
-	(@Manager1Id, 'Manager', 'mazur.manager@sportfit.pl', 'password123', 'Janusz', 'Mazur', '+48700300301'),
-	(@Manager2Id, 'Manager', 'kaczmarek@sportfit.pl', 'password123', 'Kamila', 'Kaczmarek', '+48700300302'),
-	(@Manager3Id, 'Manager', 'grabowski@sportfit.pl', 'password123', 'Leszek', 'Grabowski', '+48700300303'),
-	(@Manager4Id, 'Manager', 'kowalski@sportfit.pl', 'password123', 'Marcin', 'Kowalski', '+48700300304'),
-	(@Manager5Id, 'Manager', 'nowakowska@sportfit.pl', 'password123', 'Nina', 'Nowakowska', '+48700300305'),
-	(@Manager6Id, 'Manager', 'pawlowski@fitzone.pl', 'password123', 'Oscar', 'Pawłowski', '+48700300306'),
-	(@Manager7Id, 'Manager', 'piotrowska@fitzone.pl', 'password123', 'Patrycja', 'Piotrowska', '+48700300307'),
-	(@Manager8Id, 'Manager', 'rybak@aquafit.pl', 'password123', 'Robert', 'Rybak', '+48700300308'),
-	(@Manager9Id, 'Manager', 'sokolowska@powergym.pl', 'password123', 'Sylwia', 'Sokołowska', '+48700300309'),
-	(@Manager10Id, 'Manager', 'tomaszewski@flexyoga.pl', 'password123', 'Tomasz', 'Tomaszewski', '+48700300310');
+	(@Manager1Id, 'Manager', 'mazur.manager@sportfit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Janusz', 'Mazur', '+48700300301'),
+	(@Manager2Id, 'Manager', 'kaczmarek@sportfit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Kamila', 'Kaczmarek', '+48700300302'),
+	(@Manager3Id, 'Manager', 'grabowski@sportfit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Leszek', 'Grabowski', '+48700300303'),
+	(@Manager4Id, 'Manager', 'kowalski@sportfit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Marcin', 'Kowalski', '+48700300304'),
+	(@Manager5Id, 'Manager', 'nowakowska@sportfit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Nina', 'Nowakowska', '+48700300305'),
+	(@Manager6Id, 'Manager', 'pawlowski@fitzone.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Oscar', 'Pawłowski', '+48700300306'),
+	(@Manager7Id, 'Manager', 'piotrowska@fitzone.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Patrycja', 'Piotrowska', '+48700300307'),
+	(@Manager8Id, 'Manager', 'rybak@aquafit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Robert', 'Rybak', '+48700300308'),
+	(@Manager9Id, 'Manager', 'sokolowska@powergym.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Sylwia', 'Sokołowska', '+48700300309'),
+	(@Manager10Id, 'Manager', 'tomaszewski@flexyoga.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Tomasz', 'Tomaszewski', '+48700300310');
 
 -- =============================================
 -- Powiązania Staff z Companies (wiele-do-wielu)
 -- =============================================
-INSERT INTO StaffCompanies (StaffId, CompanyId)
+INSERT INTO StaffMemberCompanies (StaffMemberId, CompanyId)
 VALUES
 	-- Pracownicy recepcji
 	(@StaffRec1Id, @Branch1Id),
@@ -548,10 +557,10 @@ VALUES
 	(@Spec20Id, @FlexYoga1Id, 'Hatha Yoga', 'Klasyczna joga z naciskiem na pozycje');
 
 -- =============================================
--- 6. StaffSpecializations - przypisanie specjalizacji do trenerów 
+-- 6. StaffMemberSpecializations - przypisanie specjalizacji do trenerów
 -- =============================================
 
-INSERT INTO StaffSpecializations (Id, CompanyId, StaffMemberId, SpecializationId)
+INSERT INTO StaffMemberSpecializations (Id, CompanyId, StaffMemberId, SpecializationId)
 VALUES
 	-- SportFit Centrum
 	(NEWID(), @Branch1Id, @Trainer1Id, @Spec1Id),
@@ -608,10 +617,10 @@ VALUES
 	(NEWID(), @FlexYoga1Id, @Trainer20Id, @Spec20Id);
 
 -- =============================================
--- 7. StaffAvailability - dodanie dostępności personelu 
+-- 7. StaffMemberAvailabilities - dodanie dostępności personelu
 -- =============================================
 
-INSERT INTO StaffAvailability (Id, CompanyId, StaffMemberId, Date, StartTime, EndTime, IsAvailable)
+INSERT INTO StaffMemberAvailabilities (Id, CompanyId, StaffMemberId, Date, StartTime, EndTime, IsAvailable)
 VALUES
 	-- Dostępność trenerów SportFit Centrum
 	(NEWID(), @Branch1Id, @Trainer1Id, '2025-07-28', '2025-07-28 08:00:00', '2025-07-28 16:00:00', 1),
@@ -1317,8 +1326,8 @@ PRINT '- Hierarchię firm (CompanyHierarchies)'
 PRINT '- 43 pracowników (Staff) - 13 recepcjonistów, 20 trenerów, 10 managerów'
 PRINT '- 30 uczestników (Participants)'
 PRINT '- 20 specjalizacji (Specializations)'
-PRINT '- Przypisania specjalizacji do trenerów (StaffSpecializations)'
-PRINT '- Dostępność personelu (StaffAvailability)'
+PRINT '- Przypisania specjalizacji do trenerów (StaffMemberSpecializations)'
+PRINT '- Dostępność personelu (StaffMemberAvailabilities)'
 PRINT '- 25 typów wydarzeń (EventTypes)'
 PRINT '- 35 zaplanowanych wydarzeń (EventSchedules)'
 PRINT '- Przypisania personelu do wydarzeń (EventScheduleStaff)'

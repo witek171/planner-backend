@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using AutoMapper;
+﻿using AutoMapper;
 using Schedule.Contracts.Dtos.Requests;
 using Schedule.Contracts.Dtos.Responses;
 using Schedule.Domain.Models;
@@ -27,7 +26,7 @@ public class MappingProfile : Profile
 		CreateMap<StaffMemberSpecializationRequest, StaffMemberSpecialization>();
 
 		CreateMap<StaffMemberAvailabilityRequest, StaffMemberAvailability>();
-		CreateMap<StaffMemberAvailability, AvailabilityResponse>();
+		CreateMap<StaffMemberAvailability, AvailableSlotResponse>();
 		CreateMap<(StaffMember staffMember, List<StaffMemberAvailability> availabilities),
 			StaffMemberAvailabilityResponse>();
 
@@ -50,7 +49,6 @@ public class MappingProfile : Profile
 		CreateMap<ReservationUpdateRequest, Reservation>();
 
 		CreateMap<StaffMemberCompany, StaffMemberCompanyResponse>();
-		CreateMap<StaffMemberCompanyRequest, StaffMemberCompany>();
 
 		CreateMap<UpdateCompanyBreakTimesRequest, CompanyConfig>();
 	}

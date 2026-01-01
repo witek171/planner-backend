@@ -6,7 +6,7 @@
 			"launchUrl": "swagger",
 			"environmentVariables": {
 				"ASPNETCORE_ENVIRONMENT": "Development",
-				"ConnectionStrings__DefaultConnection": "Server=localhost;Database=PlannerDB;Trusted_Connection=True;TrustServerCertificate=True",
+				"ConnectionStrings__DefaultConnection": "Server=localhost,1433;Database=PlannerDB;User Id=sa;Password=YourStrong@Password123;TrustServerCertificate=True;MultipleActiveResultSets=True;",
 				"PasswordPepper": "MojaSuperSekretnaPepper123!",
 				"Jwt__Issuer": "Schedule.Auth",
 				"Jwt__Audience": "Schedule.Api",

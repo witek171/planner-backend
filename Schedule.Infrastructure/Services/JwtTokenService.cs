@@ -9,30 +9,43 @@ namespace Schedule.Infrastructure.Services;
 
 public class JwtTokenService : IJwtTokenService
 {
-
 	public JwtTokenService()
 	{
-
 	}
 
 	public string GenerateToken(Guid userId, StaffRole role)
 	{
-		List<Claim> claims = new List<Claim>
-			{
-				new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
-				new Claim(ClaimTypes.Role, role.ToString())
-			};
-
+		List<Claim> claims =
+		[
+			new(ClaimTypes.NameIdentifier, userId.ToString()),
+			new(ClaimTypes.Role, role.ToString())
+		];
 
 		RSA rsa = RSA.Create();
-		rsa.ImportFromPem(File.ReadAllText("./data/private.key"));
-		SigningCredentials creds = new SigningCredentials(new RsaSecurityKey(rsa), SecurityAlgorithms.RsaSha256);
+		string[] possiblePaths =
+		{
+			"/app/data/private.key",
+			"./Data/private.key",
+			"./data/private.key"
+		};
 
-		JwtSecurityToken token = new JwtSecurityToken(
-			issuer: EnvironmentService.JwtIssuer, // Schedule.Auth
-			audience: EnvironmentService.JwtAudience, // Schedule.API
+		string? privateKeyContent = (
+			from path in possiblePaths
+			where File.Exists(path)
+			select File.ReadAllText(path)).FirstOrDefault();
+
+		if (privateKeyContent == null)
+			throw new FileNotFoundException(
+				"Private key not found! Check whether the keys have been generated.");
+
+		rsa.ImportFromPem(privateKeyContent);
+		SigningCredentials creds = new(new RsaSecurityKey(rsa), SecurityAlgorithms.RsaSha256);
+
+		JwtSecurityToken token = new(
+			issuer: EnvironmentService.JwtIssuer,
+			audience: EnvironmentService.JwtAudience,
 			claims: claims,
-			expires: DateTime.UtcNow.AddMinutes(int.Parse(EnvironmentService.JwtExpiresInMinutes)), // 240 mintutes
+			expires: DateTime.UtcNow.AddMinutes(int.Parse(EnvironmentService.JwtExpiresInMinutes)),
 			signingCredentials: creds);
 
 		return new JwtSecurityTokenHandler().WriteToken(token);

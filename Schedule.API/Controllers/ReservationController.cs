@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PlannerNet.Extensions;
+using PlannerNet.Filters;
 using Schedule.Application.Interfaces.Services;
 using Schedule.Contracts.Dtos.Requests;
 using Schedule.Contracts.Dtos.Responses;
@@ -11,6 +13,7 @@ namespace PlannerNet.Controllers;
 [ApiController]
 [Route("api/[controller]/{companyId:guid}")]
 [Authorize(Roles = "Manager")]
+[CompanyAccess]
 public class ReservationController : ControllerBase
 {
 	private readonly IReservationService _reservationService;
@@ -24,12 +27,16 @@ public class ReservationController : ControllerBase
 		_mapper = mapper;
 	}
 
-	[HttpGet("all")]
-	public async Task<ActionResult<List<ReservationResponse>>> GetAll(Guid companyId)
+	[HttpGet]
+	public async Task<ActionResult<PagedResponse<ReservationResponse>>> GetAll(
+		Guid companyId,
+		[FromQuery] PaginationRequest paginationRequest)
 	{
-		List<Reservation> reservations = await _reservationService.GetAllAsync(companyId);
-		List<ReservationResponse> responses = _mapper.Map<List<ReservationResponse>>(reservations);
-		return Ok(responses);
+		(List<Reservation> Items, int TotalCount) result = await _reservationService
+			.GetAllAsync(companyId, paginationRequest.Page, paginationRequest.PageSize);
+		PagedResponse<ReservationResponse> response = result
+			.ToPagedResponse<Reservation, ReservationResponse>(paginationRequest, _mapper);
+		return Ok(response);
 	}
 
 	[HttpGet("{id}")]
@@ -71,7 +78,7 @@ public class ReservationController : ControllerBase
 		return NoContent();
 	}
 
-	[HttpPut("{id:guid}/markAsPaid")]
+	[HttpPatch("{id:guid}/markAsPaid")]
 	public async Task<ActionResult> MarkAsPaid(
 		Guid id,
 		Guid companyId)
@@ -84,7 +91,7 @@ public class ReservationController : ControllerBase
 		return NoContent();
 	}
 
-	[HttpPut("{id:guid}/unmarkAsPaid")]
+	[HttpPatch("{id:guid}/unmarkAsPaid")]
 	public async Task<ActionResult> UnmarkAsPaid(
 		Guid id,
 		Guid companyId)

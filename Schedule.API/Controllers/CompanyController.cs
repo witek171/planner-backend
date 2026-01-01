@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PlannerNet.Filters;
 using Schedule.Application.Interfaces.Services;
 using Schedule.Contracts.Dtos.Requests;
 using Schedule.Contracts.Dtos.Responses;
@@ -31,12 +32,12 @@ public class CompanyController : ControllerBase
 	public async Task<ActionResult<Guid>> Create([FromBody] CompanyRequest request)
 	{
 		Company company = _mapper.Map<Company>(request);
-
 		Guid companyId = await _companyService.CreateAsync(company);
 		return CreatedAtAction(nameof(Create), companyId);
 	}
 
 	[HttpPut("{companyId:guid}")]
+	[CompanyAccess]
 	public async Task<ActionResult> Put(
 		Guid companyId,
 		[FromBody] CompanyRequest request)
@@ -46,12 +47,12 @@ public class CompanyController : ControllerBase
 			return NotFound();
 
 		_mapper.Map(request, company);
-
 		await _companyService.PutAsync(company);
 		return NoContent();
 	}
 
 	[HttpDelete("{companyId:guid}")]
+	[CompanyAccess]
 	public async Task<ActionResult> DeleteById(Guid companyId)
 	{
 		Company? company = await _companyService.GetByIdAsync(companyId);
@@ -62,8 +63,8 @@ public class CompanyController : ControllerBase
 		return NoContent();
 	}
 
-	[HttpGet("byId")]
-	public async Task<ActionResult<CompanyResponse>> GetById([FromQuery] Guid companyId)
+	[HttpGet("{companyId:guid}")]
+	public async Task<ActionResult<CompanyResponse>> GetById(Guid companyId)
 	{
 		Company? company = await _companyService.GetByIdAsync(companyId);
 		if (company == null)
@@ -73,7 +74,8 @@ public class CompanyController : ControllerBase
 		return Ok(response);
 	}
 
-	[HttpPut("{companyId:guid}/markAsReception")]
+	[HttpPatch("{companyId:guid}/markAsReception")]
+	[CompanyAccess]
 	public async Task<ActionResult> MarkAsReception(Guid companyId)
 	{
 		Company? company = await _companyService.GetByIdAsync(companyId);
@@ -84,7 +86,8 @@ public class CompanyController : ControllerBase
 		return NoContent();
 	}
 
-	[HttpPut("{companyId:guid}/unmarkAsReception")]
+	[HttpPatch("{companyId:guid}/unmarkAsReception")]
+	[CompanyAccess]
 	public async Task<ActionResult> UnmarkAsReception(Guid companyId)
 	{
 		Company? company = await _companyService.GetByIdAsync(companyId);
@@ -96,6 +99,7 @@ public class CompanyController : ControllerBase
 	}
 
 	[HttpPost("{companyId:guid}/relation")]
+	[CompanyAccess]
 	public async Task<ActionResult> AddToParent(
 		Guid companyId,
 		[FromBody] Guid parentCompanyId)
@@ -110,6 +114,7 @@ public class CompanyController : ControllerBase
 	}
 
 	[HttpDelete("{companyId:guid}/relation")]
+	[CompanyAccess]
 	public async Task<ActionResult> RemoveRelations(Guid companyId)
 	{
 		Company? company = await _companyService.GetByIdAsync(companyId);
@@ -121,6 +126,7 @@ public class CompanyController : ControllerBase
 	}
 
 	[HttpGet("{companyId:guid}/relation")]
+	[CompanyAccess]
 	public async Task<ActionResult> GetRelations(Guid companyId)
 	{
 		Company? company = await _companyService.GetByIdAsync(companyId);
@@ -128,12 +134,12 @@ public class CompanyController : ControllerBase
 			return NotFound();
 
 		List<Company> companies = await _companyService.GetAllRelationsAsync(companyId);
-
 		List<CompanyResponse> responses = _mapper.Map<List<CompanyResponse>>(companies);
 		return Ok(responses);
 	}
 
 	[HttpPut("{companyId:guid}/breakTimes")]
+	[CompanyAccess]
 	public async Task<IActionResult> UpdateCompanyBreakTimes(
 		Guid companyId,
 		[FromBody] UpdateCompanyBreakTimesRequest request)
@@ -144,7 +150,6 @@ public class CompanyController : ControllerBase
 
 		CompanyConfig companyConfig = await _companyConfigService.GetByIdAsync(companyId);
 		_mapper.Map(request, companyConfig);
-
 		await _companyConfigService.UpdateBreakTimesAsync(companyConfig);
 		return NoContent();
 	}

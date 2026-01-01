@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PlannerNet.Extensions;
+using PlannerNet.Filters;
 using Schedule.Application.Interfaces.Services;
 using Schedule.Contracts.Dtos.Requests;
 using Schedule.Contracts.Dtos.Responses;
@@ -11,6 +13,7 @@ namespace PlannerNet.Controllers;
 [ApiController]
 [Route("api/[controller]/{companyId:guid}")]
 [Authorize(Roles = "Manager")]
+[CompanyAccess]
 public class StaffMemberController : ControllerBase
 {
 	private readonly IStaffMemberService _staffMemberService;
@@ -36,17 +39,21 @@ public class StaffMemberController : ControllerBase
 		_mapper = mapper;
 	}
 
-	[HttpGet("all")]
-	public async Task<ActionResult<List<StaffMemberResponse>>> GetAll(Guid companyId)
+	[HttpGet]
+	public async Task<ActionResult<List<StaffMemberResponse>>> GetAll(
+		Guid companyId,
+		[FromQuery] PaginationRequest paginationRequest)
 	{
-		List<StaffMember> staff = await _staffMemberService.GetAllAsync(companyId);
-		List<StaffMemberResponse> responses = _mapper.Map<List<StaffMemberResponse>>(staff);
-		return Ok(responses);
+		(List<StaffMember> Items, int TotalCount) result = await _staffMemberService
+			.GetAllAsync(companyId, paginationRequest.Page, paginationRequest.PageSize);
+		PagedResponse<StaffMemberResponse> response = result
+			.ToPagedResponse<StaffMember, StaffMemberResponse>(paginationRequest, _mapper);
+		return Ok(response);
 	}
 
-	[HttpGet("byId")]
+	[HttpGet("{staffMemberId:guid}")]
 	public async Task<ActionResult<StaffMemberResponse>> GetById(
-		[FromQuery] Guid staffMemberId,
+		Guid staffMemberId,
 		Guid companyId)
 	{
 		StaffMember? staffMember = await _staffMemberService
@@ -64,8 +71,7 @@ public class StaffMemberController : ControllerBase
 		[FromBody] StaffMemberRequest request)
 	{
 		StaffMember staffMember = _mapper.Map<StaffMember>(request);
-		staffMember.AddCompany(companyId);
-		Guid staffMemberId = await _staffMemberService.CreateAsync(staffMember);
+		Guid staffMemberId = await _staffMemberService.CreateAsync(staffMember, companyId);
 		return CreatedAtAction(nameof(Create), staffMemberId);
 	}
 
@@ -106,9 +112,7 @@ public class StaffMemberController : ControllerBase
 	{
 		StaffMemberSpecialization staffMemberSpecialization = _mapper
 			.Map<StaffMemberSpecialization>(request);
-
 		staffMemberSpecialization.SetCompanyId(companyId);
-
 		Guid id = await _staffMemberSpecializationService
 			.CreateAsync(companyId, staffMemberSpecialization);
 		return CreatedAtAction(nameof(CreateStaffMemberSpecialization), id);
@@ -129,10 +133,10 @@ public class StaffMemberController : ControllerBase
 		return NoContent();
 	}
 
-	[HttpGet("availability/byStaffMemberId")]
+	[HttpGet("availability/{staffMemberId:guid}")]
 	public async Task<ActionResult<List<StaffMemberAvailabilityResponse>>> GetAvailabilityByStaffMemberId(
 		Guid companyId,
-		[FromQuery] Guid staffMemberId)
+		Guid staffMemberId)
 	{
 		StaffMember? staffMember = await _staffMemberService
 			.GetByIdAsync(staffMemberId, companyId);
@@ -142,11 +146,9 @@ public class StaffMemberController : ControllerBase
 		List<StaffMemberAvailability> availabilities =
 			await _staffMemberAvailabilityService
 				.GetByStaffMemberIdAsync(companyId, staffMemberId);
-
 		StaffMemberAvailabilityResponse response = new(
 			_mapper.Map<StaffMemberResponse>(staffMember),
-			_mapper.Map<List<AvailabilityResponse>>(availabilities));
-
+			_mapper.Map<List<AvailableSlotResponse>>(availabilities));
 		return Ok(response);
 	}
 
@@ -164,7 +166,6 @@ public class StaffMemberController : ControllerBase
 		StaffMemberAvailability availability = _mapper.Map<StaffMemberAvailability>(request);
 		availability.SetCompanyId(companyId);
 		availability.SetStaffMemberId(staffMemberId);
-
 		Guid id = await _staffMemberAvailabilityService.CreateAsync(availability);
 		return CreatedAtAction(nameof(CreateAvailability), id);
 	}
@@ -183,10 +184,10 @@ public class StaffMemberController : ControllerBase
 		return NoContent();
 	}
 
-	[HttpGet("eventschedules")]
+	[HttpGet("eventSchedules/{staffMemberId:guid}")]
 	public async Task<ActionResult<List<EventScheduleResponse>>> GetStaffMemberEventSchedules(
 		Guid companyId,
-		[FromQuery] Guid staffMemberId)
+		Guid staffMemberId)
 	{
 		List<EventSchedule> schedules = await _eventScheduleService
 			.GetByStaffMemberIdAsync(companyId, staffMemberId);
@@ -195,7 +196,7 @@ public class StaffMemberController : ControllerBase
 		return Ok(responses);
 	}
 
-	[HttpPost("eventschedule")]
+	[HttpPost("eventSchedule")]
 	public async Task<ActionResult<Guid>> AssignStaffMemberToEvent(
 		Guid companyId,
 		[FromBody] EventScheduleStaffMemberRequest request)
@@ -203,13 +204,12 @@ public class StaffMemberController : ControllerBase
 		EventScheduleStaffMember eventScheduleStaffMember = _mapper
 			.Map<EventScheduleStaffMember>(request);
 		eventScheduleStaffMember.SetCompanyId(companyId);
-
 		Guid id = await _eventScheduleStaffMemberService
 			.CreateAsync(eventScheduleStaffMember);
 		return Ok(id);
 	}
 
-	[HttpDelete("eventschedule/{eventScheduleStaffMemberId:guid}")]
+	[HttpDelete("eventSchedule/{eventScheduleStaffMemberId:guid}")]
 	public async Task<ActionResult> UnassignStaffMemberFromEvent(
 		Guid companyId,
 		Guid eventScheduleStaffMemberId)
@@ -221,33 +221,5 @@ public class StaffMemberController : ControllerBase
 
 		await _eventScheduleStaffMemberService.DeleteAsync(companyId, eventScheduleStaffMemberId);
 		return NoContent();
-	}
-
-	[HttpPost("assign")]
-	public async Task<ActionResult<StaffMemberCompanyResponse>> AssignToCompany([FromBody] StaffMemberCompanyRequest request)
-	{
-		StaffMemberCompany staffCompany = _mapper.Map<StaffMemberCompany>(request);
-		bool result = await _staffMemberService.AssignToCompanyAsync(staffCompany.StaffMemberId, staffCompany.CompanyId);
-		if (!result)
-			return BadRequest("Could not assign staff member to company.");
-		StaffMemberCompanyResponse response = _mapper.Map<StaffMemberCompanyResponse>(staffCompany);
-		return Ok(response);
-	}
-
-	[HttpDelete("unassign")]
-	public async Task<ActionResult> UnassignFromCompany([FromBody] StaffMemberCompanyRequest request)
-	{
-		bool result = await _staffMemberService.UnassignFromCompanyAsync(request.StaffMemberId, request.CompanyId);
-		if (!result)
-			return BadRequest("Could not unassign staff member from company.");
-		return NoContent();
-	}
-
-	[HttpGet("{staffMemberId:guid}/companies")]
-	public async Task<ActionResult<List<StaffMemberCompanyResponse>>> GetAssignedCompany(Guid staffMemberId)
-	{
-		List<StaffMemberCompany> staffCompanies = await _staffMemberService.GetAssignedCompanyAsync(staffMemberId);
-		List<StaffMemberCompanyResponse> response = _mapper.Map<List<StaffMemberCompanyResponse>>(staffCompanies);
-		return Ok(response);
 	}
 }

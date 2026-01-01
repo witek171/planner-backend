@@ -28,8 +28,11 @@ public class EventScheduleService : IEventScheduleService
 		Guid staffMemberId)
 		=> await _eventScheduleRepository.GetByStaffMemberIdAsync(companyId, staffMemberId);
 
-	public async Task<List<EventSchedule>> GetAllAsync(Guid companyId)
-		=> await _eventScheduleRepository.GetAllAsync(companyId);
+	public async Task<(List<EventSchedule> Items, int TotalCount)> GetAllAsync(
+		Guid companyId,
+		int page,
+		int pageSize)
+		=> await _eventScheduleRepository.GetPagedWithCountAsync(companyId, page, pageSize);
 
 	public async Task<EventSchedule?> GetByIdAsync(
 		Guid id,
