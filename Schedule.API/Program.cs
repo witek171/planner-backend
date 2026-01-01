@@ -6,14 +6,17 @@ using Schedule.Application.Interfaces.Services;
 using Schedule.Application.Interfaces.Utils;
 using Schedule.Application.Interfaces.Validators;
 using Schedule.Application.Services;
-using Schedule.Infrastructure.Extensions;
 using Schedule.Infrastructure.Repositories;
 using Schedule.Infrastructure.Services;
 using Schedule.Infrastructure.Utils;
 using Schedule.Infrastructure.Validators;
 using System.Security.Cryptography;
+using Schedule.Infrastructure.Extensions;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+
+// Flag used only in CI and for static swagger.json generation
+bool isSwaggerGen = Environment.GetEnvironmentVariable("SWAGGER_GENERATION") == "true";
 
 // ============ SERVICES ============
 
@@ -25,6 +28,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
 	c.SwaggerDoc("v1", new OpenApiInfo { Title = "Planner API", Version = "v1" });
+
 	c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
 	{
 		Description = "Enter the token in the format: {token}",
@@ -51,62 +55,69 @@ builder.Services.AddSwaggerGen(c =>
 	});
 });
 
-// Authentication
-RSA rsa = RSA.Create();
-string publicKeyContent = LoadPublicKey();
-rsa.ImportFromPem(publicKeyContent);
+// Authentication / Authorization
+if (!isSwaggerGen)
+{
+	RSA rsa = RSA.Create();
+	string publicKeyContent = LoadPublicKey();
+	rsa.ImportFromPem(publicKeyContent);
 
-builder.Services.AddAuthentication("Bearer")
-	.AddJwtBearer(options =>
-	{
-		options.TokenValidationParameters = new TokenValidationParameters
+	builder.Services.AddAuthentication("Bearer")
+		.AddJwtBearer(options =>
 		{
-			ValidateIssuer = true,
-			ValidIssuer = EnvironmentService.JwtIssuer,
-			ValidateAudience = true,
-			ValidAudience = EnvironmentService.JwtAudience,
-			ValidateLifetime = true,
-			ValidateIssuerSigningKey = true,
-			IssuerSigningKey = new RsaSecurityKey(rsa)
-		};
-	});
+			options.TokenValidationParameters = new TokenValidationParameters
+			{
+				ValidateIssuer = true,
+				ValidIssuer = EnvironmentService.JwtIssuer,
+				ValidateAudience = true,
+				ValidAudience = EnvironmentService.JwtAudience,
+				ValidateLifetime = true,
+				ValidateIssuerSigningKey = true,
+				IssuerSigningKey = new RsaSecurityKey(rsa)
+			};
+		});
+}
+else
+{
+	builder.Services.AddAuthentication();
+}
 
 builder.Services.AddAuthorization();
 
 // Repositories
-string connectionString = EnvironmentService.SqlConnectionString;
 builder.Services.AddScoped<IParticipantRepository>(_ =>
-	new ParticipantRepository(connectionString));
+	new ParticipantRepository(EnvironmentService.SqlConnectionString));
 builder.Services.AddScoped<IStaffMemberRepository>(_ =>
-	new StaffMemberRepository(connectionString));
+	new StaffMemberRepository(EnvironmentService.SqlConnectionString));
 builder.Services.AddScoped<IStaffMemberSpecializationRepository>(_ =>
-	new StaffMemberSpecializationRepository(connectionString));
+	new StaffMemberSpecializationRepository(EnvironmentService.SqlConnectionString));
 builder.Services.AddScoped<IStaffMemberAvailabilityRepository>(_ =>
-	new StaffMemberAvailabilityRepository(connectionString));
+	new StaffMemberAvailabilityRepository(EnvironmentService.SqlConnectionString));
 builder.Services.AddScoped<IEventScheduleRepository>(_ =>
-	new EventScheduleRepository(connectionString));
+	new EventScheduleRepository(EnvironmentService.SqlConnectionString));
 builder.Services.AddScoped<IEventScheduleStaffMemberRepository>(_ =>
-	new EventScheduleStaffMemberRepository(connectionString));
+	new EventScheduleStaffMemberRepository(EnvironmentService.SqlConnectionString));
 builder.Services.AddScoped<ISpecializationRepository>(_ =>
-	new SpecializationRepository(connectionString));
+	new SpecializationRepository(EnvironmentService.SqlConnectionString));
 builder.Services.AddScoped<ICompanyRepository>(_ =>
-	new CompanyRepository(connectionString));
+	new CompanyRepository(EnvironmentService.SqlConnectionString));
 builder.Services.AddScoped<IEventTypeRepository>(_ =>
-	new EventTypeRepository(connectionString));
+	new EventTypeRepository(EnvironmentService.SqlConnectionString));
 builder.Services.AddScoped<IReservationRepository>(_ =>
-	new ReservationRepository(connectionString));
+	new ReservationRepository(EnvironmentService.SqlConnectionString));
 builder.Services.AddScoped<IReservationParticipantRepository>(_ =>
-	new ReservationParticipantRepository(connectionString));
+	new ReservationParticipantRepository(EnvironmentService.SqlConnectionString));
 builder.Services.AddScoped<ICompanyConfigRepository>(_ =>
-	new CompanyConfigRepository(connectionString));
+	new CompanyConfigRepository(EnvironmentService.SqlConnectionString));
 
 // Services
 builder.Services.AddScoped<IHealthCheckService>(provider =>
 {
 	IHealthCheckUtils healthCheckUtils = provider.GetRequiredService<IHealthCheckUtils>();
 	ILogger<HealthCheckService> logger = provider.GetRequiredService<ILogger<HealthCheckService>>();
-	return new HealthCheckService(healthCheckUtils, logger, connectionString);
+	return new HealthCheckService(healthCheckUtils, logger, EnvironmentService.SqlConnectionString);
 });
+
 builder.Services.AddScoped<IParticipantService, ParticipantService>();
 builder.Services.AddScoped<IStaffMemberService, StaffMemberService>();
 builder.Services.AddScoped<IStaffMemberSpecializationService, StaffMemberSpecializationService>();
@@ -159,7 +170,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors("AllowFrontend");
-app.UseAuthentication();
+
+if (!isSwaggerGen)
+	app.UseAuthentication();
+
 app.UseAuthorization();
 
 app.MapGet("/", () => Results.Redirect("/swagger"))
@@ -191,4 +205,8 @@ static string LoadPublicKey()
 
 	throw new FileNotFoundException(
 		"Public key not found! Please check whether the keys have been generated.");
+}
+
+public partial class Program
+{
 }
