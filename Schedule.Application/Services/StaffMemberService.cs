@@ -87,7 +87,7 @@ public class StaffMemberService : IStaffMemberService
 		return await _staffMemberRepository.UnassignFromCompanyAsync(staffMemberId, companyId);
 	}
 
-	public async Task<List<StaffMemberCompany>> GetAssignedCompanyAsync(Guid staffMemberId)
+	public async Task<List<Company>> GetAssignedCompanyAsync(Guid staffMemberId)
 	{
 		return await _staffMemberRepository.GetAssignedCompanyAsync(staffMemberId);
 	}

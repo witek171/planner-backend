@@ -26,15 +26,15 @@ public class StaffMemberCompanyController : ControllerBase
 	}
 
 	[HttpGet("companies")]
-	public async Task<ActionResult<List<StaffMemberCompanyResponse>>> GetAssignedCompanies()
+	public async Task<ActionResult<List<CompanyResponse>>> GetAssignedCompanies()
 	{
 		string? staffMemberIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		if (staffMemberIdClaim == null || !Guid.TryParse(staffMemberIdClaim, out Guid currentStaffMemberId))
 			return Unauthorized();
 
-		List<StaffMemberCompany> staffMemberCompanies = await _staffMemberService
+		List<Company> staffMemberCompanies = await _staffMemberService
 			.GetAssignedCompanyAsync(currentStaffMemberId);
-		List<StaffMemberCompanyResponse> response = _mapper.Map<List<StaffMemberCompanyResponse>>(staffMemberCompanies);
+		List<CompanyResponse> response = _mapper.Map<List<CompanyResponse>>(staffMemberCompanies);
 		return Ok(response);
 	}
 
