@@ -5,7 +5,7 @@ A universal backend API designed for reservation systems, staff management, and 
 ---
 ## About The Project
 
-**This project provides a comprehensive and flexible backend solution designed to power scheduling and management applications for a wide variety of service-based businesses. Its universal architecture makes it suitable for organizations like:**
+This project provides a comprehensive and flexible backend solution designed to power scheduling and management applications for a wide variety of service-based businesses. Its universal architecture makes it suitable for organizations like:
 
 - Sports clubs: managing class schedules, booking courts or facilities, and assigning trainers.
 
@@ -15,7 +15,7 @@ A universal backend API designed for reservation systems, staff management, and 
 
 - Any business that relies on managing appointments, staff availability, and client reservations.
 
-**The API is built to handle complex relationships between companies (or locations), staff members, available services (events), and clients (participants), providing a robust foundation for a custom-tailored front-end application.**
+The API is built to handle complex relationships between companies (or locations), staff members, available services (events), and clients (participants), providing a robust foundation for a custom-tailored front-end application.
 
 ---
 ## Features
@@ -92,11 +92,11 @@ The system currently supports the following core functionalities:
 </p>
 
 ---
-## How to run locally
+## How To Run Locally
 
 ### Prerequisites:
 
- - [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed and running
+ - [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed and running.
 
 ### Quick Start:
 
