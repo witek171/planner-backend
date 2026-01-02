@@ -48,8 +48,6 @@ public class MappingProfile : Profile
 		CreateMap<ReservationCreateRequest, Reservation>();
 		CreateMap<ReservationUpdateRequest, Reservation>();
 
-		CreateMap<StaffMemberCompany, StaffMemberCompanyResponse>();
-
 		CreateMap<UpdateCompanyBreakTimesRequest, CompanyConfig>();
 	}
 }
