@@ -29,9 +29,9 @@ public class CompanyAccessAttribute : ActionFilterAttribute
 			return;
 		}
 
-		List<StaffMemberCompany> userCompanies = await staffMemberService
+		List<Company> userCompanies = await staffMemberService
 			.GetAssignedCompanyAsync(currentUserId);
-		if (!userCompanies.Any(sc => sc.CompanyId == companyId))
+		if (!userCompanies.Any(sc => sc.Id == companyId))
 		{
 			context.Result = new ForbidResult();
 			return;

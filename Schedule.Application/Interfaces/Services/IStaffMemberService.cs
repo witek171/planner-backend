@@ -27,5 +27,5 @@ public interface IStaffMemberService
 
 	Task<Guid> AssignToCompanyAsync(Guid staffMemberId, Guid companyId);
 	Task<bool> UnassignFromCompanyAsync(Guid staffMemberId, Guid companyId);
-	Task<List<StaffMemberCompany>> GetAssignedCompanyAsync(Guid staffMemberId);
+	Task<List<Company>> GetAssignedCompanyAsync(Guid staffMemberId);
 }

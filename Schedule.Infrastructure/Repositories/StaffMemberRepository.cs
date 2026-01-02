@@ -466,26 +466,27 @@ public class StaffMemberRepository : IStaffMemberRepository
 		return rowsAffected > 0;
 	}
 
-	public async Task<List<StaffMemberCompany>> GetAssignedCompanyAsync(Guid staffMemberId)
+	public async Task<List<Company>> GetAssignedCompanyAsync(Guid staffMemberId)
 	{
-		const string sql =
-			@"SELECT Id, StaffMemberId, CompanyId, CreatedAt FROM StaffMemberCompanies WHERE StaffMemberId = @StaffMemberId";
-		using SqlConnection connection = new SqlConnection(_connectionString);
-		await connection.OpenAsync();
-		using SqlCommand command = new SqlCommand(sql, connection);
-		command.Parameters.AddWithValue("@StaffMemberId", staffMemberId);
-		using SqlDataReader reader = await command.ExecuteReaderAsync();
-		List<StaffMemberCompany> staffCompanies = new List<StaffMemberCompany>();
-		while (await reader.ReadAsync())
-		{
-			StaffMemberCompany staffCompany = new StaffMemberCompany(
-				reader.GetGuid(reader.GetOrdinal("Id")),
-				reader.GetGuid(reader.GetOrdinal("StaffMemberId")),
-				reader.GetGuid(reader.GetOrdinal("CompanyId")),
-				reader.GetDateTime(reader.GetOrdinal("CreatedAt")));
-			staffCompanies.Add(staffCompany);
-		}
+		const string sql = @"
+			SELECT DISTINCT 
+				c.Id, c.Name, c.TaxCode, c.Street, c.City, c.PostalCode,
+				c.Phone, c.Email, c.IsParentNode, c.IsReception, c.CreatedAt
+			FROM Companies c
+			INNER JOIN StaffMemberCompanies smc ON c.Id = smc.CompanyId
+			WHERE smc.StaffMemberId = @StaffMemberId";
 
-		return staffCompanies;
+		List<Company> companies = new();
+		await using SqlConnection connection = new(_connectionString);
+		await connection.OpenAsync();
+
+		await using SqlCommand command = new(sql, connection);
+		command.Parameters.AddWithValue("@StaffMemberId", staffMemberId);
+
+		await using SqlDataReader reader = await command.ExecuteReaderAsync();
+		while (await reader.ReadAsync())
+			companies.Add(DbMapper.MapCompany(reader));
+
+		return companies;
 	}
 }
