@@ -28,7 +28,7 @@ public class EventScheduleController : ControllerBase
 	}
 
 	[HttpGet]
-	public async Task<ActionResult<List<EventScheduleResponse>>> GetAll(
+	public async Task<ActionResult<PagedResponse<EventScheduleResponse>>> GetAll(
 		Guid companyId,
 		[FromQuery] PaginationRequest paginationRequest)
 	{
