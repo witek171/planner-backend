@@ -4,14 +4,14 @@ namespace Schedule.Contracts.Dtos.Responses;
 
 public class StaffMemberAvailabilityResponse
 {
+	[Required] public StaffMemberResponse StaffMember { get; }
+	[Required] public IReadOnlyList<AvailableSlotResponse> AvailableSlots { get; }
+
 	public StaffMemberAvailabilityResponse(
 		StaffMemberResponse staffMember,
-		List<AvailableSlotResponse> availableSlots)
+		IReadOnlyList<AvailableSlotResponse> availableSlots)
 	{
 		StaffMember = staffMember;
 		AvailableSlots = availableSlots;
 	}
-
-	[Required] public StaffMemberResponse StaffMember { get; }
-	[Required] public List<AvailableSlotResponse> AvailableSlots { get; }
 }

@@ -1,7 +1,9 @@
-﻿namespace Schedule.Contracts.Dtos.Requests;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Schedule.Contracts.Dtos.Requests;
 
 public class LoginRequest
 {
-	public string Email { get; set; } = default!;
-	public string Password { get; set; } = default!;
+	[Required, EmailAddress] public string Email { get; init; }
+	[Required] public string Password { get; init; }
 }

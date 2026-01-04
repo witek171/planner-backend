@@ -4,10 +4,5 @@ namespace Schedule.Contracts.Dtos.Requests;
 
 public class ReservationUpdateRequest
 {
-	[Required] public string Notes { get; }
-
-	public ReservationUpdateRequest(string notes)
-	{
-		Notes = notes;
-	}
+	[Required] public string Notes { get; init; }
 }
