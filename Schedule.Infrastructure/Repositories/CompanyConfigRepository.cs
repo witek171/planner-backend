@@ -60,7 +60,7 @@ public class CompanyConfigRepository : ICompanyConfigRepository
 
 		await using SqlCommand command = new(sql, connection);
 		command.Parameters.AddWithValue("@CompanyId", companyId);
-		SqlDataReader reader = await command.ExecuteReaderAsync();
+		await using SqlDataReader reader = await command.ExecuteReaderAsync();
 		if (await reader.ReadAsync())
 			return DbMapper.MapCompanyConfig(reader);
 

@@ -26,6 +26,6 @@ public class CompanyConfigService : ICompanyConfigService
 		await _companyConfigRepository.UpdateBreakTimesAsync(companyConfig);
 	}
 
-	public async Task<CompanyConfig> GetByIdAsync(Guid companyId)
-		=> (await _companyConfigRepository.GetByIdAsync(companyId))!;
+	public async Task<CompanyConfig?> GetByIdAsync(Guid companyId)
+		=> await _companyConfigRepository.GetByIdAsync(companyId);
 }
