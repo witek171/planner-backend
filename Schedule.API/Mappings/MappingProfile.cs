@@ -49,5 +49,6 @@ public class MappingProfile : Profile
 		CreateMap<ReservationUpdateRequest, Reservation>();
 
 		CreateMap<UpdateCompanyBreakTimesRequest, CompanyConfig>();
+		CreateMap<CompanyConfig, CompanyConfigResponse>();
 	}
 }

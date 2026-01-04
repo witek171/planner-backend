@@ -140,17 +140,28 @@ public class CompanyController : ControllerBase
 
 	[HttpPut("{companyId:guid}/breakTimes")]
 	[CompanyAccess]
-	public async Task<IActionResult> UpdateCompanyBreakTimes(
+	public async Task<ActionResult> UpdateCompanyBreakTimes(
 		Guid companyId,
 		[FromBody] UpdateCompanyBreakTimesRequest request)
 	{
-		Company? company = await _companyService.GetByIdAsync(companyId);
-		if (company == null)
+		CompanyConfig? companyConfig = await _companyConfigService.GetByIdAsync(companyId);
+		if (companyConfig == null)
 			return NotFound();
 
-		CompanyConfig companyConfig = await _companyConfigService.GetByIdAsync(companyId);
 		_mapper.Map(request, companyConfig);
 		await _companyConfigService.UpdateBreakTimesAsync(companyConfig);
 		return NoContent();
+	}
+
+	[HttpGet("{companyId:guid}/breakTimes")]
+	[CompanyAccess]
+	public async Task<ActionResult<CompanyConfigResponse>> GetCompanyBreakTimes(Guid companyId)
+	{
+		CompanyConfig? companyConfig = await _companyConfigService.GetByIdAsync(companyId);
+		if (companyConfig == null)
+			return NotFound();
+
+		CompanyConfigResponse response = _mapper.Map<CompanyConfigResponse>(companyConfig);
+		return Ok(response);
 	}
 }
