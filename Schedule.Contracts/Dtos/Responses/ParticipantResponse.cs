@@ -4,26 +4,10 @@ namespace Schedule.Contracts.Dtos.Responses;
 
 public class ParticipantResponse
 {
-	public ParticipantResponse(
-		Guid id,
-		string email,
-		string firstName,
-		string lastName,
-		string phone,
-		DateTime createdAt)
-	{
-		Id = id;
-		Email = email;
-		FirstName = firstName;
-		LastName = lastName;
-		Phone = phone;
-		CreatedAt = createdAt;
-	}
-
-	[Required] public Guid Id { get; }
-	[Required] public string Email { get; }
-	[Required] public string FirstName { get; }
-	[Required] public string LastName { get; }
-	[Required] public string Phone { get; }
-	[Required] public DateTime CreatedAt { get; }
+	[Required] public Guid Id { get; init; }
+	[Required, EmailAddress] public string Email { get; init; }
+	[Required] public string FirstName { get; init; }
+	[Required] public string LastName { get; init; }
+	[Required, Phone] public string Phone { get; init; }
+	[Required] public DateTime CreatedAt { get; init; }
 }

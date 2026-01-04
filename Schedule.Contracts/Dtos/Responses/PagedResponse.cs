@@ -1,16 +1,14 @@
-﻿namespace Schedule.Contracts.Dtos.Responses;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Schedule.Contracts.Dtos.Responses;
 
 public class PagedResponse<T>
 {
-	public List<T> Items { get; private set; } = new();
-	public int Page { get; }
-	public int PageSize { get; private set; }
-	public int TotalCount { get; private set; }
-	public int TotalPages { get; }
-
-	public PagedResponse()
-	{
-	}
+	[Required] public List<T> Items { get; }
+	[Required] public int Page { get; }
+	[Required] public int PageSize { get; }
+	[Required] public int TotalCount { get; }
+	[Required] public int TotalPages { get; }
 
 	public PagedResponse(
 		List<T> items,

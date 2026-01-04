@@ -4,14 +4,6 @@ namespace Schedule.Contracts.Dtos.Requests;
 
 public class EventScheduleStaffMemberRequest
 {
-	public EventScheduleStaffMemberRequest(
-		Guid eventScheduleId,
-		Guid staffMemberId)
-	{
-		EventScheduleId = eventScheduleId;
-		StaffMemberId = staffMemberId;
-	}
-
-	[Required] public Guid EventScheduleId { get; }
-	[Required] public Guid StaffMemberId { get; }
+	[Required] public Guid EventScheduleId { get; init; }
+	[Required] public Guid StaffMemberId { get; init; }
 }
