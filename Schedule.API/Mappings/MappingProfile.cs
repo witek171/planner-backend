@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Schedule.Application.ReadModels;
 using Schedule.Contracts.Dtos.Requests;
 using Schedule.Contracts.Dtos.Responses;
 using Schedule.Domain.Models;
@@ -50,5 +51,7 @@ public class MappingProfile : Profile
 
 		CreateMap<UpdateCompanyBreakTimesRequest, CompanyConfig>();
 		CreateMap<CompanyConfig, CompanyConfigResponse>();
+
+		CreateMap<StaffMemberCompanies, StaffMemberCompaniesResponse>();
 	}
 }

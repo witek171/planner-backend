@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Filters;
 using Schedule.Application.Interfaces.Services;
 using System.Security.Claims;
+using Schedule.Application.ReadModels;
 using Schedule.Domain.Models;
 
 namespace PlannerNet.Filters;
@@ -29,9 +30,9 @@ public class CompanyAccessAttribute : ActionFilterAttribute
 			return;
 		}
 
-		List<Company> userCompanies = await staffMemberService
+		StaffMemberCompanies userCompanies = await staffMemberService
 			.GetAssignedCompanyAsync(currentUserId);
-		if (!userCompanies.Any(sc => sc.Id == companyId))
+		if (!userCompanies.Companies.Any(sc => sc.Id == companyId))
 		{
 			context.Result = new ForbidResult();
 			return;

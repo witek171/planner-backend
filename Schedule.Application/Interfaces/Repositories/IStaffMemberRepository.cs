@@ -1,4 +1,5 @@
-﻿using Schedule.Domain.Models;
+﻿using Schedule.Application.ReadModels;
+using Schedule.Domain.Models;
 
 namespace Schedule.Application.Interfaces.Repositories;
 
@@ -49,5 +50,5 @@ public interface IStaffMemberRepository
 	Task<Guid> AssignToCompanyAsync(Guid staffMemberId, Guid companyId);
 	Task<bool> UnassignFromCompanyAsync(Guid staffMemberId, Guid companyId);
 
-	Task<List<Company>> GetAssignedCompanyAsync(Guid staffMemberId);
+	Task<StaffMemberCompanies> GetAssignedCompanyAsync(Guid staffMemberId);
 }

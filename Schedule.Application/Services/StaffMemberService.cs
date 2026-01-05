@@ -1,6 +1,7 @@
 ﻿using Schedule.Application.Interfaces.Repositories;
 using Schedule.Application.Interfaces.Services;
 using Schedule.Application.Interfaces.Utils;
+using Schedule.Application.ReadModels;
 using Schedule.Domain.Exceptions;
 using Schedule.Domain.Models;
 
@@ -87,10 +88,8 @@ public class StaffMemberService : IStaffMemberService
 		return await _staffMemberRepository.UnassignFromCompanyAsync(staffMemberId, companyId);
 	}
 
-	public async Task<List<Company>> GetAssignedCompanyAsync(Guid staffMemberId)
-	{
-		return await _staffMemberRepository.GetAssignedCompanyAsync(staffMemberId);
-	}
+	public async Task<StaffMemberCompanies> GetAssignedCompanyAsync(Guid staffMemberId)
+		=> await _staffMemberRepository.GetAssignedCompanyAsync(staffMemberId);
 
 	private async Task ValidateEmailAndPhoneAsync(
 		StaffMember staffMember,
