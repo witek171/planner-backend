@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 using Schedule.Application.Interfaces.Repositories;
+using Schedule.Application.ReadModels;
 using Schedule.Domain.Models;
 using Schedule.Infrastructure.Utils;
 
@@ -466,17 +467,21 @@ public class StaffMemberRepository : IStaffMemberRepository
 		return rowsAffected > 0;
 	}
 
-	public async Task<List<Company>> GetAssignedCompanyAsync(Guid staffMemberId)
+	public async Task<StaffMemberCompanies> GetAssignedCompanyAsync(Guid staffMemberId)
 	{
 		const string sql = @"
-			SELECT DISTINCT 
+			SELECT 
+				s.Id as StaffMemberId, s.Role, s.Email, s.Password, s.FirstName, s.LastName, s.Phone, s.CreatedAt, s.IsDeleted
+			FROM Staff s
+			WHERE s.Id = @StaffMemberId AND s.IsDeleted = 0;
+
+			SELECT DISTINCT
 				c.Id, c.Name, c.TaxCode, c.Street, c.City, c.PostalCode,
 				c.Phone, c.Email, c.IsParentNode, c.IsReception, c.CreatedAt
 			FROM Companies c
 			INNER JOIN StaffMemberCompanies smc ON c.Id = smc.CompanyId
 			WHERE smc.StaffMemberId = @StaffMemberId";
 
-		List<Company> companies = new();
 		await using SqlConnection connection = new(_connectionString);
 		await connection.OpenAsync();
 
@@ -484,9 +489,14 @@ public class StaffMemberRepository : IStaffMemberRepository
 		command.Parameters.AddWithValue("@StaffMemberId", staffMemberId);
 
 		await using SqlDataReader reader = await command.ExecuteReaderAsync();
+		await reader.ReadAsync();
+		StaffMember staffMember = DbMapper.MapStaffMember(reader);
+
+		List<Company> companies = [];
+		await reader.NextResultAsync();
 		while (await reader.ReadAsync())
 			companies.Add(DbMapper.MapCompany(reader));
 
-		return companies;
+		return new StaffMemberCompanies(staffMember, companies);
 	}
 }

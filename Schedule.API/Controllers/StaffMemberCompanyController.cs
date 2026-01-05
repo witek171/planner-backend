@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PlannerNet.Filters;
 using Schedule.Application.Interfaces.Services;
+using Schedule.Application.ReadModels;
 using Schedule.Contracts.Dtos.Responses;
 using Schedule.Domain.Models;
 
@@ -26,15 +27,15 @@ public class StaffMemberCompanyController : ControllerBase
 	}
 
 	[HttpGet("companies")]
-	public async Task<ActionResult<List<CompanyResponse>>> GetAssignedCompanies()
+	public async Task<ActionResult<StaffMemberCompaniesResponse>> GetAssignedCompanies()
 	{
 		string? staffMemberIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 		if (staffMemberIdClaim == null || !Guid.TryParse(staffMemberIdClaim, out Guid currentStaffMemberId))
 			return Unauthorized();
 
-		List<Company> staffMemberCompanies = await _staffMemberService
+		StaffMemberCompanies staffMemberCompanies = await _staffMemberService
 			.GetAssignedCompanyAsync(currentStaffMemberId);
-		List<CompanyResponse> response = _mapper.Map<List<CompanyResponse>>(staffMemberCompanies);
+		StaffMemberCompaniesResponse response = _mapper.Map<StaffMemberCompaniesResponse>(staffMemberCompanies);
 		return Ok(response);
 	}
 
