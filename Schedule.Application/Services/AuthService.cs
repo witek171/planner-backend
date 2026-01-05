@@ -24,7 +24,9 @@ public class AuthService : IAuthService
 	// obecnie obsuluje tylko logowanie staff members bez participants
 	public async Task<string> LoginAsync(string email, string password)
 	{
-		StaffMember staffMember = (await _staffMemberService.GetByEmailAsync(email))!;
+		StaffMember? staffMember = await _staffMemberService.GetByEmailAsync(email);
+		if (staffMember == null)
+			throw new ArgumentException($"Staff member with email {email} not exist");
 
 		Boolean isPasswordValid = _passwordHasher.Verify(password, staffMember.Password);
 		if (!isPasswordValid)
