@@ -21,104 +21,18 @@ GO
 -- 1. Companies - dodanie firm (klubów sportowych)
 -- =============================================
 
--- SportFit Group
-DECLARE
-	@MainCompanyId UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Branch1Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Branch2Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Branch3Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Branch4Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Branch5Id UNIQUEIDENTIFIER = NEWID();
-
--- FitZone Network
-DECLARE
-	@FitZoneMainId UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@FitZone1Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@FitZone2Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@FitZone3Id UNIQUEIDENTIFIER = NEWID();
-
--- AquaFit Centers
-DECLARE
-	@AquaFitMainId UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@AquaFit1Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@AquaFit2Id UNIQUEIDENTIFIER = NEWID();
-
--- PowerGym Chain
-DECLARE
-	@PowerGymMainId UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@PowerGym1Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@PowerGym2Id UNIQUEIDENTIFIER = NEWID();
-
--- FlexYoga Studios
-DECLARE
-	@FlexYogaMainId UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@FlexYoga1Id UNIQUEIDENTIFIER = NEWID();
+DECLARE @MainCompanyId UNIQUEIDENTIFIER = NEWID();
+DECLARE @Branch1Id UNIQUEIDENTIFIER = NEWID();
+DECLARE @Branch2Id UNIQUEIDENTIFIER = NEWID();
 
 INSERT INTO Companies (Id, Name, TaxCode, Street, City, PostalCode, Phone, Email, IsParentNode, IsReception)
 VALUES
-	-- SportFit Group - firma główna (nie jest recepcją)
-	(@MainCompanyId, 'SportFit Group', 'PL1234567890', 'Sportowa 1', 'Warszawa', '00-001', '+48123456789',
-	 'contact@sportfitgroup.pl', 1, 0),
-	-- SportFit - recepcje (są recepcjami)
-	(@Branch1Id, 'SportFit Centrum', 'PL2345678901', 'Centralna 10', 'Warszawa', '00-002', '+48234567890',
-	 'centrum@sportfit.pl', 0, 1),
-	(@Branch2Id, 'SportFit Południe', 'PL3456789012', 'Południowa 20', 'Kraków', '30-001', '+48345678901',
-	 'poludnie@sportfit.pl', 0, 1),
-	(@Branch3Id, 'SportFit Północ', 'PL4567890123', 'Północna 30', 'Gdańsk', '80-001', '+48456789012',
-	 'polnoc@sportfit.pl', 0, 1),
-	(@Branch4Id, 'SportFit Wschód', 'PL5678901234', 'Wschodnia 40', 'Lublin', '20-001', '+48567890123',
-	 'wschod@sportfit.pl', 0, 1),
-	(@Branch5Id, 'SportFit Zachód', 'PL6789012345', 'Zachodnia 50', 'Wrocław', '50-001', '+48678901234',
-	 'zachod@sportfit.pl', 0, 1),
-
-	-- FitZone Network - firma główna (nie jest recepcją)
-	(@FitZoneMainId, 'FitZone Network', 'PL7890123456', 'Fitness 5', 'Warszawa', '02-001', '+48789012345',
-	 'contact@fitzonenetwork.pl', 1, 0),
-	-- FitZone - recepcje (są recepcjami)
-	(@FitZone1Id, 'FitZone Mokotów', 'PL8901234567', 'Mokotowska 15', 'Warszawa', '02-002', '+48890123456',
-	 'mokotow@fitzone.pl', 0, 1),
-	(@FitZone2Id, 'FitZone Katowice', 'PL9012345678', 'Śląska 25', 'Katowice', '40-001', '+48901234567',
-	 'katowice@fitzone.pl', 0, 1),
-	(@FitZone3Id, 'FitZone Poznań', 'PL0123456789', 'Wielkopolska 35', 'Poznań', '60-001', '+48012345678',
-	 'poznan@fitzone.pl', 0, 1),
-
-	-- AquaFit Centers - firma główna (nie jest recepcją)
-	(@AquaFitMainId, 'AquaFit Centers', 'PL1357924680', 'Wodna 8', 'Gdynia', '81-001', '+48135792468',
-	 'contact@aquafitcenters.pl', 1, 0),
-	-- AquaFit - recepcje (są recepcjami)
-	(@AquaFit1Id, 'AquaFit Marina', 'PL2468135790', 'Portowa 12', 'Gdynia', '81-002', '+48246813579',
-	 'marina@aquafit.pl', 0, 1),
-	(@AquaFit2Id, 'AquaFit Sopot', 'PL3579246801', 'Plażowa 7', 'Sopot', '81-700', '+48357924680', 'sopot@aquafit.pl',
-	 0, 1),
-
-	-- PowerGym Chain - firma główna (nie jest recepcją)
-	(@PowerGymMainId, 'PowerGym Chain', 'PL4680357912', 'Siłowa 3', 'Łódź', '90-001', '+48468035791',
-	 'contact@powergymchain.pl', 1, 0),
-	-- PowerGym - recepcje (są recepcjami)
-	(@PowerGym1Id, 'PowerGym Center', 'PL5791468023', 'Centralna 45', 'Łódź', '90-002', '+48579146802',
-	 'center@powergym.pl', 0, 1),
-	(@PowerGym2Id, 'PowerGym Bydgoszcz', 'PL6802579134', 'Kujawska 18', 'Bydgoszcz', '85-001', '+48680257913',
-	 'bydgoszcz@powergym.pl', 0, 1),
-
-	-- FlexYoga Studios - firma główna (nie jest recepcją)
-	(@FlexYogaMainId, 'FlexYoga Studios', 'PL7913680245', 'Relaksacyjna 22', 'Warszawa', '01-001', '+48791368024',
-	 'contact@flexyogastudios.pl', 1, 0),
-	-- FlexYoga - recepcja (jest recepcją))
-	(@FlexYoga1Id, 'FlexYoga Wilanów', 'PL8024791356', 'Spokójna 33', 'Warszawa', '02-958', '+48802479135',
-	 'wilanow@flexyoga.pl', 0, 1);
+    (@MainCompanyId, 'SportFit Group', 'PL1234567890', 'Sportowa 1', 'Warszawa', '00-001', '+48123456789',
+     'contact@sportfitgroup.pl', 1, 0),
+    (@Branch1Id, 'SportFit Centrum', 'PL2345678901', 'Centralna 10', 'Warszawa', '00-002', '+48234567890',
+     'centrum@sportfit.pl', 0, 1),
+    (@Branch2Id, 'SportFit Południe', 'PL3456789012', 'Południowa 20', 'Kraków', '30-001', '+48345678901',
+     'poludnie@sportfit.pl', 0, 1);
 
 -- =============================================
 -- 2. CompanyHierarchies - dodanie hierarchii firm
@@ -126,49 +40,29 @@ VALUES
 
 INSERT INTO CompanyHierarchies (CompanyId, ParentCompanyId)
 VALUES
-	-- SportFit - recepcje podległe firmie głównej
-	(@Branch1Id, @MainCompanyId),
-	(@Branch2Id, @MainCompanyId),
-	(@Branch3Id, @MainCompanyId),
-	(@Branch4Id, @MainCompanyId),
-	(@Branch5Id, @MainCompanyId),
-
-	-- FitZone - recepcje podległe firmie głównej
-	(@FitZone1Id, @FitZoneMainId),
-	(@FitZone2Id, @FitZoneMainId),
-	(@FitZone3Id, @FitZoneMainId),
-
-	-- AquaFit - recepcje podległe firmie głównej
-	(@AquaFit1Id, @AquaFitMainId),
-	(@AquaFit2Id, @AquaFitMainId),
-
-	-- PowerGym - recepcje podległe firmie głównej
-	(@PowerGym1Id, @PowerGymMainId),
-	(@PowerGym2Id, @PowerGymMainId),
-
-	-- FlexYoga - recepcja podległa firmie głównej
-	(@FlexYoga1Id, @FlexYogaMainId);
+    (@Branch1Id, @MainCompanyId),
+    (@Branch2Id, @MainCompanyId);
 
 -- =============================================
--- 3. Staff - personel
+--  CompanyConfigs
 -- =============================================
 
--- Pracownicy recepcji
+INSERT INTO CompanyConfigs (CompanyId, BreakTimeStaff, BreakTimeParticipants)
+VALUES
+    (@MainCompanyId, 0, 0),
+    (@Branch1Id, 0, 0),
+    (@Branch2Id, 0, 0);
+
+-- =============================================
+-- 3. Staff - 15 pracowników dla SportFit Centrum
+-- =============================================
+
+-- Pracownicy recepcji (3)
 DECLARE @StaffRec1Id UNIQUEIDENTIFIER = NEWID();
 DECLARE @StaffRec2Id UNIQUEIDENTIFIER = NEWID();
 DECLARE @StaffRec3Id UNIQUEIDENTIFIER = NEWID();
-DECLARE @StaffRec4Id UNIQUEIDENTIFIER = NEWID();
-DECLARE @StaffRec5Id UNIQUEIDENTIFIER = NEWID();
-DECLARE @StaffRec6Id UNIQUEIDENTIFIER = NEWID();
-DECLARE @StaffRec7Id UNIQUEIDENTIFIER = NEWID();
-DECLARE @StaffRec8Id UNIQUEIDENTIFIER = NEWID();
-DECLARE @StaffRec9Id UNIQUEIDENTIFIER = NEWID();
-DECLARE @StaffRec10Id UNIQUEIDENTIFIER = NEWID();
-DECLARE @StaffRec11Id UNIQUEIDENTIFIER = NEWID();
-DECLARE @StaffRec12Id UNIQUEIDENTIFIER = NEWID();
-DECLARE @StaffRec13Id UNIQUEIDENTIFIER = NEWID();
 
--- Trenerzy
+-- Trenerzy (10)
 DECLARE @Trainer1Id UNIQUEIDENTIFIER = NEWID();
 DECLARE @Trainer2Id UNIQUEIDENTIFIER = NEWID();
 DECLARE @Trainer3Id UNIQUEIDENTIFIER = NEWID();
@@ -179,382 +73,200 @@ DECLARE @Trainer7Id UNIQUEIDENTIFIER = NEWID();
 DECLARE @Trainer8Id UNIQUEIDENTIFIER = NEWID();
 DECLARE @Trainer9Id UNIQUEIDENTIFIER = NEWID();
 DECLARE @Trainer10Id UNIQUEIDENTIFIER = NEWID();
-DECLARE @Trainer11Id UNIQUEIDENTIFIER = NEWID();
-DECLARE @Trainer12Id UNIQUEIDENTIFIER = NEWID();
-DECLARE @Trainer13Id UNIQUEIDENTIFIER = NEWID();
-DECLARE @Trainer14Id UNIQUEIDENTIFIER = NEWID();
-DECLARE @Trainer15Id UNIQUEIDENTIFIER = NEWID();
-DECLARE @Trainer16Id UNIQUEIDENTIFIER = NEWID();
-DECLARE @Trainer17Id UNIQUEIDENTIFIER = NEWID();
-DECLARE @Trainer18Id UNIQUEIDENTIFIER = NEWID();
-DECLARE @Trainer19Id UNIQUEIDENTIFIER = NEWID();
-DECLARE @Trainer20Id UNIQUEIDENTIFIER = NEWID();
 
--- Managerowie
+-- Managerowie (2)
 DECLARE @Manager1Id UNIQUEIDENTIFIER = NEWID();
 DECLARE @Manager2Id UNIQUEIDENTIFIER = NEWID();
-DECLARE @Manager3Id UNIQUEIDENTIFIER = NEWID();
-DECLARE @Manager4Id UNIQUEIDENTIFIER = NEWID();
-DECLARE @Manager5Id UNIQUEIDENTIFIER = NEWID();
-DECLARE @Manager6Id UNIQUEIDENTIFIER = NEWID();
-DECLARE @Manager7Id UNIQUEIDENTIFIER = NEWID();
-DECLARE @Manager8Id UNIQUEIDENTIFIER = NEWID();
-DECLARE @Manager9Id UNIQUEIDENTIFIER = NEWID();
-DECLARE @Manager10Id UNIQUEIDENTIFIER = NEWID();
 
--- =============================================
--- CompanyConfig - konfiguracja dla firm
--- =============================================
-
-INSERT INTO CompanyConfigs (CompanyId, BreakTimeStaff, BreakTimeParticipants)
-VALUES
-	-- SportFit Group (firma główna + oddziały)
-	(@MainCompanyId, 15, 10),
-	(@Branch1Id, 10, 5),
-	(@Branch2Id, 12, 6),
-	(@Branch3Id, 10, 5),
-	(@Branch4Id, 15, 7),
-	(@Branch5Id, 10, 5),
-
-	-- FitZone Network (firma główna + oddziały)
-	(@FitZoneMainId, 20, 15),
-	(@FitZone1Id, 10, 5),
-	(@FitZone2Id, 12, 6),
-	(@FitZone3Id, 15, 8),
-
-	-- AquaFit Centers (firma główna + oddziały)
-	(@AquaFitMainId, 20, 10),
-	(@AquaFit1Id, 10, 5),
-	(@AquaFit2Id, 12, 6),
-
-	-- PowerGym Chain (firma główna + oddziały)
-	(@PowerGymMainId, 15, 10),
-	(@PowerGym1Id, 10, 5),
-	(@PowerGym2Id, 12, 6),
-
-	-- FlexYoga Studios (firma główna + oddział)
-	(@FlexYogaMainId, 15, 10),
-	(@FlexYoga1Id, 10, 5);
-
--- =============================================
--- Wstawiamy personel (bez CompanyId)
--- =============================================
 INSERT INTO Staff (Id, Role, Email, Password, FirstName, LastName, Phone)
 VALUES
-	-- Pracownicy recepcji
-	(@StaffRec1Id, 'ReceptionEmployee', 'kowalska@sportfit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Anna', 'Kowalska', '+48700100101'),
-	(@StaffRec2Id, 'ReceptionEmployee', 'nowak@sportfit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Barbara', 'Nowak', '+48700100102'),
-	(@StaffRec3Id, 'ReceptionEmployee', 'wisniewska@sportfit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Celina', 'Wiśniewska','+48700100103'),
-	(@StaffRec4Id, 'ReceptionEmployee', 'kaminska@sportfit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Diana', 'Kamińska', '+48700100104'),
-	(@StaffRec5Id, 'ReceptionEmployee', 'lewandowska@sportfit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Ewa', 'Lewandowska', '+48700100105'),
-	(@StaffRec6Id, 'ReceptionEmployee', 'zielinska@fitzone.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Fatima', 'Zielińska', '+48700100106'),
-	(@StaffRec7Id, 'ReceptionEmployee', 'szymanska@fitzone.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Gabriela', 'Szymańska', '+48700100107'),
-	(@StaffRec8Id, 'ReceptionEmployee', 'wojcik@fitzone.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Hanna', 'Wójcik', '+48700100108'),
-	(@StaffRec9Id, 'ReceptionEmployee', 'kowalczyk@aquafit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Irena', 'Kowalczyk', '+48700100109'),
-	(@StaffRec10Id, 'ReceptionEmployee', 'kozlowska@aquafit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Justyna', 'Kozłowska', '+48700100110'),
-	(@StaffRec11Id, 'ReceptionEmployee', 'jankowska@powergym.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Klara', 'Jankowska', '+48700100111'),
-	(@StaffRec12Id, 'ReceptionEmployee', 'zawadzka@powergym.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Laura', 'Zawadzka', '+48700100112'),
-	(@StaffRec13Id, 'ReceptionEmployee', 'mazur@flexyoga.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Monika', 'Mazur', '+48700100113'),
+    -- Pracownicy recepcji
+    (@StaffRec1Id, 'ReceptionEmployee', 'anna.kowalska@sportfit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Anna', 'Kowalska', '+48700100101'),
+    (@StaffRec2Id, 'ReceptionEmployee', 'barbara.nowak@sportfit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Barbara', 'Nowak', '+48700100102'),
+    (@StaffRec3Id, 'ReceptionEmployee', 'celina.wisniewski@sportfit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Celina', 'Wiśniewska', '+48700100103'),
 
-	-- Trenerzy
-	(@Trainer1Id, 'Trainer', 'malinowski@sportfit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Dariusz', 'Malinowski', '+48700200201'),
-	(@Trainer2Id, 'Trainer', 'jablonska@sportfit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Ewa', 'Jabłońska', '+48700200202'),
-	(@Trainer3Id, 'Trainer', 'kowalczyk@sportfit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Filip', 'Kowalczyk', '+48700200203'),
-	(@Trainer4Id, 'Trainer', 'lewandowska2@sportfit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Grażyna', 'Lewandowska', '+48700200204'),
-	(@Trainer5Id, 'Trainer', 'zielinski@sportfit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Henryk', 'Zieliński', '+48700200205'),
-	(@Trainer6Id, 'Trainer', 'szymanska2@sportfit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Iwona', 'Szymańska', '+48700200206'),
-	(@Trainer7Id, 'Trainer', 'borkowski@sportfit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Jacek', 'Borkowski', '+48700200207'),
-	(@Trainer8Id, 'Trainer', 'krawczyk@sportfit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Kinga', 'Krawczyk', '+48700200208'),
-	(@Trainer9Id, 'Trainer', 'nowicki@fitzone.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Łukasz', 'Nowicki', '+48700200209'),
-	(@Trainer10Id, 'Trainer', 'pawlak@fitzone.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Marta', 'Pawlak', '+48700200210'),
-	(@Trainer11Id, 'Trainer', 'michalski@fitzone.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Norbert', 'Michalski', '+48700200211'),
-	(@Trainer12Id, 'Trainer', 'olszewska@fitzone.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Oliwia', 'Olszewska', '+48700200212'),
-	(@Trainer13Id, 'Trainer', 'adamczyk@aquafit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Piotr', 'Adamczyk', '+48700200213'),
-	(@Trainer14Id, 'Trainer', 'rutkowska@aquafit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Renata', 'Rutkowska', '+48700200214'),
-	(@Trainer15Id, 'Trainer', 'sikora@aquafit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Sebastian', 'Sikora', '+48700200215'),
-	(@Trainer16Id, 'Trainer', 'baran@powergym.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Tomasz', 'Baran', '+48700200216'),
-	(@Trainer17Id, 'Trainer', 'urbanska@powergym.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Urszula', 'Urbańska', '+48700200217'),
-	(@Trainer18Id, 'Trainer', 'walczak@powergym.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Władysław', 'Walczak', '+48700200218'),
-	(@Trainer19Id, 'Trainer', 'zakrzewski@flexyoga.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Yolanda', 'Zakrzewska', '+48700200219'),
-	(@Trainer20Id, 'Trainer', 'adamski@flexyoga.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Zbigniew', 'Adamski', '+48700200220'),
+    -- Trenerzy (10)
+    (@Trainer1Id, 'Trainer', 'dariusz.malinowski@sportfit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Dariusz', 'Malinowski', '+48700200201'),
+    (@Trainer2Id, 'Trainer', 'ewa.jablonska@sportfit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Ewa', 'Jabłońska', '+48700200202'),
+    (@Trainer3Id, 'Trainer', 'filip.kowalczyk@sportfit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Filip', 'Kowalczyk', '+48700200203'),
+    (@Trainer4Id, 'Trainer', 'grazyna.lewandowska@sportfit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Grażyna', 'Lewandowska', '+48700200204'),
+    (@Trainer5Id, 'Trainer', 'henryk.wojcik@sportfit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Henryk', 'Wójcik', '+48700200205'),
+    (@Trainer6Id, 'Trainer', 'irena.kaminska@sportfit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Irena', 'Kamińska', '+48700200206'),
+    (@Trainer7Id, 'Trainer', 'jacek.zielinski@sportfit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Jacek', 'Zieliński', '+48700200207'),
+    (@Trainer8Id, 'Trainer', 'karolina.szymanska@sportfit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Karolina', 'Szymańska', '+48700200208'),
+    (@Trainer9Id, 'Trainer', 'lukasz.wozniak@sportfit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Łukasz', 'Woźniak', '+48700200209'),
+    (@Trainer10Id, 'Trainer', 'magdalena.dabrowski@sportfit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Magdalena', 'Dąbrowska', '+48700200210'),
 
-	-- Managerowie
-	(@Manager1Id, 'Manager', 'mazur.manager@sportfit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Janusz', 'Mazur', '+48700300301'),
-	(@Manager2Id, 'Manager', 'kaczmarek@sportfit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Kamila', 'Kaczmarek', '+48700300302'),
-	(@Manager3Id, 'Manager', 'grabowski@sportfit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Leszek', 'Grabowski', '+48700300303'),
-	(@Manager4Id, 'Manager', 'kowalski@sportfit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Marcin', 'Kowalski', '+48700300304'),
-	(@Manager5Id, 'Manager', 'nowakowska@sportfit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Nina', 'Nowakowska', '+48700300305'),
-	(@Manager6Id, 'Manager', 'pawlowski@fitzone.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Oscar', 'Pawłowski', '+48700300306'),
-	(@Manager7Id, 'Manager', 'piotrowska@fitzone.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Patrycja', 'Piotrowska', '+48700300307'),
-	(@Manager8Id, 'Manager', 'rybak@aquafit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Robert', 'Rybak', '+48700300308'),
-	(@Manager9Id, 'Manager', 'sokolowska@powergym.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Sylwia', 'Sokołowska', '+48700300309'),
-	(@Manager10Id, 'Manager', 'tomaszewski@flexyoga.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Tomasz', 'Tomaszewski', '+48700300310');
+    -- Managerowie
+    (@Manager1Id, 'Manager', 'test@t.pl', '$2a$11$ZI841z505rA0uEdujiQ7Eu4HTUkef9WsPv1HkTgidBazpBWLgvBaS', 'Janusz', 'Mazur', '+48700300301'),
+    (@Manager2Id, 'Manager', 'kamila.kaczmarek@sportfit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Kamila', 'Kaczmarek', '+48700300302');
 
--- =============================================
--- Powiązania Staff z Companies (wiele-do-wielu)
--- =============================================
+-- Powiązania Staff z Companies
 INSERT INTO StaffMemberCompanies (StaffMemberId, CompanyId)
 VALUES
-	-- Pracownicy recepcji
-	(@StaffRec1Id, @Branch1Id),
-	(@StaffRec2Id, @Branch2Id),
-	(@StaffRec3Id, @Branch3Id),
-	(@StaffRec4Id, @Branch4Id),
-	(@StaffRec5Id, @Branch5Id),
-	(@StaffRec6Id, @FitZone1Id),
-	(@StaffRec7Id, @FitZone2Id),
-	(@StaffRec8Id, @FitZone3Id),
-	(@StaffRec9Id, @AquaFit1Id),
-	(@StaffRec10Id, @AquaFit2Id),
-	(@StaffRec11Id, @PowerGym1Id),
-	(@StaffRec12Id, @PowerGym2Id),
-	(@StaffRec13Id, @FlexYoga1Id),
-
-	-- Trenerzy
-	(@Trainer1Id, @Branch1Id),
-	(@Trainer2Id, @Branch1Id),
-	(@Trainer3Id, @Branch2Id),
-	(@Trainer4Id, @Branch2Id),
-	(@Trainer5Id, @Branch3Id),
-	(@Trainer6Id, @Branch3Id),
-	(@Trainer7Id, @Branch4Id),
-	(@Trainer8Id, @Branch5Id),
-	(@Trainer9Id, @FitZone1Id),
-	(@Trainer10Id, @FitZone1Id),
-	(@Trainer11Id, @FitZone2Id),
-	(@Trainer12Id, @FitZone3Id),
-	(@Trainer13Id, @AquaFit1Id),
-	(@Trainer14Id, @AquaFit1Id),
-	(@Trainer15Id, @AquaFit2Id),
-	(@Trainer16Id, @PowerGym1Id),
-	(@Trainer17Id, @PowerGym1Id),
-	(@Trainer18Id, @PowerGym2Id),
-	(@Trainer19Id, @FlexYoga1Id),
-	(@Trainer20Id, @FlexYoga1Id),
-
-	-- Managerowie
-	(@Manager1Id, @Branch1Id),
-	(@Manager2Id, @Branch2Id),
-	(@Manager3Id, @Branch3Id),
-	(@Manager4Id, @Branch4Id),
-	(@Manager5Id, @Branch5Id),
-	(@Manager6Id, @FitZone1Id),
-	(@Manager7Id, @FitZone2Id),
-	(@Manager8Id, @AquaFit1Id),
-	(@Manager9Id, @PowerGym1Id),
-	(@Manager10Id, @FlexYoga1Id);
+    (@StaffRec1Id, @Branch1Id),
+    (@StaffRec2Id, @Branch1Id),
+    (@StaffRec3Id, @Branch1Id),
+    (@Trainer1Id, @Branch1Id),
+    (@Trainer2Id, @Branch1Id),
+    (@Trainer3Id, @Branch1Id),
+    (@Trainer4Id, @Branch1Id),
+    (@Trainer5Id, @Branch1Id),
+    (@Trainer6Id, @Branch1Id),
+    (@Trainer7Id, @Branch1Id),
+    (@Trainer8Id, @Branch1Id),
+    (@Trainer9Id, @Branch1Id),
+    (@Trainer10Id, @Branch1Id),
+    (@Manager1Id, @MainCompanyId),
+    (@Manager1Id, @Branch1Id),
+    (@Manager1Id, @Branch2Id),
+    (@Manager2Id, @Branch1Id);
 
 -- =============================================
--- 4. Participants - uczestnicy
+-- 4. Participants - 50 uczestników dla SportFit Centrum
 -- =============================================
 
-DECLARE
-	@Participant1Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Participant2Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Participant3Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Participant4Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Participant5Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Participant6Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Participant7Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Participant8Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Participant9Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Participant10Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Participant11Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Participant12Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Participant13Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Participant14Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Participant15Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Participant16Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Participant17Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Participant18Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Participant19Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Participant20Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Participant21Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Participant22Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Participant23Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Participant24Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Participant25Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Participant26Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Participant27Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Participant28Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Participant29Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Participant30Id UNIQUEIDENTIFIER = NEWID();
+DECLARE @P1 UNIQUEIDENTIFIER = NEWID();
+DECLARE @P2 UNIQUEIDENTIFIER = NEWID();
+DECLARE @P3 UNIQUEIDENTIFIER = NEWID();
+DECLARE @P4 UNIQUEIDENTIFIER = NEWID();
+DECLARE @P5 UNIQUEIDENTIFIER = NEWID();
+DECLARE @P6 UNIQUEIDENTIFIER = NEWID();
+DECLARE @P7 UNIQUEIDENTIFIER = NEWID();
+DECLARE @P8 UNIQUEIDENTIFIER = NEWID();
+DECLARE @P9 UNIQUEIDENTIFIER = NEWID();
+DECLARE @P10 UNIQUEIDENTIFIER = NEWID();
+DECLARE @P11 UNIQUEIDENTIFIER = NEWID();
+DECLARE @P12 UNIQUEIDENTIFIER = NEWID();
+DECLARE @P13 UNIQUEIDENTIFIER = NEWID();
+DECLARE @P14 UNIQUEIDENTIFIER = NEWID();
+DECLARE @P15 UNIQUEIDENTIFIER = NEWID();
+DECLARE @P16 UNIQUEIDENTIFIER = NEWID();
+DECLARE @P17 UNIQUEIDENTIFIER = NEWID();
+DECLARE @P18 UNIQUEIDENTIFIER = NEWID();
+DECLARE @P19 UNIQUEIDENTIFIER = NEWID();
+DECLARE @P20 UNIQUEIDENTIFIER = NEWID();
+DECLARE @P21 UNIQUEIDENTIFIER = NEWID();
+DECLARE @P22 UNIQUEIDENTIFIER = NEWID();
+DECLARE @P23 UNIQUEIDENTIFIER = NEWID();
+DECLARE @P24 UNIQUEIDENTIFIER = NEWID();
+DECLARE @P25 UNIQUEIDENTIFIER = NEWID();
+DECLARE @P26 UNIQUEIDENTIFIER = NEWID();
+DECLARE @P27 UNIQUEIDENTIFIER = NEWID();
+DECLARE @P28 UNIQUEIDENTIFIER = NEWID();
+DECLARE @P29 UNIQUEIDENTIFIER = NEWID();
+DECLARE @P30 UNIQUEIDENTIFIER = NEWID();
+DECLARE @P31 UNIQUEIDENTIFIER = NEWID();
+DECLARE @P32 UNIQUEIDENTIFIER = NEWID();
+DECLARE @P33 UNIQUEIDENTIFIER = NEWID();
+DECLARE @P34 UNIQUEIDENTIFIER = NEWID();
+DECLARE @P35 UNIQUEIDENTIFIER = NEWID();
+DECLARE @P36 UNIQUEIDENTIFIER = NEWID();
+DECLARE @P37 UNIQUEIDENTIFIER = NEWID();
+DECLARE @P38 UNIQUEIDENTIFIER = NEWID();
+DECLARE @P39 UNIQUEIDENTIFIER = NEWID();
+DECLARE @P40 UNIQUEIDENTIFIER = NEWID();
+DECLARE @P41 UNIQUEIDENTIFIER = NEWID();
+DECLARE @P42 UNIQUEIDENTIFIER = NEWID();
+DECLARE @P43 UNIQUEIDENTIFIER = NEWID();
+DECLARE @P44 UNIQUEIDENTIFIER = NEWID();
+DECLARE @P45 UNIQUEIDENTIFIER = NEWID();
+DECLARE @P46 UNIQUEIDENTIFIER = NEWID();
+DECLARE @P47 UNIQUEIDENTIFIER = NEWID();
+DECLARE @P48 UNIQUEIDENTIFIER = NEWID();
+DECLARE @P49 UNIQUEIDENTIFIER = NEWID();
+DECLARE @P50 UNIQUEIDENTIFIER = NEWID();
 
 INSERT INTO Participants (Id, CompanyId, Email, FirstName, LastName, Phone, GdprConsent)
 VALUES
-	-- Uczestnicy SportFit Centrum
-	(@Participant1Id, @Branch1Id, 'marek.adamski@email.com', 'Marek', 'Adamski', '+48800400401', 1),
-	(@Participant2Id, @Branch1Id, 'natalia.barska@gmail.com', 'Natalia', 'Barska', '+48800400402', 1),
-	(@Participant3Id, @Branch1Id, 'olgierd.cichocki@outlook.com', 'Olgierd', 'Cichocki', '+48800400403', 1),
-	(@Participant4Id, @Branch1Id, 'anna.dabrowska@yahoo.com', 'Anna', 'Dąbrowska', '+48800400404', 1),
-
-	-- Uczestnicy SportFit Południe
-	(@Participant5Id, @Branch2Id, 'patrycja.dabrowska@email.com', 'Patrycja', 'Dąbrowska', '+48800400405', 1),
-	(@Participant6Id, @Branch2Id, 'rafal.eski@gmail.com', 'Rafał', 'Eski', '+48800400406', 1),
-	(@Participant7Id, @Branch2Id, 'sylwia.frankowska@outlook.com', 'Sylwia', 'Frankowska', '+48800400407', 1),
-	(@Participant8Id, @Branch2Id, 'krzysztof.glowacki@yahoo.com', 'Krzysztof', 'Głowacki', '+48800400408', 1),
-
-	-- Uczestnicy SportFit Północ
-	(@Participant9Id, @Branch3Id, 'tomasz.gorski@email.com', 'Tomasz', 'Górski', '+48800400409', 1),
-	(@Participant10Id, @Branch3Id, 'urszula.horak@gmail.com', 'Urszula', 'Horak', '+48800400410', 1),
-	(@Participant11Id, @Branch3Id, 'wiktor.iwanski@outlook.com', 'Wiktor', 'Iwański', '+48800400411', 1),
-
-	-- Uczestnicy SportFit Wschód
-	(@Participant12Id, @Branch4Id, 'karolina.jaworska@email.com', 'Karolina', 'Jaworska', '+48800400412', 1),
-	(@Participant13Id, @Branch4Id, 'lukasz.kowalski@gmail.com', 'Łukasz', 'Kowalski', '+48800400413', 1),
-
-	-- Uczestnicy SportFit Zachód
-	(@Participant14Id, @Branch5Id, 'magdalena.lewicz@outlook.com', 'Magdalena', 'Lewicz', '+48800400414', 1),
-	(@Participant15Id, @Branch5Id, 'norbert.mazurek@yahoo.com', 'Norbert', 'Mazurek', '+48800400415', 1),
-
-	-- Uczestnicy FitZone Mokotów
-	(@Participant16Id, @FitZone1Id, 'oliwia.nowak@email.com', 'Oliwia', 'Nowak', '+48800400416', 1),
-	(@Participant17Id, @FitZone1Id, 'pawel.osinski@gmail.com', 'Paweł', 'Osiński', '+48800400417', 1),
-	(@Participant18Id, @FitZone1Id, 'renata.piotrkowska@outlook.com', 'Renata', 'Piotrkowska', '+48800400418', 1),
-
-	-- Uczestnicy FitZone Katowice
-	(@Participant19Id, @FitZone2Id, 'sebastian.rutkowski@email.com', 'Sebastian', 'Rutkowski', '+48800400419', 1),
-	(@Participant20Id, @FitZone2Id, 'tatiana.sikorska@gmail.com', 'Tatiana', 'Sikorska', '+48800400420', 1),
-
-	-- Uczestnicy FitZone Poznań
-	(@Participant21Id, @FitZone3Id, 'urszula.tomczak@outlook.com', 'Urszula', 'Tomczak', '+48800400421', 1),
-	(@Participant22Id, @FitZone3Id, 'viktor.wisniewski@yahoo.com', 'Viktor', 'Wiśniewski', '+48800400422', 1),
-
-	-- Uczestnicy AquaFit Marina
-	(@Participant23Id, @AquaFit1Id, 'wanda.zalewski@email.com', 'Wanda', 'Zalewski', '+48800400423', 1),
-	(@Participant24Id, @AquaFit1Id, 'xavier.adamczyk@gmail.com', 'Xavier', 'Adamczyk', '+48800400424', 1),
-
-	-- Uczestnicy AquaFit Sopot
-	(@Participant25Id, @AquaFit2Id, 'yvonne.bednarska@outlook.com', 'Yvonne', 'Bednarska', '+48800400425', 1),
-	(@Participant26Id, @AquaFit2Id, 'zbigniew.czarnecki@yahoo.com', 'Zbigniew', 'Czarnecki', '+48800400426', 1),
-
-	-- Uczestnicy PowerGym Center
-	(@Participant27Id, @PowerGym1Id, 'agata.dabek@email.com', 'Agata', 'Dąbek', '+48800400427', 1),
-	(@Participant28Id, @PowerGym1Id, 'bartosz.eliasz@gmail.com', 'Bartosz', 'Eliasz', '+48800400428', 1),
-
-	-- Uczestnicy PowerGym Bydgoszcz
-	(@Participant29Id, @PowerGym2Id, 'celina.filipiak@outlook.com', 'Celina', 'Filipiak', '+48800400429', 1),
-	(@Participant30Id, @PowerGym2Id, 'damian.gorzynski@yahoo.com', 'Damian', 'Górzyński', '+48800400430', 1);
+    (@P1, @Branch1Id, 'marek.adamski@email.com', 'Marek', 'Adamski', '+48800400401', 1),
+    (@P2, @Branch1Id, 'natalia.barska@gmail.com', 'Natalia', 'Barska', '+48800400402', 1),
+    (@P3, @Branch1Id, 'olgierd.cichocki@outlook.com', 'Olgierd', 'Cichocki', '+48800400403', 1),
+    (@P4, @Branch1Id, 'anna.dabrowska@yahoo.com', 'Anna', 'Dąbrowska', '+48800400404', 1),
+    (@P5, @Branch1Id, 'piotr.eliasz@email.com', 'Piotr', 'Eliasz', '+48800400405', 1),
+    (@P6, @Branch1Id, 'joanna.filipek@gmail.com', 'Joanna', 'Filipek', '+48800400406', 1),
+    (@P7, @Branch1Id, 'tomasz.grabowski@outlook.com', 'Tomasz', 'Grabowski', '+48800400407', 1),
+    (@P8, @Branch1Id, 'katarzyna.halicka@yahoo.com', 'Katarzyna', 'Halicka', '+48800400408', 1),
+    (@P9, @Branch1Id, 'michal.iwanski@email.com', 'Michał', 'Iwański', '+48800400409', 1),
+    (@P10, @Branch1Id, 'agnieszka.jasinska@gmail.com', 'Agnieszka', 'Jasińska', '+48800400410', 1),
+    (@P11, @Branch1Id, 'robert.krol@outlook.com', 'Robert', 'Król', '+48800400411', 1),
+    (@P12, @Branch1Id, 'monika.lewinska@yahoo.com', 'Monika', 'Lewińska', '+48800400412', 1),
+    (@P13, @Branch1Id, 'adam.majewski@email.com', 'Adam', 'Majewski', '+48800400413', 1),
+    (@P14, @Branch1Id, 'paula.nowakowska@gmail.com', 'Paula', 'Nowakowska', '+48800400414', 1),
+    (@P15, @Branch1Id, 'krzysztof.olszewski@outlook.com', 'Krzysztof', 'Olszewski', '+48800400415', 1),
+    (@P16, @Branch1Id, 'beata.pawlak@yahoo.com', 'Beata', 'Pawlak', '+48800400416', 1),
+    (@P17, @Branch1Id, 'marcin.rataj@email.com', 'Marcin', 'Rataj', '+48800400417', 1),
+    (@P18, @Branch1Id, 'ewa.sobczak@gmail.com', 'Ewa', 'Sobczak', '+48800400418', 1),
+    (@P19, @Branch1Id, 'jan.tomczak@outlook.com', 'Jan', 'Tomczak', '+48800400419', 1),
+    (@P20, @Branch1Id, 'zofia.urbaniak@yahoo.com', 'Zofia', 'Urbaniak', '+48800400420', 1),
+    (@P21, @Branch1Id, 'pawel.walczak@email.com', 'Paweł', 'Walczak', '+48800400421', 1),
+    (@P22, @Branch1Id, 'marta.zajac@gmail.com', 'Marta', 'Zając', '+48800400422', 1),
+    (@P23, @Branch1Id, 'grzegorz.adamczyk@outlook.com', 'Grzegorz', 'Adamczyk', '+48800400423', 1),
+    (@P24, @Branch1Id, 'aleksandra.bak@yahoo.com', 'Aleksandra', 'Bąk', '+48800400424', 1),
+    (@P25, @Branch1Id, 'wojciech.czajka@email.com', 'Wojciech', 'Czajka', '+48800400425', 1),
+    (@P26, @Branch1Id, 'dorota.dudek@gmail.com', 'Dorota', 'Dudek', '+48800400426', 1),
+    (@P27, @Branch1Id, 'rafal.gorski@outlook.com', 'Rafał', 'Górski', '+48800400427', 1),
+    (@P28, @Branch1Id, 'iwona.hajduk@yahoo.com', 'Iwona', 'Hajduk', '+48800400428', 1),
+    (@P29, @Branch1Id, 'stanislaw.janicki@email.com', 'Stanisław', 'Janicki', '+48800400429', 1),
+    (@P30, @Branch1Id, 'magdalena.kania@gmail.com', 'Magdalena', 'Kania', '+48800400430', 1),
+    (@P31, @Branch1Id, 'bartosz.lis@outlook.com', 'Bartosz', 'Lis', '+48800400431', 1),
+    (@P32, @Branch1Id, 'sylwia.mazurek@yahoo.com', 'Sylwia', 'Mazurek', '+48800400432', 1),
+    (@P33, @Branch1Id, 'andrzej.niedzielski@email.com', 'Andrzej', 'Niedzielski', '+48800400433', 1),
+    (@P34, @Branch1Id, 'renata.olejnik@gmail.com', 'Renata', 'Olejnik', '+48800400434', 1),
+    (@P35, @Branch1Id, 'kamil.piotrowski@outlook.com', 'Kamil', 'Piotrowski', '+48800400435', 1),
+    (@P36, @Branch1Id, 'justyna.rosa@yahoo.com', 'Justyna', 'Rosa', '+48800400436', 1),
+    (@P37, @Branch1Id, 'maciej.sikora@email.com', 'Maciej', 'Sikora', '+48800400437', 1),
+    (@P38, @Branch1Id, 'patrycja.turek@gmail.com', 'Patrycja', 'Turek', '+48800400438', 1),
+    (@P39, @Branch1Id, 'artur.urban@outlook.com', 'Artur', 'Urban', '+48800400439', 1),
+    (@P40, @Branch1Id, 'weronika.wilk@yahoo.com', 'Weronika', 'Wilk', '+48800400440', 1),
+    (@P41, @Branch1Id, 'damian.zawadzki@email.com', 'Damian', 'Zawadzki', '+48800400441', 1),
+    (@P42, @Branch1Id, 'aneta.blaszczyk@gmail.com', 'Aneta', 'Błaszczyk', '+48800400442', 1),
+    (@P43, @Branch1Id, 'sebastian.chmiel@outlook.com', 'Sebastian', 'Chmiel', '+48800400443', 1),
+    (@P44, @Branch1Id, 'nina.duda@yahoo.com', 'Nina', 'Duda', '+48800400444', 1),
+    (@P45, @Branch1Id, 'oskar.flis@email.com', 'Oskar', 'Flis', '+48800400445', 1),
+    (@P46, @Branch1Id, 'kinga.gajda@gmail.com', 'Kinga', 'Gajda', '+48800400446', 1),
+    (@P47, @Branch1Id, 'norbert.holda@outlook.com', 'Norbert', 'Hołda', '+48800400447', 1),
+    (@P48, @Branch1Id, 'oliwia.janik@yahoo.com', 'Oliwia', 'Janik', '+48800400448', 1),
+    (@P49, @Branch1Id, 'patryk.kowal@email.com', 'Patryk', 'Kowal', '+48800400449', 1),
+    (@P50, @Branch1Id, 'sandra.lis@gmail.com', 'Sandra', 'Lis', '+48800400450', 1);
 
 -- =============================================
--- 5. Specializations - specjalizacje
+-- 5. Specializations - 15 specjalizacji dla SportFit Centrum
 -- =============================================
 
-DECLARE
-	@Spec1Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Spec2Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Spec3Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Spec4Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Spec5Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Spec6Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Spec7Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Spec8Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Spec9Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Spec10Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Spec11Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Spec12Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Spec13Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Spec14Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Spec15Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Spec16Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Spec17Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Spec18Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Spec19Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Spec20Id UNIQUEIDENTIFIER = NEWID();
+DECLARE @Spec1Id UNIQUEIDENTIFIER = NEWID();
+DECLARE @Spec2Id UNIQUEIDENTIFIER = NEWID();
+DECLARE @Spec3Id UNIQUEIDENTIFIER = NEWID();
+DECLARE @Spec4Id UNIQUEIDENTIFIER = NEWID();
+DECLARE @Spec5Id UNIQUEIDENTIFIER = NEWID();
+DECLARE @Spec6Id UNIQUEIDENTIFIER = NEWID();
+DECLARE @Spec7Id UNIQUEIDENTIFIER = NEWID();
+DECLARE @Spec8Id UNIQUEIDENTIFIER = NEWID();
+DECLARE @Spec9Id UNIQUEIDENTIFIER = NEWID();
+DECLARE @Spec10Id UNIQUEIDENTIFIER = NEWID();
+DECLARE @Spec11Id UNIQUEIDENTIFIER = NEWID();
+DECLARE @Spec12Id UNIQUEIDENTIFIER = NEWID();
+DECLARE @Spec13Id UNIQUEIDENTIFIER = NEWID();
+DECLARE @Spec14Id UNIQUEIDENTIFIER = NEWID();
+DECLARE @Spec15Id UNIQUEIDENTIFIER = NEWID();
 
 INSERT INTO Specializations (Id, CompanyId, Name, Description)
 VALUES
-	-- SportFit Centrum
-	(@Spec1Id, @Branch1Id, 'Joga', 'Zajęcia jogi dla początkujących i zaawansowanych'),
-	(@Spec2Id, @Branch1Id, 'Trening siłowy', 'Zajęcia na siłowni z trenerem personalnym'),
-	(@Spec3Id, @Branch1Id, 'Pilates', 'Ćwiczenia wzmacniające i rozciągające'),
-
-	-- SportFit Południe
-	(@Spec4Id, @Branch2Id, 'Crossfit', 'Intensywny trening crossfit dla wszystkich poziomów'),
-	(@Spec5Id, @Branch2Id, 'Spinning', 'Zajęcia na rowerach stacjonarnych'),
-	(@Spec6Id, @Branch2Id, 'Zumba', 'Energiczne zajęcia taneczne'),
-
-	-- SportFit Północ
-	(@Spec7Id, @Branch3Id, 'Pływanie', 'Nauka pływania i doskonalenie techniki'),
-	(@Spec8Id, @Branch3Id, 'Aqua aerobik', 'Ćwiczenia w wodzie'),
-
-	-- SportFit Wschód
-	(@Spec9Id, @Branch4Id, 'Box', 'Trening bokserski dla różnych poziomów'),
-	(@Spec10Id, @Branch4Id, 'Kickboxing', 'Sztuki walki z elementami cardio'),
-
-	-- SportFit Zachód
-	(@Spec11Id, @Branch5Id, 'TRX', 'Trening funkcjonalny z linami TRX'),
-	(@Spec12Id, @Branch5Id, 'Stretching', 'Zajęcia rozciągające i relaksacyjne'),
-
-	-- FitZone Mokotów
-	(@Spec13Id, @FitZone1Id, 'HIIT', 'Trening interwałowy wysokiej intensywności'),
-	(@Spec14Id, @FitZone1Id, 'Body Pump', 'Zajęcia z ciężarkami do muzyki'),
-
-	-- FitZone Katowice
-	(@Spec15Id, @FitZone2Id, 'Tabata', 'Krótkie, intensywne treningi'),
-
-	-- FitZone Poznań
-	(@Spec16Id, @FitZone3Id, 'Functional Training', 'Trening funkcjonalny całego ciała'),
-
-	-- AquaFit Marina
-	(@Spec17Id, @AquaFit1Id, 'Pływanie sportowe', 'Zaawansowane techniki pływackie'),
-
-	-- AquaFit Sopot
-	(@Spec18Id, @AquaFit2Id, 'Aqua fitness', 'Kompleksowy trening w wodzie'),
-
-	-- PowerGym Center
-	(@Spec19Id, @PowerGym1Id, 'Powerlifting', 'Trening siłowy - martwy ciąg, przysiad, wyciskanie'),
-
-	-- FlexYoga Wilanów
-	(@Spec20Id, @FlexYoga1Id, 'Hatha Yoga', 'Klasyczna joga z naciskiem na pozycje');
+    (@Spec1Id, @Branch1Id, 'Joga Hatha', 'Klasyczna joga z naciskiem na pozycje i oddech'),
+    (@Spec2Id, @Branch1Id, 'Joga Vinyasa', 'Dynamiczna joga łącząca ruch z oddechem'),
+    (@Spec3Id, @Branch1Id, 'Pilates Mat', 'Ćwiczenia pilates na macie'),
+    (@Spec4Id, @Branch1Id, 'Pilates Reformer', 'Pilates z wykorzystaniem specjalistycznego sprzętu'),
+    (@Spec5Id, @Branch1Id, 'Trening Siłowy', 'Trening z ciężarami wolnymi'),
+    (@Spec6Id, @Branch1Id, 'Trening Funkcjonalny', 'Ćwiczenia poprawiające codzienną sprawność'),
+    (@Spec7Id, @Branch1Id, 'Crossfit', 'Intensywny trening crossfit'),
+    (@Spec8Id, @Branch1Id, 'HIIT', 'Trening interwałowy o wysokiej intensywności'),
+    (@Spec9Id, @Branch1Id, 'Spinning', 'Trening na rowerach stacjonarnych'),
+    (@Spec10Id, @Branch1Id, 'Zumba', 'Taniec fitness z elementami latin'),
+    (@Spec11Id, @Branch1Id, 'Stretching', 'Rozciąganie i mobilność'),
+    (@Spec12Id, @Branch1Id, 'Rehabilitacja Ruchowa', 'Ćwiczenia rehabilitacyjne'),
+    (@Spec13Id, @Branch1Id, 'Trening Personalny', 'Indywidualne sesje treningowe'),
+    (@Spec14Id, @Branch1Id, 'Kickboxing Fitness', 'Trening cardio z elementami sztuk walki'),
+    (@Spec15Id, @Branch1Id, 'TRX Suspension', 'Trening z wykorzystaniem taśm TRX');
 
 -- =============================================
 -- 6. StaffMemberSpecializations - przypisanie specjalizacji do trenerów
@@ -562,779 +274,458 @@ VALUES
 
 INSERT INTO StaffMemberSpecializations (Id, CompanyId, StaffMemberId, SpecializationId)
 VALUES
-	-- SportFit Centrum
-	(NEWID(), @Branch1Id, @Trainer1Id, @Spec1Id),
-	(NEWID(), @Branch1Id, @Trainer1Id, @Spec2Id),
-	(NEWID(), @Branch1Id, @Trainer2Id, @Spec2Id),
-	(NEWID(), @Branch1Id, @Trainer2Id, @Spec3Id),
+    -- Trainer 1 - Joga
+    (NEWID(), @Branch1Id, @Trainer1Id, @Spec1Id),
+    (NEWID(), @Branch1Id, @Trainer1Id, @Spec2Id),
+    (NEWID(), @Branch1Id, @Trainer1Id, @Spec11Id),
 
-	-- SportFit Południe
-	(NEWID(), @Branch2Id, @Trainer3Id, @Spec4Id),
-	(NEWID(), @Branch2Id, @Trainer3Id, @Spec6Id),
-	(NEWID(), @Branch2Id, @Trainer4Id, @Spec5Id),
-	(NEWID(), @Branch2Id, @Trainer4Id, @Spec6Id),
+    -- Trainer 2
+    (NEWID(), @Branch1Id, @Trainer2Id, @Spec3Id),
+    (NEWID(), @Branch1Id, @Trainer2Id, @Spec4Id),
+    (NEWID(), @Branch1Id, @Trainer2Id, @Spec5Id),
+    (NEWID(), @Branch1Id, @Trainer2Id, @Spec1Id),
+    (NEWID(), @Branch1Id, @Trainer2Id, @Spec2Id),
+    (NEWID(), @Branch1Id, @Trainer2Id, @Spec11Id),
+    (NEWID(), @Branch1Id, @Trainer2Id, @Spec6Id),
+    (NEWID(), @Branch1Id, @Trainer2Id, @Spec13Id),
+    (NEWID(), @Branch1Id, @Trainer2Id, @Spec14Id),
+    (NEWID(), @Branch1Id, @Trainer2Id, @Spec15Id),
+    (NEWID(), @Branch1Id, @Trainer2Id, @Spec10Id),
 
-	-- SportFit Północ
-	(NEWID(), @Branch3Id, @Trainer5Id, @Spec7Id),
-	(NEWID(), @Branch3Id, @Trainer5Id, @Spec8Id),
-	(NEWID(), @Branch3Id, @Trainer6Id, @Spec7Id),
+    -- Trainer 3 - Siłowy
+    (NEWID(), @Branch1Id, @Trainer3Id, @Spec5Id),
+    (NEWID(), @Branch1Id, @Trainer3Id, @Spec6Id),
+    (NEWID(), @Branch1Id, @Trainer3Id, @Spec13Id),
 
-	-- SportFit Wschód
-	(NEWID(), @Branch4Id, @Trainer7Id, @Spec9Id),
-	(NEWID(), @Branch4Id, @Trainer7Id, @Spec10Id),
+    -- Trainer 4 - Crossfit/HIIT
+    (NEWID(), @Branch1Id, @Trainer4Id, @Spec7Id),
+    (NEWID(), @Branch1Id, @Trainer4Id, @Spec8Id),
+    (NEWID(), @Branch1Id, @Trainer4Id, @Spec15Id),
 
-	-- SportFit Zachód
-	(NEWID(), @Branch5Id, @Trainer8Id, @Spec11Id),
-	(NEWID(), @Branch5Id, @Trainer8Id, @Spec12Id),
+    -- Trainer 5 - Cardio
+    (NEWID(), @Branch1Id, @Trainer5Id, @Spec9Id),
+    (NEWID(), @Branch1Id, @Trainer5Id, @Spec10Id),
 
-	-- FitZone Mokotów
-	(NEWID(), @FitZone1Id, @Trainer9Id, @Spec13Id),
-	(NEWID(), @FitZone1Id, @Trainer10Id, @Spec14Id),
-	(NEWID(), @FitZone1Id, @Trainer10Id, @Spec13Id),
+    -- Trainer 6 - Rehabilitacja
+    (NEWID(), @Branch1Id, @Trainer6Id, @Spec11Id),
+    (NEWID(), @Branch1Id, @Trainer6Id, @Spec12Id),
+    (NEWID(), @Branch1Id, @Trainer6Id, @Spec3Id),
 
-	-- FitZone Katowice
-	(NEWID(), @FitZone2Id, @Trainer11Id, @Spec15Id),
+    -- Trainer 7 - Siłowy/TRX
+    (NEWID(), @Branch1Id, @Trainer7Id, @Spec5Id),
+    (NEWID(), @Branch1Id, @Trainer7Id, @Spec15Id),
+    (NEWID(), @Branch1Id, @Trainer7Id, @Spec6Id),
 
-	-- FitZone Poznań
-	(NEWID(), @FitZone3Id, @Trainer12Id, @Spec16Id),
+    -- Trainer 8 - Joga/Pilates
+    (NEWID(), @Branch1Id, @Trainer8Id, @Spec1Id),
+    (NEWID(), @Branch1Id, @Trainer8Id, @Spec3Id),
+    (NEWID(), @Branch1Id, @Trainer8Id, @Spec11Id),
 
-	-- AquaFit Marina
-	(NEWID(), @AquaFit1Id, @Trainer13Id, @Spec17Id),
-	(NEWID(), @AquaFit1Id, @Trainer14Id, @Spec17Id),
+    -- Trainer 9 - Cardio/Kickboxing
+    (NEWID(), @Branch1Id, @Trainer9Id, @Spec9Id),
+    (NEWID(), @Branch1Id, @Trainer9Id, @Spec14Id),
+    (NEWID(), @Branch1Id, @Trainer9Id, @Spec8Id),
 
-	-- AquaFit Sopot
-	(NEWID(), @AquaFit2Id, @Trainer15Id, @Spec18Id),
-
-	-- PowerGym Center
-	(NEWID(), @PowerGym1Id, @Trainer16Id, @Spec19Id),
-	(NEWID(), @PowerGym1Id, @Trainer17Id, @Spec19Id),
-
-	-- PowerGym Bydgoszcz
-	(NEWID(), @PowerGym2Id, @Trainer18Id, @Spec19Id),
-
-	-- FlexYoga Wilanów
-	(NEWID(), @FlexYoga1Id, @Trainer19Id, @Spec20Id),
-	(NEWID(), @FlexYoga1Id, @Trainer20Id, @Spec20Id);
-
--- =============================================
--- 7. StaffMemberAvailabilities - dodanie dostępności personelu
--- =============================================
-
-INSERT INTO StaffMemberAvailabilities (Id, CompanyId, StaffMemberId, Date, StartTime, EndTime, IsAvailable)
-VALUES
-	-- Dostępność trenerów SportFit Centrum
-	(NEWID(), @Branch1Id, @Trainer1Id, '2025-07-28', '2025-07-28 08:00:00', '2025-07-28 16:00:00', 1),
-	(NEWID(), @Branch1Id, @Trainer1Id, '2025-07-29', '2025-07-29 08:00:00', '2025-07-29 16:00:00', 1),
-	(NEWID(), @Branch1Id, @Trainer1Id, '2025-07-30', '2025-07-30 08:00:00', '2025-07-30 16:00:00', 1),
-	(NEWID(), @Branch1Id, @Trainer1Id, '2025-07-31', '2025-07-31 10:00:00', '2025-07-31 18:00:00', 1),
-	(NEWID(), @Branch1Id, @Trainer1Id, '2025-08-01', '2025-08-01 08:00:00', '2025-08-01 16:00:00', 1),
-
-	(NEWID(), @Branch1Id, @Trainer2Id, '2025-07-28', '2025-07-28 10:00:00', '2025-07-28 18:00:00', 1),
-	(NEWID(), @Branch1Id, @Trainer2Id, '2025-07-29', '2025-07-29 10:00:00', '2025-07-29 18:00:00', 1),
-	(NEWID(), @Branch1Id, @Trainer2Id, '2025-07-30', '2025-07-30 10:00:00', '2025-07-30 18:00:00', 1),
-	(NEWID(), @Branch1Id, @Trainer2Id, '2025-07-31', '2025-07-31 12:00:00', '2025-07-31 20:00:00', 1),
-	(NEWID(), @Branch1Id, @Trainer2Id, '2025-08-01', '2025-08-01 10:00:00', '2025-08-01 18:00:00', 1),
-
-	-- Dostępność trenerów SportFit Południe
-	(NEWID(), @Branch2Id, @Trainer3Id, '2025-07-28', '2025-07-28 09:00:00', '2025-07-28 17:00:00', 1),
-	(NEWID(), @Branch2Id, @Trainer3Id, '2025-07-29', '2025-07-29 09:00:00', '2025-07-29 17:00:00', 1),
-	(NEWID(), @Branch2Id, @Trainer3Id, '2025-07-30', '2025-07-30 09:00:00', '2025-07-30 17:00:00', 1),
-	(NEWID(), @Branch2Id, @Trainer3Id, '2025-07-31', '2025-07-31 11:00:00', '2025-07-31 19:00:00', 1),
-	(NEWID(), @Branch2Id, @Trainer3Id, '2025-08-01', '2025-08-01 09:00:00', '2025-08-01 17:00:00', 1),
-
-	(NEWID(), @Branch2Id, @Trainer4Id, '2025-07-28', '2025-07-28 11:00:00', '2025-07-28 19:00:00', 1),
-	(NEWID(), @Branch2Id, @Trainer4Id, '2025-07-29', '2025-07-29 11:00:00', '2025-07-29 19:00:00', 1),
-	(NEWID(), @Branch2Id, @Trainer4Id, '2025-07-30', '2025-07-30 11:00:00', '2025-07-30 19:00:00', 1),
-	(NEWID(), @Branch2Id, @Trainer4Id, '2025-07-31', '2025-07-31 09:00:00', '2025-07-31 17:00:00', 1),
-	(NEWID(), @Branch2Id, @Trainer4Id, '2025-08-01', '2025-08-01 11:00:00', '2025-08-01 19:00:00', 1),
-
-	-- Dostępność trenerów SportFit Północ
-	(NEWID(), @Branch3Id, @Trainer5Id, '2025-07-28', '2025-07-28 07:00:00', '2025-07-28 15:00:00', 1),
-	(NEWID(), @Branch3Id, @Trainer5Id, '2025-07-29', '2025-07-29 07:00:00', '2025-07-29 15:00:00', 1),
-	(NEWID(), @Branch3Id, @Trainer5Id, '2025-07-30', '2025-07-30 07:00:00', '2025-07-30 15:00:00', 1),
-	(NEWID(), @Branch3Id, @Trainer5Id, '2025-07-31', '2025-07-31 08:00:00', '2025-07-31 16:00:00', 1),
-	(NEWID(), @Branch3Id, @Trainer5Id, '2025-08-01', '2025-08-01 07:00:00', '2025-08-01 15:00:00', 1),
-
-	(NEWID(), @Branch3Id, @Trainer6Id, '2025-07-28', '2025-07-28 13:00:00', '2025-07-28 21:00:00', 1),
-	(NEWID(), @Branch3Id, @Trainer6Id, '2025-07-29', '2025-07-29 13:00:00', '2025-07-29 21:00:00', 1),
-	(NEWID(), @Branch3Id, @Trainer6Id, '2025-07-30', '2025-07-30 13:00:00', '2025-07-30 21:00:00', 1),
-	(NEWID(), @Branch3Id, @Trainer6Id, '2025-07-31', '2025-07-31 15:00:00', '2025-07-31 21:00:00', 1),
-	(NEWID(), @Branch3Id, @Trainer6Id, '2025-08-01', '2025-08-01 13:00:00', '2025-08-01 21:00:00', 1),
-
-	-- Dostępność trenerów FitZone
-	(NEWID(), @FitZone1Id, @Trainer9Id, '2025-07-28', '2025-07-28 06:00:00', '2025-07-28 14:00:00', 1),
-	(NEWID(), @FitZone1Id, @Trainer9Id, '2025-07-29', '2025-07-29 06:00:00', '2025-07-29 14:00:00', 1),
-	(NEWID(), @FitZone1Id, @Trainer9Id, '2025-07-30', '2025-07-30 06:00:00', '2025-07-30 14:00:00', 1),
-
-	(NEWID(), @FitZone1Id, @Trainer10Id, '2025-07-28', '2025-07-28 14:00:00', '2025-07-28 22:00:00', 1),
-	(NEWID(), @FitZone1Id, @Trainer10Id, '2025-07-29', '2025-07-29 14:00:00', '2025-07-29 22:00:00', 1),
-	(NEWID(), @FitZone1Id, @Trainer10Id, '2025-07-30', '2025-07-30 14:00:00', '2025-07-30 22:00:00', 1),
-
-	-- Dostępność trenerów AquaFit
-	(NEWID(), @AquaFit1Id, @Trainer13Id, '2025-07-28', '2025-07-28 06:00:00', '2025-07-28 14:00:00', 1),
-	(NEWID(), @AquaFit1Id, @Trainer13Id, '2025-07-29', '2025-07-29 06:00:00', '2025-07-29 14:00:00', 1),
-	(NEWID(), @AquaFit1Id, @Trainer13Id, '2025-07-30', '2025-07-30 06:00:00', '2025-07-30 14:00:00', 1),
-
-	(NEWID(), @AquaFit1Id, @Trainer14Id, '2025-07-28', '2025-07-28 14:00:00', '2025-07-28 22:00:00', 1),
-	(NEWID(), @AquaFit1Id, @Trainer14Id, '2025-07-29', '2025-07-29 14:00:00', '2025-07-29 22:00:00', 1),
-	(NEWID(), @AquaFit1Id, @Trainer14Id, '2025-07-30', '2025-07-30 14:00:00', '2025-07-30 22:00:00', 1),
-
-	-- Dostępność trenerów PowerGym
-	(NEWID(), @PowerGym1Id, @Trainer16Id, '2025-07-28', '2025-07-28 05:00:00', '2025-07-28 13:00:00', 1),
-	(NEWID(), @PowerGym1Id, @Trainer16Id, '2025-07-29', '2025-07-29 05:00:00', '2025-07-29 13:00:00', 1),
-	(NEWID(), @PowerGym1Id, @Trainer16Id, '2025-07-30', '2025-07-30 05:00:00', '2025-07-30 13:00:00', 1),
-
-	(NEWID(), @PowerGym1Id, @Trainer17Id, '2025-07-28', '2025-07-28 13:00:00', '2025-07-28 21:00:00', 1),
-	(NEWID(), @PowerGym1Id, @Trainer17Id, '2025-07-29', '2025-07-29 13:00:00', '2025-07-29 21:00:00', 1),
-	(NEWID(), @PowerGym1Id, @Trainer17Id, '2025-07-30', '2025-07-30 13:00:00', '2025-07-30 21:00:00', 1),
-
-	-- Dostępność trenerów FlexYoga
-	(NEWID(), @FlexYoga1Id, @Trainer19Id, '2025-07-28', '2025-07-28 08:00:00', '2025-07-28 16:00:00', 1),
-	(NEWID(), @FlexYoga1Id, @Trainer19Id, '2025-07-29', '2025-07-29 08:00:00', '2025-07-29 16:00:00', 1),
-	(NEWID(), @FlexYoga1Id, @Trainer19Id, '2025-07-30', '2025-07-30 08:00:00', '2025-07-30 16:00:00', 1),
-
-	(NEWID(), @FlexYoga1Id, @Trainer20Id, '2025-07-28', '2025-07-28 16:00:00', '2025-07-28 22:00:00', 1),
-	(NEWID(), @FlexYoga1Id, @Trainer20Id, '2025-07-29', '2025-07-29 16:00:00', '2025-07-29 22:00:00', 1),
-	(NEWID(), @FlexYoga1Id, @Trainer20Id, '2025-07-30', '2025-07-30 16:00:00', '2025-07-30 22:00:00', 1);
+    -- Trainer 10 - Zumba/Taniec
+    (NEWID(), @Branch1Id, @Trainer10Id, @Spec10Id),
+    (NEWID(), @Branch1Id, @Trainer10Id, @Spec14Id),
+    (NEWID(), @Branch1Id, @Trainer10Id, @Spec11Id);
 
 -- =============================================
--- 8. EventTypes - dodanie typów wydarzeń 
+-- 7. StaffMemberAvailabilities - dostępność trenerów (styczeń-marzec 2026)
 -- =============================================
 
-DECLARE
-	@EventType1Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@EventType2Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@EventType3Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@EventType4Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@EventType5Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@EventType6Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@EventType7Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@EventType8Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@EventType9Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@EventType10Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@EventType11Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@EventType12Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@EventType13Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@EventType14Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@EventType15Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@EventType16Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@EventType17Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@EventType18Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@EventType19Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@EventType20Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@EventType21Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@EventType22Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@EventType23Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@EventType24Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@EventType25Id UNIQUEIDENTIFIER = NEWID();
+-- Generowanie dostępności dla wszystkich trenerów na 3 miesiące
+DECLARE @CurrentDate DATE = '2026-01-01';
+DECLARE @EndDate DATE = '2026-03-31';
+
+WHILE @CurrentDate <= @EndDate
+BEGIN
+    -- Pomijamy niedziele (DATEPART(dw, @CurrentDate) = 1 w systemie z niedzielą jako 1)
+    IF DATEPART(dw, @CurrentDate) != 1
+    BEGIN
+        -- Trainer 1 - poniedziałek-piątek 8:00-16:00
+        IF DATEPART(dw, @CurrentDate) BETWEEN 2 AND 6
+            INSERT INTO StaffMemberAvailabilities (Id, CompanyId, StaffMemberId, Date, StartTime, EndTime, IsAvailable)
+            VALUES (NEWID(), @Branch1Id, @Trainer1Id, @CurrentDate,
+                    CAST(@CurrentDate AS DATETIME) + CAST('08:00:00' AS DATETIME),
+                    CAST(@CurrentDate AS DATETIME) + CAST('16:00:00' AS DATETIME), 1);
+
+        -- Trainer 2 - poniedziałek-piątek 10:00-18:00
+        IF DATEPART(dw, @CurrentDate) BETWEEN 2 AND 6
+            INSERT INTO StaffMemberAvailabilities (Id, CompanyId, StaffMemberId, Date, StartTime, EndTime, IsAvailable)
+            VALUES (NEWID(), @Branch1Id, @Trainer2Id, @CurrentDate,
+                    CAST(@CurrentDate AS DATETIME) + CAST('10:00:00' AS DATETIME),
+                    CAST(@CurrentDate AS DATETIME) + CAST('18:00:00' AS DATETIME), 1);
+
+        -- Trainer 3 - poniedziałek-sobota 12:00-20:00
+        IF DATEPART(dw, @CurrentDate) BETWEEN 2 AND 7
+            INSERT INTO StaffMemberAvailabilities (Id, CompanyId, StaffMemberId, Date, StartTime, EndTime, IsAvailable)
+            VALUES (NEWID(), @Branch1Id, @Trainer3Id, @CurrentDate,
+                    CAST(@CurrentDate AS DATETIME) + CAST('12:00:00' AS DATETIME),
+                    CAST(@CurrentDate AS DATETIME) + CAST('20:00:00' AS DATETIME), 1);
+
+        -- Trainer 4 - wtorek-sobota 7:00-15:00
+        IF DATEPART(dw, @CurrentDate) BETWEEN 3 AND 7
+            INSERT INTO StaffMemberAvailabilities (Id, CompanyId, StaffMemberId, Date, StartTime, EndTime, IsAvailable)
+            VALUES (NEWID(), @Branch1Id, @Trainer4Id, @CurrentDate,
+                    CAST(@CurrentDate AS DATETIME) + CAST('07:00:00' AS DATETIME),
+                    CAST(@CurrentDate AS DATETIME) + CAST('15:00:00' AS DATETIME), 1);
+
+        -- Trainer 5 - poniedziałek-piątek 6:00-14:00
+        IF DATEPART(dw, @CurrentDate) BETWEEN 2 AND 6
+            INSERT INTO StaffMemberAvailabilities (Id, CompanyId, StaffMemberId, Date, StartTime, EndTime, IsAvailable)
+            VALUES (NEWID(), @Branch1Id, @Trainer5Id, @CurrentDate,
+                    CAST(@CurrentDate AS DATETIME) + CAST('06:00:00' AS DATETIME),
+                    CAST(@CurrentDate AS DATETIME) + CAST('14:00:00' AS DATETIME), 1);
+
+        -- Trainer 6 - poniedziałek-piątek 9:00-17:00
+        IF DATEPART(dw, @CurrentDate) BETWEEN 2 AND 6
+            INSERT INTO StaffMemberAvailabilities (Id, CompanyId, StaffMemberId, Date, StartTime, EndTime, IsAvailable)
+            VALUES (NEWID(), @Branch1Id, @Trainer6Id, @CurrentDate,
+                    CAST(@CurrentDate AS DATETIME) + CAST('09:00:00' AS DATETIME),
+                    CAST(@CurrentDate AS DATETIME) + CAST('17:00:00' AS DATETIME), 1);
+
+        -- Trainer 7 - poniedziałek-sobota 14:00-22:00
+        IF DATEPART(dw, @CurrentDate) BETWEEN 2 AND 7
+            INSERT INTO StaffMemberAvailabilities (Id, CompanyId, StaffMemberId, Date, StartTime, EndTime, IsAvailable)
+            VALUES (NEWID(), @Branch1Id, @Trainer7Id, @CurrentDate,
+                    CAST(@CurrentDate AS DATETIME) + CAST('14:00:00' AS DATETIME),
+                    CAST(@CurrentDate AS DATETIME) + CAST('22:00:00' AS DATETIME), 1);
+
+        -- Trainer 8 - środa-sobota 8:00-16:00
+        IF DATEPART(dw, @CurrentDate) BETWEEN 4 AND 7
+            INSERT INTO StaffMemberAvailabilities (Id, CompanyId, StaffMemberId, Date, StartTime, EndTime, IsAvailable)
+            VALUES (NEWID(), @Branch1Id, @Trainer8Id, @CurrentDate,
+                    CAST(@CurrentDate AS DATETIME) + CAST('08:00:00' AS DATETIME),
+                    CAST(@CurrentDate AS DATETIME) + CAST('16:00:00' AS DATETIME), 1);
+
+        -- Trainer 9 - poniedziałek-piątek 16:00-22:00
+        IF DATEPART(dw, @CurrentDate) BETWEEN 2 AND 6
+            INSERT INTO StaffMemberAvailabilities (Id, CompanyId, StaffMemberId, Date, StartTime, EndTime, IsAvailable)
+            VALUES (NEWID(), @Branch1Id, @Trainer9Id, @CurrentDate,
+                    CAST(@CurrentDate AS DATETIME) + CAST('16:00:00' AS DATETIME),
+                    CAST(@CurrentDate AS DATETIME) + CAST('22:00:00' AS DATETIME), 1);
+
+        -- Trainer 10 - wtorek-sobota 10:00-18:00
+        IF DATEPART(dw, @CurrentDate) BETWEEN 3 AND 7
+            INSERT INTO StaffMemberAvailabilities (Id, CompanyId, StaffMemberId, Date, StartTime, EndTime, IsAvailable)
+            VALUES (NEWID(), @Branch1Id, @Trainer10Id, @CurrentDate,
+                    CAST(@CurrentDate AS DATETIME) + CAST('10:00:00' AS DATETIME),
+                    CAST(@CurrentDate AS DATETIME) + CAST('18:00:00' AS DATETIME), 1);
+    END
+
+    SET @CurrentDate = DATEADD(day, 1, @CurrentDate);
+END;
+
+-- =============================================
+-- 8. EventTypes - 15 typów wydarzeń dla SportFit Centrum
+-- =============================================
+
+DECLARE @ET1 UNIQUEIDENTIFIER = NEWID();
+DECLARE @ET2 UNIQUEIDENTIFIER = NEWID();
+DECLARE @ET3 UNIQUEIDENTIFIER = NEWID();
+DECLARE @ET4 UNIQUEIDENTIFIER = NEWID();
+DECLARE @ET5 UNIQUEIDENTIFIER = NEWID();
+DECLARE @ET6 UNIQUEIDENTIFIER = NEWID();
+DECLARE @ET7 UNIQUEIDENTIFIER = NEWID();
+DECLARE @ET8 UNIQUEIDENTIFIER = NEWID();
+DECLARE @ET9 UNIQUEIDENTIFIER = NEWID();
+DECLARE @ET10 UNIQUEIDENTIFIER = NEWID();
+DECLARE @ET11 UNIQUEIDENTIFIER = NEWID();
+DECLARE @ET12 UNIQUEIDENTIFIER = NEWID();
+DECLARE @ET13 UNIQUEIDENTIFIER = NEWID();
+DECLARE @ET14 UNIQUEIDENTIFIER = NEWID();
+DECLARE @ET15 UNIQUEIDENTIFIER = NEWID();
 
 INSERT INTO EventTypes (Id, CompanyId, Name, Description, Duration, Price, MaxParticipants, MinStaff)
 VALUES
-	-- SportFit Centrum
-	(@EventType1Id, @Branch1Id, 'Joga dla początkujących', 'Zajęcia jogi dla osób początkujących', 60, 50.00, 15, 1),
-	(@EventType2Id, @Branch1Id, 'Trening personalny', 'Indywidualne sesje z trenerem', 45, 120.00, 1, 1),
-	(@EventType3Id, @Branch1Id, 'Pilates grupowy', 'Zajęcia pilates w małej grupie', 50, 45.00, 12, 1),
-
-	-- SportFit Południe
-	(@EventType4Id, @Branch2Id, 'Crossfit grupowy', 'Intensywny trening crossfit w grupie', 60, 60.00, 12, 1),
-	(@EventType5Id, @Branch2Id, 'Spinning', 'Zajęcia na rowerach stacjonarnych', 45, 45.00, 20, 1),
-	(@EventType6Id, @Branch2Id, 'Zumba party', 'Energiczne zajęcia taneczne', 55, 40.00, 25, 1),
-
-	-- SportFit Północ
-	(@EventType7Id, @Branch3Id, 'Nauka pływania', 'Lekcje pływania dla różnych poziomów', 60, 80.00, 8, 1),
-	(@EventType8Id, @Branch3Id, 'Aqua aerobik', 'Ćwiczenia aerobowe w wodzie', 45, 55.00, 15, 1),
-
-	-- SportFit Wschód
-	(@EventType9Id, @Branch4Id, 'Trening bokserski', 'Podstawy boksu i trening kondycyjny', 60, 70.00, 10, 1),
-	(@EventType10Id, @Branch4Id, 'Kickboxing', 'Sztuki walki z elementami cardio', 55, 65.00, 12, 1),
-
-	-- SportFit Zachód
-	(@EventType11Id, @Branch5Id, 'TRX Functional', 'Trening funkcjonalny z linami TRX', 50, 55.00, 14, 1),
-	(@EventType12Id, @Branch5Id, 'Stretching & Relax', 'Zajęcia rozciągające i relaksacyjne', 45, 35.00, 20, 1),
-
-	-- FitZone Mokotów
-	(@EventType13Id, @FitZone1Id, 'HIIT Power', 'Trening interwałowy wysokiej intensywności', 45, 60.00, 16, 1),
-	(@EventType14Id, @FitZone1Id, 'Body Pump', 'Zajęcia z ciężarkami do muzyki', 55, 50.00, 18, 1),
-
-	-- FitZone Katowice
-	(@EventType15Id, @FitZone2Id, 'Tabata Express', 'Krótkie, intensywne treningi', 30, 40.00, 20, 1),
-
-	-- FitZone Poznań
-	(@EventType16Id, @FitZone3Id, 'Functional Training', 'Trening funkcjonalny całego ciała', 60, 55.00, 14, 1),
-
-	-- AquaFit Marina
-	(@EventType17Id, @AquaFit1Id, 'Pływanie sportowe', 'Zaawansowane techniki pływackie', 60, 90.00, 6, 1),
-	(@EventType18Id, @AquaFit1Id, 'Trening personalny pływanie', 'Indywidualne lekcje pływania', 45, 150.00, 1, 1),
-
-	-- AquaFit Sopot
-	(@EventType19Id, @AquaFit2Id, 'Aqua fitness', 'Kompleksowy trening w wodzie', 50, 60.00, 12, 1),
-	(@EventType20Id, @AquaFit2Id, 'Aqua jogging', 'Bieganie w wodzie', 40, 45.00, 15, 1),
-
-	-- PowerGym Center
-	(@EventType21Id, @PowerGym1Id, 'Powerlifting', 'Trening siłowy - martwy ciąg, przysiad, wyciskanie', 90, 80.00, 8,
-	 1),
-	(@EventType22Id, @PowerGym1Id, 'Strongman training', 'Trening siłaczy', 75, 75.00, 10, 1),
-
-	-- PowerGym Bydgoszcz
-	(@EventType23Id, @PowerGym2Id, 'Bodybuilding', 'Trening na masę mięśniową', 75, 70.00, 12, 1),
-
-	-- FlexYoga Wilanów
-	(@EventType24Id, @FlexYoga1Id, 'Hatha Yoga', 'Klasyczna joga z naciskiem na pozycje', 75, 60.00, 16, 1),
-	(@EventType25Id, @FlexYoga1Id, 'Yoga Nidra', 'Joga relaksacyjna i medytacyjna', 60, 55.00, 20, 1);
+    (@ET1, @Branch1Id, 'Joga Poranna', 'Poranne zajęcia jogi na dobry początek dnia', 60, 45.00, 20, 1),
+    (@ET2, @Branch1Id, 'Joga Wieczorna', 'Relaksacyjna joga na zakończenie dnia', 75, 50.00, 18, 1),
+    (@ET3, @Branch1Id, 'Pilates Podstawy', 'Pilates dla początkujących', 50, 55.00, 15, 1),
+    (@ET4, @Branch1Id, 'Pilates Zaawansowany', 'Pilates dla osób zaawansowanych', 60, 65.00, 12, 1),
+    (@ET5, @Branch1Id, 'Trening Siłowy Grupowy', 'Trening siłowy w grupie', 60, 40.00, 16, 1),
+    (@ET6, @Branch1Id, 'Trening Personalny', 'Indywidualna sesja z trenerem', 45, 150.00, 1, 1),
+    (@ET7, @Branch1Id, 'Crossfit WOD', 'Workout of the Day - crossfit', 60, 55.00, 14, 1),
+    (@ET8, @Branch1Id, 'HIIT Express', 'Krótki intensywny trening interwałowy', 30, 35.00, 20, 1),
+    (@ET9, @Branch1Id, 'Spinning Classic', 'Klasyczne zajęcia spinning', 45, 40.00, 25, 1),
+    (@ET10, @Branch1Id, 'Zumba Party', 'Energetyczna zumba', 55, 35.00, 30, 1),
+    (@ET11, @Branch1Id, 'Stretching & Relax', 'Rozciąganie i relaksacja', 45, 30.00, 20, 1),
+    (@ET12, @Branch1Id, 'Rehabilitacja Grupowa', 'Ćwiczenia rehabilitacyjne w grupie', 60, 70.00, 10, 1),
+    (@ET13, @Branch1Id, 'Kickboxing Fitness', 'Cardio kickboxing', 55, 45.00, 18, 1),
+    (@ET14, @Branch1Id, 'TRX Training', 'Trening na taśmach TRX', 45, 50.00, 12, 1),
+    (@ET15, @Branch1Id, 'Functional Training', 'Trening funkcjonalny', 50, 45.00, 14, 1);
 
 -- =============================================
--- 9. EventSchedules - dodanie harmonogramu wydarzeń 
+-- 9. EventSchedules - 150 wydarzeń (styczeń-marzec 2026)
 -- =============================================
 
-DECLARE
-	@Event1Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Event2Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Event3Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Event4Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Event5Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Event6Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Event7Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Event8Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Event9Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Event10Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Event11Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Event12Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Event13Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Event14Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Event15Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Event16Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Event17Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Event18Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Event19Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Event20Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Event21Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Event22Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Event23Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Event24Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Event25Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Event26Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Event27Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Event28Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Event29Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Event30Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Event31Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Event32Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Event33Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Event34Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Event35Id UNIQUEIDENTIFIER = NEWID();
+-- Tabela tymczasowa do przechowywania ID wydarzeń
+CREATE TABLE #EventIds (
+    EventId UNIQUEIDENTIFIER,
+    EventNumber INT
+);
 
-INSERT INTO EventSchedules (Id, CompanyId, EventTypeId, PlaceName, StartTime, Status)
-VALUES
-	-- Wydarzenia SportFit Centrum
-	(@Event1Id, @Branch1Id, @EventType1Id, 'Sala Fitness 1', '2025-07-28 10:00:00', 'Active'),
-	(@Event2Id, @Branch1Id, @EventType2Id, 'Sala Treningowa 2', '2025-07-29 14:00:00', 'Active'),
-	(@Event3Id, @Branch1Id, @EventType3Id, 'Sala Pilates', '2025-07-30 18:00:00', 'Active'),
-	(@Event4Id, @Branch1Id, @EventType1Id, 'Sala Fitness 1', '2025-07-31 09:00:00', 'Active'),
-	(@Event5Id, @Branch1Id, @EventType2Id, 'Sala Treningowa 2', '2025-08-01 15:00:00', 'Active'),
+-- Generowanie 150 wydarzeń
+DECLARE @EventCounter INT = 1;
+DECLARE @EventDate DATE;
+DECLARE @EventTypeId UNIQUEIDENTIFIER;
+DECLARE @TrainerId UNIQUEIDENTIFIER;
+DECLARE @StartHour INT;
+DECLARE @PlaceName NVARCHAR(100);
+DECLARE @NewEventId UNIQUEIDENTIFIER;
 
-	-- Wydarzenia SportFit Południe
-	(@Event6Id, @Branch2Id, @EventType4Id, 'Sala Crossfit', '2025-07-28 18:00:00', 'Active'),
-	(@Event7Id, @Branch2Id, @EventType5Id, 'Sala Spinning', '2025-07-29 11:00:00', 'Active'),
-	(@Event8Id, @Branch2Id, @EventType6Id, 'Sala Taneczna', '2025-07-30 19:00:00', 'Active'),
-	(@Event9Id, @Branch2Id, @EventType4Id, 'Sala Crossfit', '2025-07-31 17:00:00', 'Active'),
-	(@Event10Id, @Branch2Id, @EventType5Id, 'Sala Spinning', '2025-08-01 12:00:00', 'Active'),
+WHILE @EventCounter <= 150
+BEGIN
+    -- Losowa data w styczniu-marcu 2026
+    SET @EventDate = DATEADD(day, ABS(CHECKSUM(NEWID())) % 90, '2026-01-01');
 
-	-- Wydarzenia SportFit Północ
-	(@Event11Id, @Branch3Id, @EventType7Id, 'Basen - tor 1-2', '2025-07-28 09:00:00', 'Active'),
-	(@Event12Id, @Branch3Id, @EventType8Id, 'Basen - cały', '2025-07-29 16:00:00', 'Active'),
-	(@Event13Id, @Branch3Id, @EventType7Id, 'Basen - tor 3-4', '2025-07-30 10:00:00', 'Active'),
-	(@Event14Id, @Branch3Id, @EventType8Id, 'Basen - cały', '2025-07-31 17:00:00', 'Active'),
-	(@Event15Id, @Branch3Id, @EventType7Id, 'Basen - tor 1-2', '2025-08-01 08:00:00', 'Active'),
+    -- Pomijamy niedziele
+    WHILE DATEPART(dw, @EventDate) = 1
+        SET @EventDate = DATEADD(day, 1, @EventDate);
 
-	-- Wydarzenia SportFit Wschód
-	(@Event16Id, @Branch4Id, @EventType9Id, 'Sala Bokserska', '2025-07-28 18:00:00', 'Active'),
-	(@Event17Id, @Branch4Id, @EventType10Id, 'Sala Kickboxing', '2025-07-29 19:00:00', 'Active'),
-	(@Event18Id, @Branch4Id, @EventType9Id, 'Sala Bokserska', '2025-07-30 17:00:00', 'Active'),
+    -- Losowy typ wydarzenia
+    SET @EventTypeId = CASE (ABS(CHECKSUM(NEWID())) % 15) + 1
+        WHEN 1 THEN @ET1 WHEN 2 THEN @ET2 WHEN 3 THEN @ET3 WHEN 4 THEN @ET4 WHEN 5 THEN @ET5
+        WHEN 6 THEN @ET6 WHEN 7 THEN @ET7 WHEN 8 THEN @ET8 WHEN 9 THEN @ET9 WHEN 10 THEN @ET10
+        WHEN 11 THEN @ET11 WHEN 12 THEN @ET12 WHEN 13 THEN @ET13 WHEN 14 THEN @ET14 ELSE @ET15
+    END;
 
-	-- Wydarzenia SportFit Zachód
-	(@Event19Id, @Branch5Id, @EventType11Id, 'Sala TRX', '2025-07-28 17:00:00', 'Active'),
-	(@Event20Id, @Branch5Id, @EventType12Id, 'Sala Relaks', '2025-07-29 20:00:00', 'Active'),
-	(@Event21Id, @Branch5Id, @EventType11Id, 'Sala TRX', '2025-07-30 16:00:00', 'Active'),
+    -- Losowy trener (odpowiedni do typu)
+    SET @TrainerId = CASE (ABS(CHECKSUM(NEWID())) % 10) + 1
+        WHEN 1 THEN @Trainer1Id WHEN 2 THEN @Trainer2Id WHEN 3 THEN @Trainer3Id WHEN 4 THEN @Trainer4Id
+        WHEN 5 THEN @Trainer5Id WHEN 6 THEN @Trainer6Id WHEN 7 THEN @Trainer7Id WHEN 8 THEN @Trainer8Id
+        WHEN 9 THEN @Trainer9Id ELSE @Trainer10Id
+    END;
 
-	-- Wydarzenia FitZone Mokotów
-	(@Event22Id, @FitZone1Id, @EventType13Id, 'Sala HIIT', '2025-07-28 07:00:00', 'Active'),
-	(@Event23Id, @FitZone1Id, @EventType14Id, 'Sala Body Pump', '2025-07-29 19:00:00', 'Active'),
-	(@Event24Id, @FitZone1Id, @EventType13Id, 'Sala HIIT', '2025-07-30 08:00:00', 'Active'),
-	(@Event25Id, @FitZone2Id, @EventType15Id, 'Sala Express', '2025-07-28 12:00:00', 'Active'),
-	(@Event26Id, @FitZone2Id, @EventType15Id, 'Sala Express', '2025-07-29 18:00:00', 'Active'),
+    -- Losowa godzina (7-20)
+    SET @StartHour = 7 + (ABS(CHECKSUM(NEWID())) % 14);
 
-	-- Wydarzenia FitZone Poznań
-	(@Event27Id, @FitZone3Id, @EventType16Id, 'Sala Funkcjonalna', '2025-07-28 16:00:00', 'Active'),
-	(@Event28Id, @FitZone3Id, @EventType16Id, 'Sala Funkcjonalna', '2025-07-30 17:00:00', 'Active'),
+    -- Losowa sala
+    SET @PlaceName = CASE (ABS(CHECKSUM(NEWID())) % 8) + 1
+        WHEN 1 THEN 'Sala Fitness A'
+        WHEN 2 THEN 'Sala Fitness B'
+        WHEN 3 THEN 'Sala Jogi'
+        WHEN 4 THEN 'Sala Pilates'
+        WHEN 5 THEN 'Sala Spinning'
+        WHEN 6 THEN 'Sala Crossfit'
+        WHEN 7 THEN 'Sala Taneczna'
+        ELSE 'Sala Treningowa'
+    END;
 
-	-- Wydarzenia AquaFit Marina
-	(@Event29Id, @AquaFit1Id, @EventType17Id, 'Basen olimpijski - tor 1-3', '2025-07-28 07:00:00', 'Active'),
-	(@Event30Id, @AquaFit1Id, @EventType18Id, 'Basen olimpijski - tor 4', '2025-07-29 15:00:00', 'Active'),
-	(@Event31Id, @AquaFit1Id, @EventType17Id, 'Basen olimpijski - tor 1-3', '2025-07-30 08:00:00', 'Active'),
+    SET @NewEventId = NEWID();
 
-	-- Wydarzenia AquaFit Sopot
-	(@Event32Id, @AquaFit2Id, @EventType19Id, 'Basen rekreacyjny', '2025-07-28 16:00:00', 'Active'),
-	(@Event33Id, @AquaFit2Id, @EventType20Id, 'Basen sportowy', '2025-07-29 17:00:00', 'Active'),
+    INSERT INTO EventSchedules (Id, CompanyId, EventTypeId, PlaceName, StartTime, Status)
+    VALUES (@NewEventId, @Branch1Id, @EventTypeId, @PlaceName,
+            DATEADD(hour, @StartHour, CAST(@EventDate AS DATETIME)), 'Active');
 
-	-- Wydarzenia PowerGym Center
-	(@Event34Id, @PowerGym1Id, @EventType21Id, 'Sala Powerlifting', '2025-07-28 06:00:00', 'Active'),
-	(@Event35Id, @PowerGym1Id, @EventType22Id, 'Sala Strongman', '2025-07-29 20:00:00', 'Active');
+    -- Zapisz ID wydarzenia
+    INSERT INTO #EventIds (EventId, EventNumber) VALUES (@NewEventId, @EventCounter);
+
+    -- Przypisz trenera do wydarzenia
+    INSERT INTO EventScheduleStaff (Id, CompanyId, EventScheduleId, StaffMemberId)
+    VALUES (NEWID(), @Branch1Id, @NewEventId, @TrainerId);
+
+    SET @EventCounter = @EventCounter + 1;
+END;
 
 -- =============================================
--- 10. EventScheduleStaff - przypisanie personelu do wydarzeń 
+-- 10. Reservations - 15 rezerwacji z wieloma uczestnikami
 -- =============================================
 
-INSERT INTO EventScheduleStaff (Id, CompanyId, EventScheduleId, StaffMemberId)
-VALUES
-	-- Przypisanie trenerów SportFit Centrum
-	(NEWID(), @Branch1Id, @Event1Id, @Trainer1Id),
-	(NEWID(), @Branch1Id, @Event2Id, @Trainer2Id),
-	(NEWID(), @Branch1Id, @Event3Id, @Trainer2Id),
-	(NEWID(), @Branch1Id, @Event4Id, @Trainer1Id),
-	(NEWID(), @Branch1Id, @Event5Id, @Trainer2Id),
+DECLARE @R1 UNIQUEIDENTIFIER = NEWID();
+DECLARE @R2 UNIQUEIDENTIFIER = NEWID();
+DECLARE @R3 UNIQUEIDENTIFIER = NEWID();
+DECLARE @R4 UNIQUEIDENTIFIER = NEWID();
+DECLARE @R5 UNIQUEIDENTIFIER = NEWID();
+DECLARE @R6 UNIQUEIDENTIFIER = NEWID();
+DECLARE @R7 UNIQUEIDENTIFIER = NEWID();
+DECLARE @R8 UNIQUEIDENTIFIER = NEWID();
+DECLARE @R9 UNIQUEIDENTIFIER = NEWID();
+DECLARE @R10 UNIQUEIDENTIFIER = NEWID();
+DECLARE @R11 UNIQUEIDENTIFIER = NEWID();
+DECLARE @R12 UNIQUEIDENTIFIER = NEWID();
+DECLARE @R13 UNIQUEIDENTIFIER = NEWID();
+DECLARE @R14 UNIQUEIDENTIFIER = NEWID();
+DECLARE @R15 UNIQUEIDENTIFIER = NEWID();
 
-	-- Przypisanie trenerów SportFit Południe
-	(NEWID(), @Branch2Id, @Event6Id, @Trainer3Id),
-	(NEWID(), @Branch2Id, @Event7Id, @Trainer4Id),
-	(NEWID(), @Branch2Id, @Event8Id, @Trainer3Id),
-	(NEWID(), @Branch2Id, @Event9Id, @Trainer3Id),
-	(NEWID(), @Branch2Id, @Event10Id, @Trainer4Id),
+-- Pobierz ID wydarzeń dla rezerwacji
+DECLARE @E1 UNIQUEIDENTIFIER, @E2 UNIQUEIDENTIFIER, @E3 UNIQUEIDENTIFIER, @E4 UNIQUEIDENTIFIER, @E5 UNIQUEIDENTIFIER;
+DECLARE @E6 UNIQUEIDENTIFIER, @E7 UNIQUEIDENTIFIER, @E8 UNIQUEIDENTIFIER, @E9 UNIQUEIDENTIFIER, @E10 UNIQUEIDENTIFIER;
+DECLARE @E11 UNIQUEIDENTIFIER, @E12 UNIQUEIDENTIFIER, @E13 UNIQUEIDENTIFIER, @E14 UNIQUEIDENTIFIER, @E15 UNIQUEIDENTIFIER;
 
-	-- Przypisanie trenerów SportFit Północ
-	(NEWID(), @Branch3Id, @Event11Id, @Trainer5Id),
-	(NEWID(), @Branch3Id, @Event12Id, @Trainer5Id),
-	(NEWID(), @Branch3Id, @Event13Id, @Trainer6Id),
-	(NEWID(), @Branch3Id, @Event14Id, @Trainer5Id),
-	(NEWID(), @Branch3Id, @Event15Id, @Trainer6Id),
+SELECT @E1 = EventId FROM #EventIds WHERE EventNumber = 1;
+SELECT @E2 = EventId FROM #EventIds WHERE EventNumber = 5;
+SELECT @E3 = EventId FROM #EventIds WHERE EventNumber = 10;
+SELECT @E4 = EventId FROM #EventIds WHERE EventNumber = 15;
+SELECT @E5 = EventId FROM #EventIds WHERE EventNumber = 20;
+SELECT @E6 = EventId FROM #EventIds WHERE EventNumber = 30;
+SELECT @E7 = EventId FROM #EventIds WHERE EventNumber = 40;
+SELECT @E8 = EventId FROM #EventIds WHERE EventNumber = 50;
+SELECT @E9 = EventId FROM #EventIds WHERE EventNumber = 60;
+SELECT @E10 = EventId FROM #EventIds WHERE EventNumber = 70;
+SELECT @E11 = EventId FROM #EventIds WHERE EventNumber = 80;
+SELECT @E12 = EventId FROM #EventIds WHERE EventNumber = 90;
+SELECT @E13 = EventId FROM #EventIds WHERE EventNumber = 100;
+SELECT @E14 = EventId FROM #EventIds WHERE EventNumber = 120;
+SELECT @E15 = EventId FROM #EventIds WHERE EventNumber = 140;
 
-	-- Przypisanie trenerów SportFit Wschód
-	(NEWID(), @Branch4Id, @Event16Id, @Trainer7Id),
-	(NEWID(), @Branch4Id, @Event17Id, @Trainer7Id),
-	(NEWID(), @Branch4Id, @Event18Id, @Trainer7Id),
-
-	-- Przypisanie trenerów SportFit Zachód
-	(NEWID(), @Branch5Id, @Event19Id, @Trainer8Id),
-	(NEWID(), @Branch5Id, @Event20Id, @Trainer8Id),
-	(NEWID(), @Branch5Id, @Event21Id, @Trainer8Id),
-
-	-- Przypisanie trenerów FitZone
-	(NEWID(), @FitZone1Id, @Event22Id, @Trainer9Id),
-	(NEWID(), @FitZone1Id, @Event23Id, @Trainer10Id),
-	(NEWID(), @FitZone1Id, @Event24Id, @Trainer9Id),
-	(NEWID(), @FitZone2Id, @Event25Id, @Trainer11Id),
-	(NEWID(), @FitZone2Id, @Event26Id, @Trainer11Id),
-	(NEWID(), @FitZone3Id, @Event27Id, @Trainer12Id),
-	(NEWID(), @FitZone3Id, @Event28Id, @Trainer12Id),
-
-	-- Przypisanie trenerów AquaFit
-	(NEWID(), @AquaFit1Id, @Event29Id, @Trainer13Id),
-	(NEWID(), @AquaFit1Id, @Event30Id, @Trainer14Id),
-	(NEWID(), @AquaFit1Id, @Event31Id, @Trainer13Id),
-	(NEWID(), @AquaFit2Id, @Event32Id, @Trainer15Id),
-	(NEWID(), @AquaFit2Id, @Event33Id, @Trainer15Id),
-
-	-- Przypisanie trenerów PowerGym
-	(NEWID(), @PowerGym1Id, @Event34Id, @Trainer16Id),
-	(NEWID(), @PowerGym1Id, @Event35Id, @Trainer17Id);
-
--- =============================================
--- 11. Reservations - dodanie rezerwacji 
--- =============================================
-
-DECLARE
-	@Reservation1Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Reservation2Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Reservation3Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Reservation4Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Reservation5Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Reservation6Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Reservation7Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Reservation8Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Reservation9Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Reservation10Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Reservation11Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Reservation12Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Reservation13Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Reservation14Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Reservation15Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Reservation16Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Reservation17Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Reservation18Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Reservation19Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Reservation20Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Reservation21Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Reservation22Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Reservation23Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Reservation24Id UNIQUEIDENTIFIER = NEWID();
-DECLARE
-	@Reservation25Id UNIQUEIDENTIFIER = NEWID();
-
--- Dodanie rezerwacji (bez ParticipantId i ParticipantCount)
 INSERT INTO Reservations (Id, CompanyId, EventScheduleId, Status, Notes, CreatedAt, CancelledAt, IsPaid, PaidAt)
 VALUES
-	-- Rezerwacje SportFit Centrum
-	(@Reservation1Id, @Branch1Id, @Event1Id, 'Confirmed', 'Pierwszy raz na zajęciach jogi',
-	 '2025-07-25 14:00:00', NULL, 1, '2025-07-25 14:30:00'),
-	(@Reservation2Id, @Branch1Id, @Event2Id, 'Confirmed',
-	 'Trening personalny - cel: budowa masy mięśniowej', '2025-07-26 08:45:00', NULL, 1, '2025-07-26 09:15:00'),
-	(@Reservation3Id, @Branch1Id, @Event3Id, 'Confirmed',
-	 'Zajęcia pilates - problemy z kręgosłupem', '2025-07-27 16:15:00', NULL, 1, '2025-07-27 16:45:00'),
-	(@Reservation4Id, @Branch1Id, @Event4Id, 'Confirmed', 'Kontynuacja zajęć jogi',
-	 '2025-07-28 07:50:00', NULL, 1, '2025-07-28 08:20:00'),
+    -- Rezerwacja 1 - 12 uczestników (Joga grupowa)
+    (@R1, @Branch1Id, @E1, 'Confirmed', 'Duża grupa przyjaciół na jogę poranną',
+     '2026-01-02 09:00:00', NULL, 1, '2026-01-02 09:30:00'),
 
-	-- Rezerwacje SportFit Południe
-	(@Reservation5Id, @Branch2Id, @Event6Id, 'Confirmed', 'Doświadczony w crossfit',
-	 '2025-07-25 11:15:00', NULL, 1, '2025-07-25 11:45:00'),
-	(@Reservation6Id, @Branch2Id, @Event7Id, 'Confirmed', 'Lubię spinning - świetna muzyka',
-	 '2025-07-26 13:00:00', NULL, 1, '2025-07-26 13:30:00'),
-	(@Reservation7Id, @Branch2Id, @Event8Id, 'Confirmed', 'Pierwszy raz na zumbie',
-	 '2025-07-27 17:45:00', NULL, 1, '2025-07-27 18:15:00'),
-	(@Reservation8Id, @Branch2Id, @Event9Id, 'Confirmed', 'Oczekiwanie na potwierdzenie',
-	 '2025-07-28 09:30:00', NULL, 0, NULL),
+    -- Rezerwacja 2 - 8 uczestników (Pilates)
+    (@R2, @Branch1Id, @E2, 'Confirmed', 'Grupa koleżanek z pracy',
+     '2026-01-03 14:00:00', NULL, 1, '2026-01-03 14:15:00'),
 
-	-- Rezerwacje SportFit Północ
-	(@Reservation9Id, @Branch3Id, @Event11Id, 'Confirmed', 'Początkujący - nauka podstaw pływania',
-	 '2025-07-25 15:50:00', NULL, 1, '2025-07-25 16:20:00'),
-	(@Reservation10Id, @Branch3Id, @Event12Id, 'Confirmed',
-	 'Aqua aerobik - rehabilitacja po kontuzji', '2025-07-26 10:15:00', NULL, 1, '2025-07-26 10:45:00'),
-	(@Reservation11Id, @Branch3Id, @Event13Id, 'Cancelled', 'Zmiana planów - choroba',
-	 '2025-07-27 14:30:00', '2025-07-27 15:45:00', 0, NULL),
-	(@Reservation12Id, @Branch3Id, @Event15Id, 'Confirmed', 'Kontynuacja nauki pływania',
-	 '2025-07-28 07:00:00', NULL, 1, '2025-07-28 07:30:00'),
+    -- Rezerwacja 3 - 15 uczestników (Zumba)
+    (@R3, @Branch1Id, @E3, 'Confirmed', 'Wieczór panieński - zumba party',
+     '2026-01-05 11:00:00', NULL, 1, '2026-01-05 11:30:00'),
 
-	-- Rezerwacje SportFit Wschód
-	(@Reservation13Id, @Branch4Id, @Event16Id, 'Confirmed', 'Chcę nauczyć się boksu',
-	 '2025-07-26 15:15:00', NULL, 1, '2025-07-26 15:45:00'),
-	(@Reservation14Id, @Branch4Id, @Event17Id, 'Confirmed', 'Kickboxing na spalanie kalorii',
-	 '2025-07-27 16:50:00', NULL, 1, '2025-07-27 17:20:00'),
+    -- Rezerwacja 4 - 6 uczestników (Crossfit)
+    (@R4, @Branch1Id, @E4, 'Confirmed', 'Drużyna crossfit amatorów',
+     '2026-01-07 08:30:00', NULL, 1, '2026-01-07 09:00:00'),
 
-	-- Rezerwacje SportFit Zachód
-	(@Reservation15Id, @Branch5Id, @Event19Id, 'Confirmed', 'TRX - trening funkcjonalny',
-	 '2025-07-26 13:40:00', NULL, 1, '2025-07-26 14:10:00'),
-	(@Reservation16Id, @Branch5Id, @Event20Id, 'Confirmed', 'Potrzebuję relaksu po pracy',
-	 '2025-07-27 19:00:00', NULL, 1, '2025-07-27 19:30:00'),
+    -- Rezerwacja 5 - 10 uczestników (HIIT)
+    (@R5, @Branch1Id, @E5, 'Confirmed', 'Poranna ekipa HIIT',
+     '2026-01-10 06:00:00', NULL, 1, '2026-01-10 06:20:00'),
 
-	-- Rezerwacje FitZone Mokotów
-	(@Reservation17Id, @FitZone1Id, @Event22Id, 'Confirmed', 'HIIT - chcę szybko spalić kalorie',
-	 '2025-07-25 19:45:00', NULL, 1, '2025-07-25 20:15:00'),
-	(@Reservation18Id, @FitZone1Id, @Event23Id, 'Confirmed', 'Body Pump - budowanie siły',
-	 '2025-07-27 16:15:00', NULL, 1, '2025-07-27 16:45:00'),
-	(@Reservation19Id, @FitZone1Id, @Event24Id, 'Confirmed', 'Kolejne HIIT - jestem uzależniona!',
-	 '2025-07-28 06:00:00', NULL, 1, '2025-07-28 06:30:00'),
+    -- Rezerwacja 6 - 14 uczestników (Spinning)
+    (@R6, @Branch1Id, @E6, 'Confirmed', 'Klub rowerowy - trening zimowy',
+     '2026-01-15 16:00:00', NULL, 1, '2026-01-15 16:30:00'),
 
-	-- Rezerwacje FitZone Katowice
-	(@Reservation20Id, @FitZone2Id, @Event25Id, 'Confirmed', 'Tabata - krótko i intensywnie',
-	 '2025-07-26 10:50:00', NULL, 1, '2025-07-26 11:20:00'),
-	(@Reservation21Id, @FitZone2Id, @Event26Id, 'Confirmed', 'Wieczorna sesja Tabata',
-	 '2025-07-27 17:10:00', NULL, 1, '2025-07-27 17:40:00'),
+    -- Rezerwacja 7 - 5 uczestników (TRX)
+    (@R7, @Branch1Id, @E7, 'Confirmed', 'Mała grupa TRX dla początkujących',
+     '2026-01-20 10:00:00', NULL, 1, '2026-01-20 10:15:00'),
 
-	-- Rezerwacje AquaFit Marina
-	(@Reservation22Id, @AquaFit1Id, @Event29Id, 'Confirmed',
-	 'Pływanie sportowe - przygotowanie do zawodów', '2025-07-26 18:00:00', NULL, 1, '2025-07-26 18:30:00'),
-	(@Reservation23Id, @AquaFit1Id, @Event30Id, 'Confirmed', 'Trening personalny - technika kraul',
-	 '2025-07-27 11:45:00', NULL, 1, '2025-07-27 12:15:00'),
+    -- Rezerwacja 8 - 9 uczestników (Stretching)
+    (@R8, @Branch1Id, @E8, 'Confirmed', 'Seniorzy - stretching poranny',
+     '2026-01-25 09:00:00', NULL, 1, '2026-01-25 09:30:00'),
 
-	-- Rezerwacje PowerGym Center
-	(@Reservation24Id, @PowerGym1Id, @Event34Id, 'Confirmed', 'Powerlifting - chcę bić rekordy',
-	 '2025-07-26 05:15:00', NULL, 1, '2025-07-26 05:45:00'),
-	(@Reservation25Id, @PowerGym1Id, @Event35Id, 'Confirmed', 'Strongman - siłacz w sobie',
-	 '2025-07-27 19:20:00', NULL, 1, '2025-07-27 19:50:00');
+    -- Rezerwacja 9 - 11 uczestników (Functional Training)
+    (@R9, @Branch1Id, @E9, 'Confirmed', 'Drużyna piłkarska - trening uzupełniający',
+     '2026-02-01 15:00:00', NULL, 1, '2026-02-01 15:20:00'),
+
+    -- Rezerwacja 10 - 7 uczestników (Kickboxing)
+    (@R10, @Branch1Id, @E10, 'Confirmed', 'Kickboxing dla kobiet',
+     '2026-02-05 18:00:00', NULL, 1, '2026-02-05 18:15:00'),
+
+    -- Rezerwacja 11 - 13 uczestników (Joga wieczorna)
+    (@R11, @Branch1Id, @E11, 'Confirmed', 'Joga antystresowa po pracy',
+     '2026-02-10 17:00:00', NULL, 1, '2026-02-10 17:30:00'),
+
+    -- Rezerwacja 12 - 4 uczestników (Rehabilitacja)
+    (@R12, @Branch1Id, @E12, 'Confirmed', 'Rehabilitacja kręgosłupa',
+     '2026-02-15 11:00:00', NULL, 1, '2026-02-15 11:20:00'),
+
+    -- Rezerwacja 13 - 16 uczestników (Siłowy grupowy)
+    (@R13, @Branch1Id, @E13, 'Confirmed', 'Trening siłowy - ekipa firmowa',
+     '2026-02-20 12:00:00', NULL, 1, '2026-02-20 12:30:00'),
+
+    -- Rezerwacja 14 - 8 uczestników (Pilates zaawansowany)
+    (@R14, @Branch1Id, @E14, 'Pending', 'Pilates - zaawansowana technika',
+     '2026-03-01 14:00:00', NULL, 0, NULL),
+
+    -- Rezerwacja 15 - 10 uczestników (HIIT)
+    (@R15, @Branch1Id, @E15, 'Pending', 'HIIT weekendowy',
+     '2026-03-10 10:00:00', NULL, 0, NULL);
 
 -- =============================================
--- 12. ReservationParticipants - przypisanie uczestników do rezerwacji
+-- 11. ReservationParticipants - przypisanie uczestników
 -- =============================================
 
-INSERT INTO ReservationParticipants (CompanyId, ReservationId, ParticipantId)
-VALUES
-	-- Uczestnicy SportFit Centrum
-	(@Branch1Id, @Reservation1Id, @Participant1Id),
-	(@Branch1Id, @Reservation2Id, @Participant2Id),
-	(@Branch1Id, @Reservation3Id, @Participant3Id),
-	(@Branch1Id, @Reservation4Id, @Participant4Id),
+-- Rezerwacja 1 - 12 uczestników
+INSERT INTO ReservationParticipants (CompanyId, ReservationId, ParticipantId) VALUES
+    (@Branch1Id, @R1, @P1), (@Branch1Id, @R1, @P2), (@Branch1Id, @R1, @P3), (@Branch1Id, @R1, @P4),
+    (@Branch1Id, @R1, @P5), (@Branch1Id, @R1, @P6), (@Branch1Id, @R1, @P7), (@Branch1Id, @R1, @P8),
+    (@Branch1Id, @R1, @P9), (@Branch1Id, @R1, @P10), (@Branch1Id, @R1, @P11), (@Branch1Id, @R1, @P12);
 
-	-- Uczestnicy SportFit Południe
-	(@Branch2Id, @Reservation5Id, @Participant5Id),
-	(@Branch2Id, @Reservation6Id, @Participant6Id),
-	(@Branch2Id, @Reservation7Id, @Participant7Id),
-	(@Branch2Id, @Reservation8Id, @Participant8Id),
+-- Rezerwacja 2 - 8 uczestników
+INSERT INTO ReservationParticipants (CompanyId, ReservationId, ParticipantId) VALUES
+    (@Branch1Id, @R2, @P13), (@Branch1Id, @R2, @P14), (@Branch1Id, @R2, @P15), (@Branch1Id, @R2, @P16),
+    (@Branch1Id, @R2, @P17), (@Branch1Id, @R2, @P18), (@Branch1Id, @R2, @P19), (@Branch1Id, @R2, @P20);
 
-	-- Uczestnicy SportFit Północ
-	(@Branch3Id, @Reservation9Id, @Participant9Id),
-	(@Branch3Id, @Reservation10Id, @Participant10Id),
-	(@Branch3Id, @Reservation11Id, @Participant11Id),
-	(@Branch3Id, @Reservation12Id, @Participant9Id), -- Ten sam uczestnik w kolejnej rezerwacji
+-- Rezerwacja 3 - 15 uczestników
+INSERT INTO ReservationParticipants (CompanyId, ReservationId, ParticipantId) VALUES
+    (@Branch1Id, @R3, @P21), (@Branch1Id, @R3, @P22), (@Branch1Id, @R3, @P23), (@Branch1Id, @R3, @P24),
+    (@Branch1Id, @R3, @P25), (@Branch1Id, @R3, @P26), (@Branch1Id, @R3, @P27), (@Branch1Id, @R3, @P28),
+    (@Branch1Id, @R3, @P29), (@Branch1Id, @R3, @P30), (@Branch1Id, @R3, @P31), (@Branch1Id, @R3, @P32),
+    (@Branch1Id, @R3, @P33), (@Branch1Id, @R3, @P34), (@Branch1Id, @R3, @P35);
 
-	-- Uczestnicy SportFit Wschód
-	(@Branch4Id, @Reservation13Id, @Participant12Id),
-	(@Branch4Id, @Reservation14Id, @Participant13Id),
+-- Rezerwacja 4 - 6 uczestników
+INSERT INTO ReservationParticipants (CompanyId, ReservationId, ParticipantId) VALUES
+    (@Branch1Id, @R4, @P36), (@Branch1Id, @R4, @P37), (@Branch1Id, @R4, @P38),
+    (@Branch1Id, @R4, @P39), (@Branch1Id, @R4, @P40), (@Branch1Id, @R4, @P41);
 
-	-- Uczestnicy SportFit Zachód
-	(@Branch5Id, @Reservation15Id, @Participant14Id),
-	(@Branch5Id, @Reservation16Id, @Participant15Id),
+-- Rezerwacja 5 - 10 uczestników
+INSERT INTO ReservationParticipants (CompanyId, ReservationId, ParticipantId) VALUES
+    (@Branch1Id, @R5, @P42), (@Branch1Id, @R5, @P43), (@Branch1Id, @R5, @P44), (@Branch1Id, @R5, @P45),
+    (@Branch1Id, @R5, @P46), (@Branch1Id, @R5, @P47), (@Branch1Id, @R5, @P48), (@Branch1Id, @R5, @P49),
+    (@Branch1Id, @R5, @P50), (@Branch1Id, @R5, @P1);
 
-	-- Uczestnicy FitZone Mokotów
-	(@FitZone1Id, @Reservation17Id, @Participant16Id),
-	(@FitZone1Id, @Reservation18Id, @Participant17Id),
-	(@FitZone1Id, @Reservation19Id, @Participant18Id),
+-- Rezerwacja 6 - 14 uczestników
+INSERT INTO ReservationParticipants (CompanyId, ReservationId, ParticipantId) VALUES
+    (@Branch1Id, @R6, @P2), (@Branch1Id, @R6, @P3), (@Branch1Id, @R6, @P4), (@Branch1Id, @R6, @P5),
+    (@Branch1Id, @R6, @P6), (@Branch1Id, @R6, @P7), (@Branch1Id, @R6, @P8), (@Branch1Id, @R6, @P9),
+    (@Branch1Id, @R6, @P10), (@Branch1Id, @R6, @P11), (@Branch1Id, @R6, @P12), (@Branch1Id, @R6, @P13),
+    (@Branch1Id, @R6, @P14), (@Branch1Id, @R6, @P15);
 
-	-- Uczestnicy FitZone Katowice
-	(@FitZone2Id, @Reservation20Id, @Participant19Id),
-	(@FitZone2Id, @Reservation21Id, @Participant20Id),
+-- Rezerwacja 7 - 5 uczestników
+INSERT INTO ReservationParticipants (CompanyId, ReservationId, ParticipantId) VALUES
+    (@Branch1Id, @R7, @P16), (@Branch1Id, @R7, @P17), (@Branch1Id, @R7, @P18),
+    (@Branch1Id, @R7, @P19), (@Branch1Id, @R7, @P20);
 
-	-- Uczestnicy AquaFit Marina
-	(@AquaFit1Id, @Reservation22Id, @Participant23Id),
-	(@AquaFit1Id, @Reservation23Id, @Participant24Id),
+-- Rezerwacja 8 - 9 uczestników
+INSERT INTO ReservationParticipants (CompanyId, ReservationId, ParticipantId) VALUES
+    (@Branch1Id, @R8, @P21), (@Branch1Id, @R8, @P22), (@Branch1Id, @R8, @P23), (@Branch1Id, @R8, @P24),
+    (@Branch1Id, @R8, @P25), (@Branch1Id, @R8, @P26), (@Branch1Id, @R8, @P27), (@Branch1Id, @R8, @P28),
+    (@Branch1Id, @R8, @P29);
 
-	-- Uczestnicy PowerGym Center
-	(@PowerGym1Id, @Reservation24Id, @Participant27Id),
-	(@PowerGym1Id, @Reservation25Id, @Participant28Id);
+-- Rezerwacja 9 - 11 uczestników
+INSERT INTO ReservationParticipants (CompanyId, ReservationId, ParticipantId) VALUES
+    (@Branch1Id, @R9, @P30), (@Branch1Id, @R9, @P31), (@Branch1Id, @R9, @P32), (@Branch1Id, @R9, @P33),
+    (@Branch1Id, @R9, @P34), (@Branch1Id, @R9, @P35), (@Branch1Id, @R9, @P36), (@Branch1Id, @R9, @P37),
+    (@Branch1Id, @R9, @P38), (@Branch1Id, @R9, @P39), (@Branch1Id, @R9, @P40);
 
--- =============================================
--- PRZYKŁAD: Rezerwacja grupowa z wieloma uczestnikami
--- =============================================
+-- Rezerwacja 10 - 7 uczestników
+INSERT INTO ReservationParticipants (CompanyId, ReservationId, ParticipantId) VALUES
+    (@Branch1Id, @R10, @P41), (@Branch1Id, @R10, @P42), (@Branch1Id, @R10, @P43), (@Branch1Id, @R10, @P44),
+    (@Branch1Id, @R10, @P45), (@Branch1Id, @R10, @P46), (@Branch1Id, @R10, @P47);
 
--- Dodatkowa rezerwacja grupowa dla demonstracji
-DECLARE @GroupReservationId UNIQUEIDENTIFIER = NEWID();
+-- Rezerwacja 11 - 13 uczestników
+INSERT INTO ReservationParticipants (CompanyId, ReservationId, ParticipantId) VALUES
+    (@Branch1Id, @R11, @P48), (@Branch1Id, @R11, @P49), (@Branch1Id, @R11, @P50), (@Branch1Id, @R11, @P1),
+    (@Branch1Id, @R11, @P2), (@Branch1Id, @R11, @P3), (@Branch1Id, @R11, @P4), (@Branch1Id, @R11, @P5),
+    (@Branch1Id, @R11, @P6), (@Branch1Id, @R11, @P7), (@Branch1Id, @R11, @P8), (@Branch1Id, @R11, @P9),
+    (@Branch1Id, @R11, @P10);
 
-INSERT INTO Reservations (Id, CompanyId, EventScheduleId, Status, Notes, CreatedAt, CancelledAt, IsPaid, PaidAt)
-VALUES (@GroupReservationId, @Branch1Id, @Event1Id, 'Confirmed', 'Rezerwacja grupowa - zajęcia jogi dla przyjaciół',
-        '2025-07-29 10:00:00', NULL, 1, '2025-07-29 10:30:00');
+-- Rezerwacja 12 - 4 uczestników
+INSERT INTO ReservationParticipants (CompanyId, ReservationId, ParticipantId) VALUES
+    (@Branch1Id, @R12, @P11), (@Branch1Id, @R12, @P12), (@Branch1Id, @R12, @P13), (@Branch1Id, @R12, @P14);
 
--- Dodanie wielu uczestników do jednej rezerwacji
-INSERT INTO ReservationParticipants (CompanyId, ReservationId, ParticipantId)
-VALUES (@Branch1Id, @GroupReservationId, @Participant1Id), -- Anna Kowalska
-       (@Branch1Id, @GroupReservationId, @Participant2Id), -- Jan Nowak
-       (@Branch1Id, @GroupReservationId, @Participant3Id);
--- Maria Wiśniewska
+-- Rezerwacja 13 - 16 uczestników
+INSERT INTO ReservationParticipants (CompanyId, ReservationId, ParticipantId) VALUES
+    (@Branch1Id, @R13, @P15), (@Branch1Id, @R13, @P16), (@Branch1Id, @R13, @P17), (@Branch1Id, @R13, @P18),
+    (@Branch1Id, @R13, @P19), (@Branch1Id, @R13, @P20), (@Branch1Id, @R13, @P21), (@Branch1Id, @R13, @P22),
+    (@Branch1Id, @R13, @P23), (@Branch1Id, @R13, @P24), (@Branch1Id, @R13, @P25), (@Branch1Id, @R13, @P26),
+    (@Branch1Id, @R13, @P27), (@Branch1Id, @R13, @P28), (@Branch1Id, @R13, @P29), (@Branch1Id, @R13, @P30);
 
--- =============================================
--- 12. Notifications - dodanie powiadomień 
--- =============================================
+-- Rezerwacja 14 - 8 uczestników
+INSERT INTO ReservationParticipants (CompanyId, ReservationId, ParticipantId) VALUES
+    (@Branch1Id, @R14, @P31), (@Branch1Id, @R14, @P32), (@Branch1Id, @R14, @P33), (@Branch1Id, @R14, @P34),
+    (@Branch1Id, @R14, @P35), (@Branch1Id, @R14, @P36), (@Branch1Id, @R14, @P37), (@Branch1Id, @R14, @P38);
 
-INSERT INTO Notifications (Id, CompanyId, ReservationId, EmailStatus, SmsStatus, EmailSentAt, SmsSentAt, EmailContent,
-                           SmsContent)
-VALUES
-	-- Powiadomienia SportFit Centrum
-	(NEWID(), @Branch1Id, @Reservation1Id, 'Sent', 'Sent', '2025-07-25 14:35:00', '2025-07-25 14:35:00',
-	 'Potwierdzenie rezerwacji na zajęcia jogi dla początkujących w dniu 28.07.2025 o godz. 10:00. Dziękujemy za wybór SportFit!',
-	 'SportFit: Joga 28.07.2025, 10:00 - Sala Fitness 1'),
-	(NEWID(), @Branch1Id, @Reservation2Id, 'Sent', 'Sent', '2025-07-26 09:20:00', '2025-07-26 09:20:00',
-	 'Potwierdzenie rezerwacji na trening personalny w dniu 29.07.2025 o godz. 14:00. Trener: Ewa Jabłońska.',
-	 'SportFit: Trening personalny 29.07.2025, 14:00 - Ewa Jabłońska'),
-	(NEWID(), @Branch1Id, @Reservation3Id, 'Sent', 'Sent', '2025-07-27 16:50:00', '2025-07-27 16:50:00',
-	 'Potwierdzenie rezerwacji na pilates grupowy w dniu 30.07.2025 o godz. 18:00. Sala Pilates.',
-	 'SportFit: Pilates 30.07.2025, 18:00 - Sala Pilates'),
+-- Rezerwacja 15 - 10 uczestników
+INSERT INTO ReservationParticipants (CompanyId, ReservationId, ParticipantId) VALUES
+    (@Branch1Id, @R15, @P39), (@Branch1Id, @R15, @P40), (@Branch1Id, @R15, @P41), (@Branch1Id, @R15, @P42),
+    (@Branch1Id, @R15, @P43), (@Branch1Id, @R15, @P44), (@Branch1Id, @R15, @P45), (@Branch1Id, @R15, @P46),
+    (@Branch1Id, @R15, @P47), (@Branch1Id, @R15, @P48);
 
-	-- Powiadomienia SportFit Południe
-	(NEWID(), @Branch2Id, @Reservation5Id, 'Sent', 'Sent', '2025-07-25 11:50:00', '2025-07-25 11:50:00',
-	 'Potwierdzenie rezerwacji na crossfit grupowy w dniu 28.07.2025 o godz. 18:00. Przygotuj się na intensywny trening!',
-	 'SportFit: Crossfit 28.07.2025, 18:00 - Sala Crossfit'),
-	(NEWID(), @Branch2Id, @Reservation6Id, 'Sent', 'Sent', '2025-07-26 13:35:00', '2025-07-26 13:35:00',
-	 'Potwierdzenie rezerwacji na spinning w dniu 29.07.2025 o godz. 11:00. Przynieś ręcznik i butelkę wody.',
-	 'SportFit: Spinning 29.07.2025, 11:00 - Sala Spinning'),
-	(NEWID(), @Branch2Id, @Reservation7Id, 'Sent', 'Sent', '2025-07-27 18:20:00', '2025-07-27 18:20:00',
-	 'Potwierdzenie rezerwacji na zumba party w dniu 30.07.2025 o godz. 19:00. Tańcz i baw się!',
-	 'SportFit: Zumba 30.07.2025, 19:00 - Sala Taneczna'),
+-- Czyszczenie tabeli tymczasowej
+DROP TABLE #EventIds;
 
-	-- Powiadomienia SportFit Północ
-	(NEWID(), @Branch3Id, @Reservation9Id, 'Sent', 'Sent', '2025-07-25 16:25:00', '2025-07-25 16:25:00',
-	 'Potwierdzenie rezerwacji na naukę pływania w dniu 28.07.2025 o godz. 09:00. Basen - tor 1-2.',
-	 'SportFit: Pływanie 28.07.2025, 09:00 - Basen tor 1-2'),
-	(NEWID(), @Branch3Id, @Reservation10Id, 'Sent', 'Sent', '2025-07-26 10:50:00', '2025-07-26 10:50:00',
-	 'Potwierdzenie rezerwacji na aqua aerobik w dniu 29.07.2025 o godz. 16:00. Trener: Henryk Zieliński.',
-	 'SportFit: Aqua aerobik 29.07.2025, 16:00 - Henryk Zieliński'),
-	(NEWID(), @Branch3Id, @Reservation11Id, 'Sent', 'Sent', '2025-07-28 09:00:00', '2025-07-28 09:00:00',
-	 'Potwierdzenie anulowania rezerwacji na naukę pływania w dniu 30.07.2025 o godz. 10:00. Życzymy szybkiego powrotu do zdrowia!',
-	 'SportFit: Anulowanie - Pływanie 30.07.2025, 10:00'),
-
-	-- Powiadomienia FitZone
-	(NEWID(), @FitZone1Id, @Reservation17Id, 'Sent', 'Sent', '2025-07-25 20:20:00', '2025-07-25 20:20:00',
-	 'Potwierdzenie rezerwacji na HIIT Power w dniu 28.07.2025 o godz. 07:00. FitZone Mokotów - Sala HIIT.',
-	 'FitZone: HIIT 28.07.2025, 07:00 - Sala HIIT'),
-	(NEWID(), @FitZone1Id, @Reservation18Id, 'Sent', 'Sent', '2025-07-27 16:50:00', '2025-07-27 16:50:00',
-	 'Potwierdzenie rezerwacji na Body Pump w dniu 29.07.2025 o godz. 19:00. Trener: Marta Pawlak.',
-	 'FitZone: Body Pump 29.07.2025, 19:00 - Marta Pawlak'),
-
-	-- Powiadomienia AquaFit
-	(NEWID(), @AquaFit1Id, @Reservation22Id, 'Sent', 'Sent', '2025-07-26 18:35:00', '2025-07-26 18:35:00',
-	 'Potwierdzenie rezerwacji na pływanie sportowe w dniu 28.07.2025 o godz. 07:00. AquaFit Marina - tor 1-3.',
-	 'AquaFit: Pływanie sportowe 28.07.2025, 07:00'),
-	(NEWID(), @AquaFit1Id, @Reservation23Id, 'Sent', 'Sent', '2025-07-27 12:20:00', '2025-07-27 12:20:00',
-	 'Potwierdzenie rezerwacji na trening personalny pływanie w dniu 29.07.2025 o godz. 15:00. Trener: Renata Rutkowska.',
-	 'AquaFit: Trening personalny 29.07.2025, 15:00'),
-
-	-- Powiadomienia PowerGym
-	(NEWID(), @PowerGym1Id, @Reservation24Id, 'Sent', 'Sent', '2025-07-26 05:50:00', '2025-07-26 05:50:00',
-	 'Potwierdzenie rezerwacji na powerlifting w dniu 28.07.2025 o godz. 06:00. PowerGym Center - Sala Powerlifting.',
-	 'PowerGym: Powerlifting 28.07.2025, 06:00'),
-	(NEWID(), @PowerGym1Id, @Reservation25Id, 'Sent', 'Sent', '2025-07-27 19:55:00', '2025-07-27 19:55:00',
-	 'Potwierdzenie rezerwacji na strongman training w dniu 29.07.2025 o godz. 20:00. Trener: Urszula Urbańska.',
-	 'PowerGym: Strongman 29.07.2025, 20:00 - Urszula Urbańska');
-
--- =============================================
--- 13. Messages - dodanie wiadomości 
--- =============================================
-
-INSERT INTO Messages (Id, CompanyId, SenderId, ReceiverId, Content)
-VALUES
-	-- Wiadomości SportFit
-	(NEWID(), @Branch1Id, @Manager1Id, @Trainer1Id,
-	 'Proszę o przygotowanie planu zajęć jogi na sierpień. Zwiększone zainteresowanie!'),
-	(NEWID(), @Branch1Id, @Trainer1Id, @Manager1Id,
-	 'Plan zajęć jogi na sierpień będzie gotowy do piątku. Dodaję 2 dodatkowe grupy.'),
-	(NEWID(), @Branch1Id, @StaffRec1Id, @Manager1Id, 'Recepcja raportuje: 15 nowych członków w tym tygodniu!'),
-	(NEWID(), @Branch1Id, @Manager1Id, @Trainer2Id,
-	 'Świetna opinia o Twoich treningach personalnych. Kontynuuj dobrą pracę!'),
-	(NEWID(), @Branch1Id, @Trainer2Id, @Manager1Id,
-	 'Dziękuję za uznanie. Czy mogę poprowadzić warsztaty pilates w weekend?'),
-
-	(NEWID(), @Branch2Id, @Manager2Id, @Trainer3Id, 'Czy możesz poprowadzić dodatkowe zajęcia crossfit w sobotę?'),
-	(NEWID(), @Branch2Id, @Trainer3Id, @Manager2Id,
-	 'Tak, mogę poprowadzić dodatkowe zajęcia crossfit w sobotę o 16:00'),
-	(NEWID(), @Branch2Id, @StaffRec2Id, @Manager2Id,
-	 'Sala spinning wymaga serwisu rowerów - zgłoszenia od uczestników'),
-	(NEWID(), @Branch2Id, @Manager2Id, @StaffRec2Id, 'Dzięki za info. Zamawiam serwis na jutro rano przed zajęciami.'),
-
-	(NEWID(), @Branch3Id, @StaffRec3Id, @Manager3Id,
-	 'Komplet zapisów na zajęcia pływania w przyszłym tygodniu. Rozważamy dodatkową grupę?'),
-	(NEWID(), @Branch3Id, @Manager3Id, @Trainer5Id,
-	 'Henryk, czy mógłbyś poprowadzić dodatkową grupę pływania w czwartek?'),
-	(NEWID(), @Branch3Id, @Trainer5Id, @Manager3Id, 'Oczywiście! Czwartek 18:00 będzie idealny dla dodatkowej grupy.'),
-
-	-- Wiadomości FitZone
-	(NEWID(), @FitZone1Id, @Manager6Id, @Trainer9Id,
-	 'Świetny feedback na zajęcia HIIT! Rozważamy zwiększenie częstotliwości.'),
-	(NEWID(), @FitZone1Id, @Trainer9Id, @Manager6Id, 'Cieszę się! Mogę dodać sesje HIIT w środy i piątki.'),
-	(NEWID(), @FitZone1Id, @StaffRec6Id, @Manager6Id,
-	 'Nowy członek pyta o zajęcia dla seniorów. Czy planujemy taką grupę?'),
-	(NEWID(), @FitZone1Id, @Manager6Id, @StaffRec6Id, 'Dobry pomysł! Porozmawiam z trenerami o programie 50+'),
-
-	(NEWID(), @FitZone2Id, @Manager7Id, @Trainer11Id, 'Tabata cieszy się ogromną popularnością! Brawo!'),
-	(NEWID(), @FitZone2Id, @Trainer11Id, @Manager7Id,
-	 'Dziękuję! Uczestnicy są bardzo zmotywowani. Może warsztaty weekendowe?'),
-
-	-- Wiadomości AquaFit
-	(NEWID(), @AquaFit1Id, @Manager8Id, @Trainer13Id, 'Zawodnik z naszych zajęć wygrał regionalne zawody! Gratulacje!'),
-	(NEWID(), @AquaFit1Id, @Trainer13Id, @Manager8Id, 'To wspaniała wiadomość! Ciężka praca się opłaciła.'),
-	(NEWID(), @AquaFit1Id, @StaffRec9Id, @Manager8Id, 'Zapytania o obozy pływackie na wakacje. Organizujemy?'),
-	(NEWID(), @AquaFit1Id, @Manager8Id, @Trainer14Id, 'Renata, czy chciałabyś współorganizować obóz pływacki?'),
-	(NEWID(), @AquaFit1Id, @Trainer14Id, @Manager8Id, 'Z przyjemnością! Mam już pomysły na program.'),
-
-	-- Wiadomości PowerGym
-	(NEWID(), @PowerGym1Id, @Manager9Id, @Trainer16Id, 'Tomasz, świetne wyniki uczestników w powerlifting!'),
-	(NEWID(), @PowerGym1Id, @Trainer16Id, @Manager9Id, 'Dziękuję! Planujemy udział w zawodach wojewódzkich.'),
-	(NEWID(), @PowerGym1Id, @StaffRec11Id, @Manager9Id, 'Prośba o dodanie zajęć dla kobiet zainteresowanych siłownią'),
-	(NEWID(), @PowerGym1Id, @Manager9Id, @Trainer17Id, 'Urszula, czy poprowadzisz grupę "Ladies Power"?'),
-	(NEWID(), @PowerGym1Id, @Trainer17Id, @Manager9Id, 'Świetny pomysł! Kobiety potrzebują dedykowanych zajęć.'),
-
-	-- Wiadomości FlexYoga
-	(NEWID(), @FlexYoga1Id, @Manager10Id, @Trainer19Id, 'Meditation workshop otrzymał fantastyczne recenzje!'),
-	(NEWID(), @FlexYoga1Id, @Trainer19Id, @Manager10Id, 'Dziękuję! Planujemy cykl warsztatów mindfulness.'),
-	(NEWID(), @FlexYoga1Id, @Trainer20Id, @Manager10Id, 'Zbigniew, czy mógłbyś poprowadzić zajęcia jogi dla par?'),
-	(NEWID(), @FlexYoga1Id, @Manager10Id, @Trainer20Id, 'Interesujący pomysł na walentynki! Przygotujemy program.');
-
--- =============================================
--- KONIEC SKRYPTU
--- =============================================
-
-PRINT
-	'Dane przykładowe zostały pomyślnie wstawione do bazy danych!'
-PRINT 'Utworzono:'
-PRINT '- 18 firm (Companies) - w tym 5 firm głównych i 13 recepcji'
-PRINT '- Hierarchię firm (CompanyHierarchies)'
-PRINT '- 43 pracowników (Staff) - 13 recepcjonistów, 20 trenerów, 10 managerów'
-PRINT '- 30 uczestników (Participants)'
-PRINT '- 20 specjalizacji (Specializations)'
-PRINT '- Przypisania specjalizacji do trenerów (StaffMemberSpecializations)'
-PRINT '- Dostępność personelu (StaffMemberAvailabilities)'
-PRINT '- 25 typów wydarzeń (EventTypes)'
-PRINT '- 35 zaplanowanych wydarzeń (EventSchedules)'
-PRINT '- Przypisania personelu do wydarzeń (EventScheduleStaff)'
-PRINT '- 25 rezerwacji (Reservations)'
-PRINT '- 15 powiadomień (Notifications)'
-PRINT '- 32 wiadomości (Messages)'
 PRINT ''
-PRINT 'Wszystkie tabele używają CompanyId zamiast ReceptionId!'
-PRINT 'Wszystkie numery telefonów są unikalne!'
-PRINT 'Skrypt zakończony pomyślnie.'
+PRINT 'Skrypt zakończony pomyślnie!'
+GO
