@@ -1,6 +1,7 @@
 ﻿using Schedule.Application.Interfaces.Repositories;
 using Schedule.Application.Interfaces.Services;
 using Schedule.Application.Interfaces.Validators;
+using Schedule.Domain.Exceptions;
 using Schedule.Domain.Models;
 
 namespace Schedule.Application.Services;
@@ -44,8 +45,7 @@ public class EventScheduleStaffMemberService : IEventScheduleStaffMemberService
 
 		if (!await _scheduleConflictValidator
 				.CanAssignStaffMemberAsync(companyId, staffMemberId, startTime, endTime))
-			throw new InvalidOperationException(
-				$"Staff member {staffMemberId} has a time conflict");
+			throw new StaffMemberTimeConflictException(staffMemberId);
 
 		return await _eventScheduleStaffMemberRepository.CreateAsync(eventScheduleStaffMember);
 	}
@@ -68,8 +68,7 @@ public class EventScheduleStaffMemberService : IEventScheduleStaffMemberService
 		EventSchedule? eventSchedule = await _eventScheduleRepository
 			.GetByIdAsync(eventScheduleId, companyId);
 		if (eventSchedule == null)
-			throw new InvalidOperationException(
-				$"Event Schedule {eventScheduleId} not found");
+			throw new EventScheduleNotFoundException(eventScheduleId);
 	}
 
 	private async Task ValidateStaffMemberAsync(EventScheduleStaffMember eventScheduleStaffMember)
@@ -80,7 +79,6 @@ public class EventScheduleStaffMemberService : IEventScheduleStaffMemberService
 		StaffMember? eventType = await _staffMemberRepository
 			.GetByIdAsync(staffMemberId, companyId);
 		if (eventType == null)
-			throw new InvalidOperationException(
-				$"Staff member {staffMemberId} not found");
+			throw new StaffMemberNotFoundException(staffMemberId);
 	}
 }

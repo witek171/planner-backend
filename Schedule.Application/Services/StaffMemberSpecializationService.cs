@@ -1,5 +1,6 @@
 ﻿using Schedule.Application.Interfaces.Repositories;
 using Schedule.Application.Interfaces.Services;
+using Schedule.Domain.Exceptions;
 using Schedule.Domain.Models;
 
 namespace Schedule.Application.Services;
@@ -17,13 +18,10 @@ public class StaffMemberSpecializationService : IStaffMemberSpecializationServic
 		Guid companyId,
 		StaffMemberSpecialization staffMemberSpecialization)
 	{
-		if (await _staffMemberSpecializationRepository.ExistsAsync(
-				staffMemberSpecialization.StaffMemberId,
-				staffMemberSpecialization.SpecializationId))
-			throw new InvalidOperationException(
-				$"Staff member {staffMemberSpecialization.StaffMemberId}" +
-				$" already has specialization {staffMemberSpecialization.SpecializationId}" +
-				$" assigned");
+		Guid staffMemberId = staffMemberSpecialization.StaffMemberId;
+		Guid specializationId = staffMemberSpecialization.SpecializationId;
+		if (await _staffMemberSpecializationRepository.ExistsAsync(staffMemberId, specializationId))
+			throw new StaffMemberSpecializationAlreadyAssignedException(staffMemberId, specializationId);
 
 		return await _staffMemberSpecializationRepository.CreateAsync(companyId, staffMemberSpecialization);
 	}

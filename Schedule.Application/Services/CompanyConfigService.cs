@@ -1,5 +1,6 @@
 ﻿using Schedule.Application.Interfaces.Repositories;
 using Schedule.Application.Interfaces.Services;
+using Schedule.Domain.Exceptions;
 using Schedule.Domain.Models;
 
 namespace Schedule.Application.Services;
@@ -16,12 +17,10 @@ public class CompanyConfigService : ICompanyConfigService
 	public async Task UpdateBreakTimesAsync(CompanyConfig companyConfig)
 	{
 		if (companyConfig.BreakTimeStaff < 0)
-			throw new InvalidOperationException(
-				"Break time for staff must be equal or greater than zero");
+			throw new InvalidBreakTimeStaffException();
 
 		if (companyConfig.BreakTimeParticipants < 0)
-			throw new InvalidOperationException(
-				"Break time for participants must be equal or greater than zero");
+			throw new InvalidBreakTimeParticipantsException();
 
 		await _companyConfigRepository.UpdateBreakTimesAsync(companyConfig);
 	}

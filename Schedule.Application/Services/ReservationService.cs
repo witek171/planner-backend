@@ -1,6 +1,7 @@
 ﻿using Schedule.Application.Interfaces.Repositories;
 using Schedule.Application.Interfaces.Services;
 using Schedule.Application.Interfaces.Validators;
+using Schedule.Domain.Exceptions;
 using Schedule.Domain.Models;
 
 namespace Schedule.Application.Services;
@@ -44,7 +45,7 @@ public class ReservationService : IReservationService
 		await ValidateParticipantsAsync(reservation);
 		IReadOnlyList<Guid> participantsIds = reservation.ParticipantsIds;
 		if (participantsIds.Count != participantsIds.Distinct().Count())
-			throw new InvalidOperationException("Duplicate participants found in the list");
+			throw new DuplicateParticipantsException();
 
 		Guid companyId = reservation.CompanyId;
 		Guid eventScheduleId = reservation.EventScheduleId;
@@ -57,13 +58,11 @@ public class ReservationService : IReservationService
 			bool isParticipantAssigned = await _eventScheduleRepository
 				.IsParticipantAssignedAsync(participantId, eventScheduleId);
 			if (isParticipantAssigned)
-				throw new InvalidOperationException(
-					$"Participant {participantId} is already assigned to event schedule {eventScheduleId}");
+				throw new ParticipantAlreadyAssignedException(participantId, eventScheduleId);
 
 			if (!await _scheduleConflictValidator
 					.CanAssignParticipantAsync(companyId, participantId, startTime, endTime))
-				throw new InvalidOperationException(
-					$"Participant {participantId} has a time conflict");
+				throw new ParticipantTimeConflictException(participantId);
 		}
 
 		int participantsCount = reservation.ParticipantsIds.Count;
@@ -71,10 +70,10 @@ public class ReservationService : IReservationService
 			.GetMaxParticipantsAndCurrentParticipantsAsync(eventScheduleId, companyId);
 
 		if (participantsCount + currentParticipants > maxParticipants)
-			throw new InvalidOperationException(
-				$"The reservation cannot be created. The maximum number of participants for this " +
-				$"event is {maxParticipants}, but {currentParticipants} are already " +
-				$"registered and you are trying to add {participantsCount} more");
+			throw new MaxParticipantsExceededException(
+				maxParticipants,
+				currentParticipants,
+				participantsCount);
 
 		reservation.Normalize();
 		if (reservation.IsPaid)
@@ -128,8 +127,7 @@ public class ReservationService : IReservationService
 		EventSchedule? eventType = await _eventScheduleRepository
 			.GetByIdAsync(eventScheduleId, companyId);
 		if (eventType == null)
-			throw new InvalidOperationException(
-				$"Event schedule {eventScheduleId} not found");
+			throw new EventScheduleNotFoundException(eventScheduleId);
 	}
 
 	private async Task ValidateParticipantsAsync(Reservation reservation)
@@ -142,8 +140,7 @@ public class ReservationService : IReservationService
 			Participant? participant = await _participantRepository
 				.GetByIdAsync(participantId, companyId);
 			if (participant == null)
-				throw new InvalidOperationException(
-					$"Participant {participantId} not found");
+				throw new ParticipantNotFoundException(participantId);
 		}
 	}
 }

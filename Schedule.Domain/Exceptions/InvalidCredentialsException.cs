@@ -2,5 +2,7 @@
 
 public class InvalidCredentialsException : Exception
 {
-	public InvalidCredentialsException() : base("Incorect password or email") { }
+	public InvalidCredentialsException() : base("Incorrect password or email")
+	{
+	}
 }

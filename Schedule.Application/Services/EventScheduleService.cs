@@ -1,5 +1,6 @@
 using Schedule.Application.Interfaces.Repositories;
 using Schedule.Application.Interfaces.Services;
+using Schedule.Domain.Exceptions;
 using Schedule.Domain.Models;
 
 namespace Schedule.Application.Services;
@@ -83,7 +84,6 @@ public class EventScheduleService : IEventScheduleService
 		EventType? eventType = await _eventTypeRepository
 			.GetByIdAsync(eventTypeId, companyId);
 		if (eventType == null)
-			throw new InvalidOperationException(
-				$"Event type {eventTypeId} not found");
+			throw new EventTypeNotFoundException(eventTypeId);
 	}
 }

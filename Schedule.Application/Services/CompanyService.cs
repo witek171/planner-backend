@@ -1,5 +1,6 @@
 ﻿using Schedule.Application.Interfaces.Repositories;
 using Schedule.Application.Interfaces.Services;
+using Schedule.Domain.Exceptions;
 using Schedule.Domain.Models;
 
 namespace Schedule.Application.Services;
@@ -54,16 +55,13 @@ public class CompanyService : ICompanyService
 		Guid parentId)
 	{
 		if (childId == parentId)
-			throw new InvalidOperationException(
-				$"Company {childId} cannot be its own parent");
+			throw new CompanySelfReferenceException(childId);
 
 		if (await _companyRepository.ExistsAsChildAsync(childId))
-			throw new InvalidOperationException(
-				$"Company {childId} already has a parent company");
+			throw new CompanyAlreadyHasParentException(childId);
 
 		if (await _companyRepository.RelationExistAsync(childId, parentId))
-			throw new InvalidOperationException(
-				$"Relation between companies {childId} and {parentId} already exists");
+			throw new CompanyRelationAlreadyExistsException(childId, parentId);
 
 		await _companyRepository.AddRelationAsync(childId, parentId);
 		Company parent = (await _companyRepository.GetByIdAsync(parentId))!;
@@ -79,9 +77,7 @@ public class CompanyService : ICompanyService
 	{
 		if (!await _companyRepository.ExistsAsChildAsync(companyId) &&
 			!await _companyRepository.ExistsAsParentAsync(companyId))
-			throw new InvalidOperationException(
-				$"Company {companyId} is not present in the hierarchy," +
-				$" therefore it has no relations to remove");
+			throw new CompanyNotInHierarchyException(companyId);
 
 		(bool hasChildren, Guid? parentId) = await _companyRepository
 			.RemoveRelationsAsync(companyId);
@@ -93,10 +89,7 @@ public class CompanyService : ICompanyService
 	}
 
 	public async Task<List<Company>> GetAllRelationsAsync(Guid companyId)
-	{
-		List<Company> companies = await _companyRepository.GetAllRelationsAsync(companyId);
-		return companies;
-	}
+		=> await _companyRepository.GetAllRelationsAsync(companyId);
 
 	private async Task UnmarkCompanyAsParentIfNeededAsync(Guid companyId)
 	{
