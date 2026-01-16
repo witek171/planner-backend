@@ -1,5 +1,6 @@
 ﻿using Schedule.Application.Interfaces.Repositories;
 using Schedule.Application.Interfaces.Services;
+using Schedule.Domain.Exceptions;
 using Schedule.Domain.Models;
 
 namespace Schedule.Application.Services;
@@ -16,7 +17,7 @@ public class ParticipantService : IParticipantService
 	public async Task<Guid> CreateAsync(Participant participant)
 	{
 		if (!participant.GdprConsent)
-			throw new InvalidOperationException("GDPR consent is required");
+			throw new GdprConsentRequiredException();
 
 		participant.Normalize();
 		return await _participantRepository.CreateAsync(participant);

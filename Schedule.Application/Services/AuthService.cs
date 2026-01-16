@@ -26,7 +26,7 @@ public class AuthService : IAuthService
 	{
 		StaffMember? staffMember = await _staffMemberService.GetByEmailAsync(email);
 		if (staffMember == null)
-			throw new ArgumentException($"Staff member with email {email} not exist");
+			throw new InvalidCredentialsException();
 
 		Boolean isPasswordValid = _passwordHasher.Verify(password, staffMember.Password);
 		if (!isPasswordValid)

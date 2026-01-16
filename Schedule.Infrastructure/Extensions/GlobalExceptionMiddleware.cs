@@ -40,41 +40,86 @@ public class GlobalExceptionMiddleware
 		HttpContext context,
 		Exception exception)
 	{
-		context.Response.ContentType = "application/json";
-
-		int statusCode = exception switch
+		if (context.Response.HasStarted)
 		{
-			EmailAlreadyExistsException => StatusCodes.Status400BadRequest,
-			PhoneAlreadyExistsException => StatusCodes.Status400BadRequest,
-			ArgumentException => StatusCodes.Status400BadRequest,
-			InvalidOperationException => StatusCodes.Status400BadRequest,
-			_ => StatusCodes.Status500InternalServerError
+			_logger.LogWarning("Response has already started, cannot write error response");
+			return;
+		}
+
+		context.Response.ContentType = "application/json";
+		(int statusCode, string userMessage) = exception switch
+		{
+			CompanySelfReferenceException
+				=> (400, "Company cannot be assigned to itself"),
+			DuplicateParticipantsException
+				=> (400, "List contains duplicate participants"),
+			GdprConsentRequiredException
+				=> (400, "GDPR consent is required"),
+			InvalidBreakTimeParticipantsException
+				=> (400, "Invalid break time for participants"),
+			InvalidBreakTimeStaffException
+				=> (400, "Invalid break time for staff member"),
+			InvalidCredentialsException
+				=> (401, "Invalid email or password"),
+			EventScheduleNotFoundException
+				=> (404, "Event schedule not found"),
+			EventTypeNotFoundException
+				=> (404, "Event type not found"),
+			ParticipantNotFoundException
+				=> (404, "Participant not found"),
+			StaffMemberNotFoundException
+				=> (404, "Staff member not found"),
+			CompanyNotInHierarchyException
+				=> (404, "Company is not present in the hierarchy, therefore it has no relations to remove"),
+			CompanyAlreadyHasParentException
+				=> (409, "Company is already assigned to another parent company"),
+			CompanyRelationAlreadyExistsException
+				=> (409, "Relationship between companies already exists"),
+			EmailAlreadyExistsException
+				=> (409, "Email address is already taken"),
+			PhoneAlreadyExistsException
+				=> (409, "Phone number is already taken"),
+			ParticipantAlreadyAssignedException
+				=> (409, "Participant is already assigned to this event"),
+			ParticipantTimeConflictException
+				=> (409, "Participant has another event scheduled at this time"),
+			StaffMemberTimeConflictException
+				=> (409, "Staff member has another event scheduled at this time"),
+			StaffMemberSpecializationAlreadyAssignedException
+				=> (409, "Staff member already has this specialization assigned"),
+			MaxParticipantsExceededException
+				=> (409, "Maximum number of participants has been reached"),
+			_ => (500, "An unexpected server error occurred")
 		};
 
 		context.Response.StatusCode = statusCode;
-
 		object response = _environment.IsDevelopment()
-			? new { statusCode, exceptions = GetExceptionDetails(exception) }
-			: new { error = exception.Message, statusCode };
+			? new
+			{
+				statusCode,
+				userMessage,
+				details = GetExceptionDetails(exception)
+			}
+			: new { statusCode, userMessage };
 
 		await context.Response.WriteAsync(System.Text.Json.JsonSerializer.Serialize(response));
 	}
 
 	private static IEnumerable<object> GetExceptionDetails(Exception ex)
 	{
-		List<object> details = new();
-
-		while (ex != null)
+		List<object> details = [];
+		Exception? current = ex;
+		while (current is not null)
 		{
 			details.Add(new
 			{
-				type = ex.GetType().Name,
-				message = ex.Message,
-				stackTrace = ex.StackTrace?
+				type = current.GetType().Name,
+				message = current.Message,
+				stackTrace = current.StackTrace?
 					.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries)
 			});
 
-			ex = ex.InnerException;
+			current = current.InnerException;
 		}
 
 		return details;
