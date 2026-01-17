@@ -22,7 +22,8 @@ public interface IParticipantRepository
 	Task<(List<Participant> Items, int TotalCount)> GetPagedWithCountAsync(
 		Guid companyId,
 		int page,
-		int pageSize);
+		int pageSize,
+		string? search);
 
 	Task<bool> IsParticipantAssignedToReservationsAsync(
 		Guid participantId,

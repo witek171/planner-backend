@@ -17,13 +17,19 @@ public class SpecializationRepository : ISpecializationRepository
 	public async Task<(List<Specialization> Items, int TotalCount)> GetPagedWithCountAsync(
 		Guid companyId,
 		int page,
-		int pageSize)
+		int pageSize,
+		string? search = null)
 	{
-		const string sql = @"
+		string sql = @"
 			SELECT Id, CompanyId, Name, Description,
 				COUNT(*) OVER() AS TotalCount
 			FROM Specializations 
-			WHERE CompanyId = @CompanyId
+			WHERE CompanyId = @CompanyId";
+
+		if (!string.IsNullOrWhiteSpace(search))
+			sql += " AND (Name LIKE @Search OR Description LIKE @Search)";
+
+		sql += @"
 			ORDER BY Name
 			OFFSET @Offset ROWS
 			FETCH NEXT @PageSize ROWS ONLY";
@@ -35,6 +41,10 @@ public class SpecializationRepository : ISpecializationRepository
 		command.Parameters.AddWithValue("@CompanyId", companyId);
 		command.Parameters.AddWithValue("@Offset", (page - 1) * pageSize);
 		command.Parameters.AddWithValue("@PageSize", pageSize);
+		command.Parameters.AddWithValue("@Search",
+			string.IsNullOrWhiteSpace(search)
+				? DBNull.Value
+				: $"%{search}%");
 
 		await using SqlDataReader reader = await command.ExecuteReaderAsync();
 		List<Specialization> specializations = new();

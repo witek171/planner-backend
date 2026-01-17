@@ -86,7 +86,11 @@ public class ParticipantController : ControllerBase
 		[FromQuery] PaginationRequest paginationRequest)
 	{
 		(List<Participant> Items, int TotalCount) result = await _participantService
-			.GetAllAsync(companyId, paginationRequest.Page, paginationRequest.PageSize);
+			.GetAllAsync(
+				companyId,
+				paginationRequest.Page,
+				paginationRequest.PageSize,
+				paginationRequest.Search);
 		PagedResponse<ParticipantResponse> response = result
 			.ToPagedResponse<Participant, ParticipantResponse>(paginationRequest, _mapper);
 		return Ok(response);

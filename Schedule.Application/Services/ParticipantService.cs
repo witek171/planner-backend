@@ -61,6 +61,7 @@ public class ParticipantService : IParticipantService
 	public async Task<(List<Participant> Items, int TotalCount)> GetAllAsync(
 		Guid companyId,
 		int page,
-		int pageSize)
-		=> await _participantRepository.GetPagedWithCountAsync(companyId, page, pageSize);
+		int pageSize,
+		string? search = null)
+		=> await _participantRepository.GetPagedWithCountAsync(companyId, page, pageSize, search);
 }
