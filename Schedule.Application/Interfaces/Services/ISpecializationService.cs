@@ -7,7 +7,8 @@ public interface ISpecializationService
 	Task<(List<Specialization> Items, int TotalCount)> GetAllAsync(
 		Guid companyId,
 		int page,
-		int pageSize);
+		int pageSize,
+		string? search);
 
 	Task<Specialization?> GetByIdAsync(Guid id, Guid companyId);
 	Task<Guid> CreateAsync(Specialization specialization);

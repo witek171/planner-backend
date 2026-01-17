@@ -11,7 +11,8 @@ public interface IEventScheduleService
 	Task<(List<EventSchedule> Items, int TotalCount)> GetAllAsync(
 		Guid companyId,
 		int page,
-		int pageSize);
+		int pageSize,
+		Guid? eventTypeId);
 
 	Task<EventSchedule?> GetByIdAsync(
 		Guid id,

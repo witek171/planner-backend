@@ -30,12 +30,16 @@ public class EventScheduleController : ControllerBase
 	[HttpGet]
 	public async Task<ActionResult<PagedResponse<EventScheduleResponse>>> GetAll(
 		Guid companyId,
-		[FromQuery] PaginationRequest paginationRequest)
+		[FromQuery] EventScheduleFilterRequest filterRequest)
 	{
 		(List<EventSchedule> Items, int TotalCount) result = await _eventScheduleService
-			.GetAllAsync(companyId, paginationRequest.Page, paginationRequest.PageSize);
+			.GetAllAsync(
+				companyId,
+				filterRequest.Page,
+				filterRequest.PageSize,
+				filterRequest.EventTypeId);
 		PagedResponse<EventScheduleResponse> response = result
-			.ToPagedResponse<EventSchedule, EventScheduleResponse>(paginationRequest, _mapper);
+			.ToPagedResponse<EventSchedule, EventScheduleResponse>(filterRequest, _mapper);
 		return Ok(response);
 	}
 

@@ -16,8 +16,9 @@ public class SpecializationService : ISpecializationService
 	public async Task<(List<Specialization> Items, int TotalCount)> GetAllAsync(
 		Guid companyId,
 		int page,
-		int pageSize)
-		=> await _specializationRepository.GetPagedWithCountAsync(companyId, page, pageSize);
+		int pageSize,
+		string? search = null)
+		=> await _specializationRepository.GetPagedWithCountAsync(companyId, page, pageSize, search);
 
 	public async Task<Specialization?> GetByIdAsync(Guid id, Guid companyId)
 		=> await _specializationRepository.GetByIdAsync(id, companyId);

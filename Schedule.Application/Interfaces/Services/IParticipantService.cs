@@ -24,5 +24,6 @@ public interface IParticipantService
 	Task<(List<Participant> Items, int TotalCount)> GetAllAsync(
 		Guid companyId,
 		int page,
-		int pageSize);
+		int pageSize,
+		string? search);
 }

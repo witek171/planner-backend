@@ -33,7 +33,11 @@ public class SpecializationController : ControllerBase
 		[FromQuery] PaginationRequest paginationRequest)
 	{
 		(List<Specialization> Items, int TotalCount) result = await _specializationService
-			.GetAllAsync(companyId, paginationRequest.Page, paginationRequest.PageSize);
+			.GetAllAsync(
+				companyId,
+				paginationRequest.Page,
+				paginationRequest.PageSize,
+				paginationRequest.Search);
 		PagedResponse<SpecializationResponse> response = result
 			.ToPagedResponse<Specialization, SpecializationResponse>(paginationRequest, _mapper);
 		return Ok(response);
