@@ -40,7 +40,7 @@ The system currently supports the following core functionalities:
 
 - Defining staff availability schedules.
 
-- Validation of time ranges, including mandatory breaks between events, to prevent overlapping schedules, reservations, and staff availability conflicts.
+- Time range validation with mandatory breaks to prevent scheduling conflicts.
 
 ### Reservation & Event Management:
 
@@ -135,7 +135,7 @@ jdbc:sqlserver://localhost:1433;databaseName=PlannerDB;user=sa;password=YourStro
 > Note: From inside Docker containers, `localhost` means **the container itself**.  
 > Other containers should use the service name `sqlserver` instead of `localhost`.
 
-### Demo login credentials
+### Demo login credentials:
 
 Use the following credentials to log in to the demo environment:
 
@@ -145,7 +145,7 @@ Use the following credentials to log in to the demo environment:
 | Trainer | `t@t.pl` | `demo` |
 | Reception Employee | `r@r.pl` | `demo` |
 
-> demo users are automatically created during application startup.
+> demo users are automatically created `during application startup`.
 
  ### What happens automatically:
 - SQL Server starts up (port 1433).
