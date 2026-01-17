@@ -81,25 +81,25 @@ DECLARE @Manager2Id UNIQUEIDENTIFIER = NEWID();
 INSERT INTO Staff (Id, Role, Email, Password, FirstName, LastName, Phone)
 VALUES
     -- Pracownicy recepcji
-    (@StaffRec1Id, 'ReceptionEmployee', 'anna.kowalska@sportfit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Anna', 'Kowalska', '+48700100101'),
-    (@StaffRec2Id, 'ReceptionEmployee', 'barbara.nowak@sportfit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Barbara', 'Nowak', '+48700100102'),
-    (@StaffRec3Id, 'ReceptionEmployee', 'celina.wisniewski@sportfit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Celina', 'Wiśniewska', '+48700100103'),
+    (@StaffRec1Id, 'ReceptionEmployee', 'r@r.pl', '$2a$11$JTCf2we/VdmC1Viuhxqwf.WVyRMRH5gxgt2WvOicBCNzO84VQI.6C', 'Anna', 'Kowalska', '+48700100101'),
+    (@StaffRec2Id, 'ReceptionEmployee', 'barbara.nowak@sportfit.pl', '$2a$11$JTCf2we/VdmC1Viuhxqwf.WVyRMRH5gxgt2WvOicBCNzO84VQI.6C', 'Barbara', 'Nowak', '+48700100102'),
+    (@StaffRec3Id, 'ReceptionEmployee', 'celina.wisniewski@sportfit.pl', '$2a$11$JTCf2we/VdmC1Viuhxqwf.WVyRMRH5gxgt2WvOicBCNzO84VQI.6C', 'Celina', 'Wiśniewska', '+48700100103'),
 
     -- Trenerzy (10)
-    (@Trainer1Id, 'Trainer', 'dariusz.malinowski@sportfit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Dariusz', 'Malinowski', '+48700200201'),
-    (@Trainer2Id, 'Trainer', 'ewa.jablonska@sportfit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Ewa', 'Jabłońska', '+48700200202'),
-    (@Trainer3Id, 'Trainer', 'filip.kowalczyk@sportfit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Filip', 'Kowalczyk', '+48700200203'),
-    (@Trainer4Id, 'Trainer', 'grazyna.lewandowska@sportfit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Grażyna', 'Lewandowska', '+48700200204'),
-    (@Trainer5Id, 'Trainer', 'henryk.wojcik@sportfit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Henryk', 'Wójcik', '+48700200205'),
-    (@Trainer6Id, 'Trainer', 'irena.kaminska@sportfit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Irena', 'Kamińska', '+48700200206'),
-    (@Trainer7Id, 'Trainer', 'jacek.zielinski@sportfit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Jacek', 'Zieliński', '+48700200207'),
-    (@Trainer8Id, 'Trainer', 'karolina.szymanska@sportfit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Karolina', 'Szymańska', '+48700200208'),
-    (@Trainer9Id, 'Trainer', 'lukasz.wozniak@sportfit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Łukasz', 'Woźniak', '+48700200209'),
-    (@Trainer10Id, 'Trainer', 'magdalena.dabrowski@sportfit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Magdalena', 'Dąbrowska', '+48700200210'),
+    (@Trainer1Id, 'Trainer', 't@t.pl', '$2a$11$JTCf2we/VdmC1Viuhxqwf.WVyRMRH5gxgt2WvOicBCNzO84VQI.6C', 'Dariusz', 'Malinowski', '+48700200201'),
+    (@Trainer2Id, 'Trainer', 'ewa.jablonska@sportfit.pl', '$2a$11$JTCf2we/VdmC1Viuhxqwf.WVyRMRH5gxgt2WvOicBCNzO84VQI.6C', 'Ewa', 'Jabłońska', '+48700200202'),
+    (@Trainer3Id, 'Trainer', 'filip.kowalczyk@sportfit.pl', '$2a$11$JTCf2we/VdmC1Viuhxqwf.WVyRMRH5gxgt2WvOicBCNzO84VQI.6C', 'Filip', 'Kowalczyk', '+48700200203'),
+    (@Trainer4Id, 'Trainer', 'grazyna.lewandowska@sportfit.pl', '$2a$11$JTCf2we/VdmC1Viuhxqwf.WVyRMRH5gxgt2WvOicBCNzO84VQI.6C', 'Grażyna', 'Lewandowska', '+48700200204'),
+    (@Trainer5Id, 'Trainer', 'henryk.wojcik@sportfit.pl', '$2a$11$JTCf2we/VdmC1Viuhxqwf.WVyRMRH5gxgt2WvOicBCNzO84VQI.6C', 'Henryk', 'Wójcik', '+48700200205'),
+    (@Trainer6Id, 'Trainer', 'irena.kaminska@sportfit.pl', '$2a$11$JTCf2we/VdmC1Viuhxqwf.WVyRMRH5gxgt2WvOicBCNzO84VQI.6C', 'Irena', 'Kamińska', '+48700200206'),
+    (@Trainer7Id, 'Trainer', 'jacek.zielinski@sportfit.pl', '$2a$11$JTCf2we/VdmC1Viuhxqwf.WVyRMRH5gxgt2WvOicBCNzO84VQI.6C', 'Jacek', 'Zieliński', '+48700200207'),
+    (@Trainer8Id, 'Trainer', 'karolina.szymanska@sportfit.pl', '$2a$11$JTCf2we/VdmC1Viuhxqwf.WVyRMRH5gxgt2WvOicBCNzO84VQI.6C', 'Karolina', 'Szymańska', '+48700200208'),
+    (@Trainer9Id, 'Trainer', 'lukasz.wozniak@sportfit.pl', '$2a$11$JTCf2we/VdmC1Viuhxqwf.WVyRMRH5gxgt2WvOicBCNzO84VQI.6C', 'Łukasz', 'Woźniak', '+48700200209'),
+    (@Trainer10Id, 'Trainer', 'magdalena.dabrowski@sportfit.pl', '$2a$11$JTCf2we/VdmC1Viuhxqwf.WVyRMRH5gxgt2WvOicBCNzO84VQI.6C', 'Magdalena', 'Dąbrowska', '+48700200210'),
 
     -- Managerowie
-    (@Manager1Id, 'Manager', 'test@t.pl', '$2a$11$ZI841z505rA0uEdujiQ7Eu4HTUkef9WsPv1HkTgidBazpBWLgvBaS', 'Janusz', 'Mazur', '+48700300301'),
-    (@Manager2Id, 'Manager', 'kamila.kaczmarek@sportfit.pl', '$2a$11$4r/77UPSpJvAbAkQt2U5oOpG5vzSHlxyPZQiUi5aN0biwTut0ewsm', 'Kamila', 'Kaczmarek', '+48700300302');
+    (@Manager1Id, 'Manager', 'm@m.pl', '$2a$11$JTCf2we/VdmC1Viuhxqwf.WVyRMRH5gxgt2WvOicBCNzO84VQI.6C', 'Janusz', 'Mazur', '+48700300301'),
+    (@Manager2Id, 'Manager', 'kamila.kaczmarek@sportfit.pl', '$2a$11$JTCf2we/VdmC1Viuhxqwf.WVyRMRH5gxgt2WvOicBCNzO84VQI.6C', 'Kamila', 'Kaczmarek', '+48700300302');
 
 -- Powiązania Staff z Companies
 INSERT INTO StaffMemberCompanies (StaffMemberId, CompanyId)
