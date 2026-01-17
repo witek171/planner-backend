@@ -625,11 +625,11 @@ VALUES
      '2026-02-20 12:00:00', NULL, 1, '2026-02-20 12:30:00'),
 
     -- Rezerwacja 14 - 8 uczestników (Pilates zaawansowany)
-    (@R14, @Branch1Id, @E14, 'Pending', 'Pilates - zaawansowana technika',
+    (@R14, @Branch1Id, @E14, 'Cancelled', 'Pilates - zaawansowana technika',
      '2026-03-01 14:00:00', NULL, 0, NULL),
 
     -- Rezerwacja 15 - 10 uczestników (HIIT)
-    (@R15, @Branch1Id, @E15, 'Pending', 'HIIT weekendowy',
+    (@R15, @Branch1Id, @E15, 'Cancelled', 'HIIT weekendowy',
      '2026-03-10 10:00:00', NULL, 0, NULL);
 
 -- =============================================
