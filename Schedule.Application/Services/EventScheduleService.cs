@@ -32,8 +32,9 @@ public class EventScheduleService : IEventScheduleService
 	public async Task<(List<EventSchedule> Items, int TotalCount)> GetAllAsync(
 		Guid companyId,
 		int page,
-		int pageSize)
-		=> await _eventScheduleRepository.GetPagedWithCountAsync(companyId, page, pageSize);
+		int pageSize,
+		Guid? eventTypeId = null)
+		=> await _eventScheduleRepository.GetPagedWithCountAsync(companyId, page, pageSize, eventTypeId);
 
 	public async Task<EventSchedule?> GetByIdAsync(
 		Guid id,

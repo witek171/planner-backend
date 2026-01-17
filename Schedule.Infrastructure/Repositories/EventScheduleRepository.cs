@@ -54,9 +54,10 @@ public class EventScheduleRepository : IEventScheduleRepository
 	public async Task<(List<EventSchedule> Items, int TotalCount)> GetPagedWithCountAsync(
 		Guid companyId,
 		int page,
-		int pageSize)
+		int pageSize,
+		Guid? eventTypeId = null)
 	{
-		const string sql = @"
+		string sql = @"
 			SELECT 
 				es.Id, es.CompanyId, es.EventTypeId, es.PlaceName, 
 				es.StartTime, es.CreatedAt, es.Status,
@@ -68,7 +69,12 @@ public class EventScheduleRepository : IEventScheduleRepository
 			FROM EventSchedules es
 			INNER JOIN EventTypes et ON es.EventTypeId = et.Id
 			WHERE es.CompanyId = @CompanyId 
-			  AND es.Status <> @DeletedStatus
+			  AND es.Status <> @DeletedStatus";
+
+		if (eventTypeId.HasValue)
+			sql += " AND es.EventTypeId = @EventTypeId";
+
+		sql += @"
 			ORDER BY es.StartTime
 			OFFSET @Offset ROWS
 			FETCH NEXT @PageSize ROWS ONLY";
@@ -81,9 +87,11 @@ public class EventScheduleRepository : IEventScheduleRepository
 		command.Parameters.AddWithValue("@DeletedStatus", nameof(EventScheduleStatus.Deleted));
 		command.Parameters.AddWithValue("@Offset", (page - 1) * pageSize);
 		command.Parameters.AddWithValue("@PageSize", pageSize);
+		if (eventTypeId.HasValue)
+			command.Parameters.AddWithValue("@EventTypeId", eventTypeId.Value);
 
 		await using SqlDataReader reader = await command.ExecuteReaderAsync();
-		List<EventSchedule> eventSchedules = new();
+		List<EventSchedule> eventSchedules = [];
 		int totalCount = 0;
 		while (await reader.ReadAsync())
 		{

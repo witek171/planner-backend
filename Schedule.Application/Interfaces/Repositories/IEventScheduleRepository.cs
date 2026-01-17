@@ -11,7 +11,8 @@ public interface IEventScheduleRepository
 	Task<(List<EventSchedule> Items, int TotalCount)> GetPagedWithCountAsync(
 		Guid companyId,
 		int page,
-		int pageSize);
+		int pageSize,
+		Guid? eventTypeId);
 
 	Task<EventSchedule?> GetByIdAsync(
 		Guid id,
