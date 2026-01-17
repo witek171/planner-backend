@@ -3,7 +3,7 @@
 A universal backend API designed for reservation systems, staff management, and client scheduling.
 
 ---
-## About The Project
+## About the Project
 
 This project provides a comprehensive and flexible backend solution designed to power scheduling and management applications for a wide variety of service-based businesses. Its universal architecture makes it suitable for organizations like:
 
@@ -28,7 +28,7 @@ The system currently supports the following core functionalities:
   
 - Multi-company context switching (staff choose one of their assigned companies).
 
-- Role-based access control (RBAC) for staff roles (e.g., Manager, Reception employee).
+- Role-based access control (RBAC) for staff roles (e.g., Manager, Reception employee, Trainer).
   
 - Company-scoped data isolation.
 
@@ -39,6 +39,8 @@ The system currently supports the following core functionalities:
 - CRUD operations for staff members, assignment to companies, and specialization management.
 
 - Defining staff availability schedules.
+
+- Validation of time ranges, including mandatory breaks between events, to prevent overlapping schedules, reservations, and staff availability conflicts.
 
 ### Reservation & Event Management:
 
@@ -92,13 +94,13 @@ The system currently supports the following core functionalities:
 </p>
 
 ---
-## How To Run Locally
+## How to Run Locally
 
 ### Prerequisites:
 
  - [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed and running.
 
-### Quick Start:
+### Quick start:
 
 1. **Clone the repository:**
    ```bash
@@ -132,6 +134,18 @@ jdbc:sqlserver://localhost:1433;databaseName=PlannerDB;user=sa;password=YourStro
 
 > Note: From inside Docker containers, `localhost` means **the container itself**.  
 > Other containers should use the service name `sqlserver` instead of `localhost`.
+
+### Demo login credentials
+
+Use the following credentials to log in to the demo environment:
+
+| Role | Email | Password |
+|------|-------|----------|
+| Manager | `m@m.pl` | `demo` |
+| Trainer | `t@t.pl` | `demo` |
+| Reception Employee | `r@r.pl` | `demo` |
+
+> demo users are automatically created during application startup.
 
  ### What happens automatically:
 - SQL Server starts up (port 1433).
