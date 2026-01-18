@@ -1,5 +1,7 @@
 # Planner API
 
+[![API Docs](https://img.shields.io/badge/API-Documentation-blue)](https://witek171.github.io/planner-backend/)
+
 A universal backend API designed for reservation systems, staff management, and client scheduling.
 
 ---
@@ -53,6 +55,7 @@ The system currently supports the following core functionalities:
 - CRUD operations for participant (client) data.
 
 ---
+
 ## Roadmap
 
 - Full implementation of Email/SMS notifications (based on the Notifications table).
@@ -145,7 +148,7 @@ Use the following credentials to log in to the demo environment:
 | Trainer | `t@t.pl` | `demo` |
 | Reception Employee | `r@r.pl` | `demo` |
 
-> demo users are automatically created `during application startup`.
+> Demo users are automatically created `during application startup`.
 
  ### What happens automatically:
 - SQL Server starts up (port 1433).
