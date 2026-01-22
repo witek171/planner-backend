@@ -1,9 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-	<Import Project="..\Common\ProjectBase.props" />
-
 	<ItemGroup>
-	  <ProjectReference Include="..\Schedule.Domain\Schedule.Domain.csproj" />
+		<ProjectReference Include="..\Schedule.Domain\Schedule.Domain.csproj"/>
 	</ItemGroup>
 
 </Project>

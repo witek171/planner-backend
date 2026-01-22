@@ -1,7 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-	<Import Project="..\Common\ProjectBase.props"/>
-
 	<ItemGroup>
 		<ProjectReference Include="..\Schedule.Application\Schedule.Application.csproj"/>
 		<ProjectReference Include="..\Schedule.Contracts\Schedule.Contracts.csproj"/>
@@ -9,15 +7,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.AspNetCore.Http" Version="2.3.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Http" Version="2.3.0"/>
 		<PackageReference Include="Microsoft.Data.SqlClient" Version="6.0.2"/>
 		<PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.7"/>
 		<PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="9.0.7"/>
 		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.7"/>
-		<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="10.0.0-rc.1.25451.107" />
+		<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="10.0.0-rc.1.25451.107"/>
 		<PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.7"/>
 		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.0.0"/>
-		<PackageReference Include="TimePeriodLibrary.NET" Version="2.1.6" />
+		<PackageReference Include="TimePeriodLibrary.NET" Version="2.1.6"/>
 	</ItemGroup>
 
 </Project>
