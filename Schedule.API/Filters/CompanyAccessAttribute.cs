@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Schedule.Application.Interfaces.Services;
 using System.Security.Claims;
 using Schedule.Application.ReadModels;
-using Schedule.Domain.Models;
 
 namespace PlannerNet.Filters;
 
