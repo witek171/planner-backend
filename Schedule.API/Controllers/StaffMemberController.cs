@@ -12,7 +12,6 @@ namespace PlannerNet.Controllers;
 
 [ApiController]
 [Route("api/[controller]/{companyId:guid}")]
-[Authorize(Roles = "Manager")]
 [CompanyAccess]
 public class StaffMemberController : ControllerBase
 {
@@ -40,6 +39,7 @@ public class StaffMemberController : ControllerBase
 	}
 
 	[HttpGet]
+	[Authorize(Roles = "Manager")]
 	public async Task<ActionResult<List<StaffMemberResponse>>> GetAll(
 		Guid companyId,
 		[FromQuery] PaginationRequest paginationRequest)
@@ -52,6 +52,7 @@ public class StaffMemberController : ControllerBase
 	}
 
 	[HttpGet("{staffMemberId:guid}")]
+	[Authorize(Roles = "Manager")]
 	public async Task<ActionResult<StaffMemberResponse>> GetById(
 		Guid staffMemberId,
 		Guid companyId)
@@ -66,6 +67,7 @@ public class StaffMemberController : ControllerBase
 	}
 
 	[HttpPost]
+	[Authorize(Roles = "Manager")]
 	public async Task<ActionResult<Guid>> Create(
 		Guid companyId,
 		[FromBody] StaffMemberRequest request)
@@ -76,6 +78,7 @@ public class StaffMemberController : ControllerBase
 	}
 
 	[HttpPut("{staffMemberId:guid}")]
+	[Authorize(Roles = "Manager")]
 	public async Task<ActionResult> Put(
 		Guid staffMemberId,
 		Guid companyId,
@@ -92,6 +95,7 @@ public class StaffMemberController : ControllerBase
 	}
 
 	[HttpDelete("{staffMemberId:guid}")]
+	[Authorize(Roles = "Manager")]
 	public async Task<ActionResult> Delete(
 		Guid staffMemberId,
 		Guid companyId)
@@ -106,6 +110,7 @@ public class StaffMemberController : ControllerBase
 	}
 
 	[HttpPost("specialization")]
+	[Authorize(Roles = "Manager")]
 	public async Task<ActionResult<Guid>> CreateStaffMemberSpecialization(
 		Guid companyId,
 		[FromBody] StaffMemberSpecializationRequest request)
@@ -119,6 +124,7 @@ public class StaffMemberController : ControllerBase
 	}
 
 	[HttpDelete("specialization/{staffMemberSpecializationId:guid}")]
+	[Authorize(Roles = "Manager")]
 	public async Task<ActionResult> DeleteStaffMemberSpecialization(
 		Guid companyId,
 		Guid staffMemberSpecializationId)
@@ -134,6 +140,8 @@ public class StaffMemberController : ControllerBase
 	}
 
 	[HttpGet("availability/{staffMemberId:guid}")]
+	[Authorize(Roles = "Manager,Trainer")]
+	[StaffMemberAccess]
 	public async Task<ActionResult<List<StaffMemberAvailabilityResponse>>> GetAvailabilityByStaffMemberId(
 		Guid companyId,
 		Guid staffMemberId)
@@ -153,6 +161,8 @@ public class StaffMemberController : ControllerBase
 	}
 
 	[HttpPost("availability/{staffMemberId:guid}")]
+	[Authorize(Roles = "Manager,Trainer")]
+	[StaffMemberAccess]
 	public async Task<ActionResult<Guid>> CreateAvailability(
 		Guid companyId,
 		Guid staffMemberId,
@@ -171,6 +181,8 @@ public class StaffMemberController : ControllerBase
 	}
 
 	[HttpDelete("availability/{availabilityId:guid}")]
+	[Authorize(Roles = "Manager,Trainer")]
+	[StaffMemberAccess]
 	public async Task<ActionResult> DeleteAvailability(
 		Guid companyId,
 		Guid availabilityId)
@@ -185,6 +197,8 @@ public class StaffMemberController : ControllerBase
 	}
 
 	[HttpGet("eventSchedules/{staffMemberId:guid}")]
+	[Authorize(Roles = "Manager,Trainer")]
+	[StaffMemberAccess]
 	public async Task<ActionResult<List<EventScheduleResponse>>> GetStaffMemberEventSchedules(
 		Guid companyId,
 		Guid staffMemberId)
@@ -197,6 +211,7 @@ public class StaffMemberController : ControllerBase
 	}
 
 	[HttpPost("eventSchedule")]
+	[Authorize(Roles = "Manager")]
 	public async Task<ActionResult<Guid>> AssignStaffMemberToEvent(
 		Guid companyId,
 		[FromBody] EventScheduleStaffMemberRequest request)
@@ -210,6 +225,7 @@ public class StaffMemberController : ControllerBase
 	}
 
 	[HttpDelete("eventSchedule/{eventScheduleStaffMemberId:guid}")]
+	[Authorize(Roles = "Manager")]
 	public async Task<ActionResult> UnassignStaffMemberFromEvent(
 		Guid companyId,
 		Guid eventScheduleStaffMemberId)
