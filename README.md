@@ -1,4 +1,4 @@
-# Planner API
+# Reservation System API
 
 [![API Docs](https://img.shields.io/badge/API-Documentation-blue)](https://witek171.github.io/planner-backend/)
 
@@ -53,6 +53,12 @@ The system currently supports the following core functionalities:
 - Managing the payment status of reservations.
 
 - CRUD operations for participant (client) data.
+
+---
+
+## Architecture
+
+The system is built as a **modular monolith** following clean architecture principles. This ensures maintainability, testability, and clear separation of concerns while keeping a single deployable service.
 
 ---
 
@@ -146,7 +152,7 @@ Use the following credentials to log in to the demo environment:
 |------|-------|----------|
 | Manager | `m@m.pl` | `demo` |
 | Trainer | `t@t.pl` | `demo` |
-| Reception Employee | `r@r.pl` | `demo` |
+| Reception employee | `r@r.pl` | `demo` |
 
 > Demo users are automatically created `during application startup`.
 
