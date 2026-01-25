@@ -1,0 +1,119 @@
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using ReservationSystem.Extensions;
+using ReservationSystem.Filters;
+using ReservationSystem.Application.Interfaces.Services;
+using ReservationSystem.Contracts.Dtos.Requests;
+using ReservationSystem.Contracts.Dtos.Responses;
+using ReservationSystem.Domain.Models;
+
+namespace ReservationSystem.Controllers;
+
+[ApiController]
+[Route("api/[controller]/{companyId:guid}")]
+[Authorize(Roles = "Manager")]
+[CompanyAccess]
+public class ReservationController : ControllerBase
+{
+	private readonly IReservationService _reservationService;
+	private readonly IMapper _mapper;
+
+	public ReservationController(
+		IReservationService reservationService,
+		IMapper mapper)
+	{
+		_reservationService = reservationService;
+		_mapper = mapper;
+	}
+
+	[HttpGet]
+	public async Task<ActionResult<PagedResponse<ReservationResponse>>> GetAll(
+		Guid companyId,
+		[FromQuery] PaginationRequest paginationRequest)
+	{
+		(List<Reservation> Items, int TotalCount) result = await _reservationService
+			.GetAllAsync(companyId, paginationRequest.Page, paginationRequest.PageSize);
+		PagedResponse<ReservationResponse> response = result
+			.ToPagedResponse<Reservation, ReservationResponse>(paginationRequest, _mapper);
+		return Ok(response);
+	}
+
+	[HttpGet("{id}")]
+	public async Task<ActionResult<ReservationResponse>> GetById(
+		Guid id,
+		Guid companyId)
+	{
+		Reservation? reservation = await _reservationService.GetByIdAsync(id, companyId);
+		if (reservation == null)
+			return NotFound();
+
+		ReservationResponse response = _mapper.Map<ReservationResponse>(reservation);
+		return Ok(response);
+	}
+
+	[HttpPost]
+	public async Task<ActionResult<Guid>> Create(
+		Guid companyId,
+		[FromBody] ReservationCreateRequest createRequest)
+	{
+		Reservation reservation = _mapper.Map<Reservation>(createRequest);
+		reservation.SetCompanyId(companyId);
+		Guid id = await _reservationService.CreateAsync(reservation);
+		return CreatedAtAction(nameof(Create), id);
+	}
+
+	[HttpPut("{id:guid}")]
+	public async Task<ActionResult> Update(
+		Guid id,
+		Guid companyId,
+		[FromBody] ReservationUpdateRequest updateRequest)
+	{
+		Reservation? reservation = await _reservationService.GetByIdAsync(id, companyId);
+		if (reservation == null)
+			return NotFound();
+
+		_mapper.Map(updateRequest, reservation);
+		await _reservationService.UpdateAsync(reservation);
+		return NoContent();
+	}
+
+	[HttpPatch("{id:guid}/markAsPaid")]
+	public async Task<ActionResult> MarkAsPaid(
+		Guid id,
+		Guid companyId)
+	{
+		Reservation? reservation = await _reservationService.GetByIdAsync(id, companyId);
+		if (reservation == null)
+			return NotFound();
+
+		await _reservationService.MarkAsPaidAsync(reservation);
+		return NoContent();
+	}
+
+	[HttpPatch("{id:guid}/unmarkAsPaid")]
+	public async Task<ActionResult> UnmarkAsPaid(
+		Guid id,
+		Guid companyId)
+	{
+		Reservation? reservation = await _reservationService.GetByIdAsync(id, companyId);
+		if (reservation == null)
+			return NotFound();
+
+		await _reservationService.UnmarkAsPaidAsync(reservation);
+		return NoContent();
+	}
+
+	[HttpDelete("{id:guid}")]
+	public async Task<ActionResult> Delete(
+		Guid id,
+		Guid companyId)
+	{
+		Reservation? reservation = await _reservationService.GetByIdAsync(id, companyId);
+		if (reservation == null)
+			return NotFound();
+
+		await _reservationService.SoftDeleteAsync(id, companyId);
+		return NoContent();
+	}
+}

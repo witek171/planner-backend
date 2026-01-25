@@ -27,7 +27,7 @@ services:
     environment:
       - SA_PASSWORD=YourStrong@Password123
     volumes:
-      - ./Database:/scripts:ro
+      - ./database:/scripts:ro
     depends_on:
       sqlserver:
         condition: service_healthy
@@ -63,7 +63,7 @@ services:
     image: alpine:latest
     container_name: planner_key_generator
     volumes:
-      - ./Schedule.API/Data:/keys
+      - ./src/ReservationSystem.API/Data:/keys
     command: >
       sh -c "
         apk add --no-cache openssl &&
@@ -82,20 +82,20 @@ services:
   schedule_api:
     build:
       context: .
-      dockerfile: Schedule.API/Dockerfile
+      dockerfile: src/ReservationSystem.API/Dockerfile
     container_name: planner_api
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:8080
       - ConnectionStrings__DefaultConnection=Server=sqlserver,1433;Database=PlannerDB;User Id=sa;Password=YourStrong@Password123;TrustServerCertificate=True;MultipleActiveResultSets=True;
       - PasswordPepper=MojaSuperSekretnaPepper123!
-      - Jwt__Issuer=Schedule.Auth
-      - Jwt__Audience=Schedule.Api
+      - Jwt__Issuer=ReservationSystem.Auth
+      - Jwt__Audience=ReservationSystem.Api
       - Jwt__ExpiresInMinutes=240
     ports:
       - "5000:8080"
     volumes:
-      - ./Schedule.API/Data:/app/data:ro
+      - ./src/ReservationSystem.API/Data:/app/data:ro
     depends_on:
       db_init:
         condition: service_completed_successfully

@@ -28,10 +28,10 @@ jobs:
           dotnet-version: "8.0.x"
 
       - name: Restore
-        run: dotnet restore Schedule.API/Schedule.API.csproj
+        run: dotnet restore src/ReservationSystem.API/ReservationSystem.API.csproj
 
       - name: Build (Release)
-        run: dotnet build Schedule.API/Schedule.API.csproj -c Release --no-restore
+        run: dotnet build src/ReservationSystem.API/ReservationSystem.API.csproj -c Release --no-restore
 
       - name: Install Swagger CLI (Swashbuckle)
         run: dotnet tool install --tool-path ./.tools Swashbuckle.AspNetCore.Cli --version 6.6.2
@@ -43,7 +43,7 @@ jobs:
           mkdir -p docs
           ./.tools/swagger tofile \
             --output docs/swagger.json \
-            Schedule.API/bin/Release/net8.0/Schedule.API.dll v1
+            src/ReservationSystem.API/bin/Release/net8.0/ReservationSystem.API.dll v1
 
       - name: Upload Pages artifact (docs/)
         uses: actions/upload-pages-artifact@v3

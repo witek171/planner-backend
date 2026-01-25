@@ -1,7 +1,0 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
-	<ItemGroup>
-		<ProjectReference Include="..\Schedule.Domain\Schedule.Domain.csproj"/>
-	</ItemGroup>
-
-</Project>
