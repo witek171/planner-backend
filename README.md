@@ -1,7 +1,5 @@
 # Reservation System API
 
-[![API Docs](https://img.shields.io/badge/API-Documentation-blue)](https://witek171.github.io/reservation-system-backend/)
-
 A universal backend API designed for reservation systems, staff management, and client scheduling.
 
 ---
@@ -56,9 +54,17 @@ The system currently supports the following core functionalities:
 
 ---
 
+## API Documentation
+
+For a complete list of endpoints, request schemas, and response types, please refer to the full documentation linked below:
+
+[![API Docs](https://img.shields.io/badge/API-Documentation-blue)](https://witek171.github.io/reservation-system-backend/)
+
+---
+
 ## Architecture
 
-The system is built as a modular monolith following clean architecture principles. This ensures maintainability, testability, and clear separation of concerns while keeping a single deployable service.
+The system is built as a **modular monolith** following clean architecture principles. This ensures maintainability, testability, and clear separation of concerns while keeping a single deployable service.
 
 ---
 
