@@ -1,0 +1,7 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<ItemGroup>
+		<ProjectReference Include="..\ReservationSystem.Domain\ReservationSystem.Domain.csproj"/>
+	</ItemGroup>
+
+</Project>

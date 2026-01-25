@@ -1,4 +1,4 @@
-KEY_DIR="./Schedule.API/Data"
+KEY_DIR="./src/ReservationSystem.API/Data"
 PRIVATE_KEY_FILE="$KEY_DIR/private.key"
 PUBLIC_KEY_FILE="$KEY_DIR/public.key"
 

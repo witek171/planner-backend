@@ -7,7 +7,7 @@
 node_modules/
 dist/
 
-Schedule.API/Properties/launchSettings.json
+#src/ReservationSystem.API/Properties/launchSettings.json
 
 # Compiled Java class files
 *.class
@@ -110,8 +110,8 @@ bld/
 .vs/
 
 # RSA Keys
-Schedule.API/Data/private.key
-Schedule.API/Data/public.key
+ReservationSystem.API/Data/private.key
+ReservationSystem.API/Data/public.key
 
 # Docker volumes
 sqlserver_data/
